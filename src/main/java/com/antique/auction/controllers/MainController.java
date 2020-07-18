@@ -16,15 +16,33 @@ public class MainController {
         this.itemRepository = itemRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/start")
     public String start () {
-        Item item = new Item();
-        item.setName("FirstLot");
-        item.setDescription("this is first lot");
-        item.setPrice(10);
-        itemRepository.save(item);
+        itemRepository.save(getItem("first", "some first", 10));
+        itemRepository.save(getItem("second", "some fijujurst", 10));
+        itemRepository.save(getItem("ttttt", "some firjujust", 100));
+        itemRepository.save(getItem("rrrrr", "some first", 10));
+        itemRepository.save(getItem("firseet", "some first", 10));
+        itemRepository.save(getItem("firsewwt", "some jujuj", 10));
+        itemRepository.save(getItem("first", "some first", 10));
+        itemRepository.save(getItem("firdfgfdst", "some ikiki", 30));
+        itemRepository.save(getItem("firfdgst", "some first", 10));
+        itemRepository.save(getItem("hjhjhj", "some first", 10));
+        itemRepository.save(getItem("first", "some first", 10));
+        itemRepository.save(getItem("firstnvb", "some first", 10));
+        itemRepository.save(getItem("fidgfdgrst", "some first", 10));
+        itemRepository.save(getItem("fibnvbnrst", "some first", 50));
+        itemRepository.save(getItem("first", "some first", 10));
         return "home";
     }
+    private Item getItem(String name, String description, int price) {
+        Item item = new Item();
+        item.setName(name);
+        item.setDescription(description);
+        item.setPrice(price);
+        return item;
+    }
+
     @RequestMapping("/home")
     public String home() {
         return "home";
