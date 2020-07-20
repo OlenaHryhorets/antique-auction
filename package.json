@@ -1,0 +1,16 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "responsive",
+  "main": "index.js",
+  "scripts": {
+    "sass": "node-sass -w sass/ -o src/main/resources/static/ --recursive"
+  },
+
+  "author": "",
+  "license": "ISC",
+
+  "dependencies": {
+    "node-sass": "^4.14.1"
+  }
+}
