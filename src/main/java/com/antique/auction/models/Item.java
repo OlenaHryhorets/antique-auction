@@ -1,24 +1,30 @@
 package com.antique.auction.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String name;
     private String description;
-    private int price;
+    private int currentPrice;
+    private LocalDateTime bidDate;
+    private Integer bidHours;
 
-    public int getId() {
+    @OneToMany(mappedBy="item",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    private List<ItemPrice> itemPrices = new ArrayList<>();
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,11 +44,35 @@ public class Item {
         this.description = description;
     }
 
-    public int getPrice() {
-        return price;
+    public int getCurrentPrice() {
+        return currentPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setCurrentPrice(int currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public List<ItemPrice> getItemPrices() {
+        return itemPrices;
+    }
+
+    public void setItemPrices(List<ItemPrice> itemPrices) {
+        this.itemPrices = itemPrices;
+    }
+
+    public LocalDateTime getBidDate() {
+        return bidDate;
+    }
+
+    public void setBidDate(LocalDateTime bidDate) {
+        this.bidDate = bidDate;
+    }
+
+    public Integer getBidHours() {
+        return bidHours;
+    }
+
+    public void setBidHours(Integer bidHours) {
+        this.bidHours = bidHours;
     }
 }
