@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="#" th:action="@{/item/add/{id}(id=${item.id})}" th:object="${item}" method="post">
+<form action="#" th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}" method="post">
     <label for="name">Name</label>
     <input type="text" th:field="*{name}" id="name" placeholder="Name">
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
@@ -14,7 +14,8 @@
     <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
     <input type="text" th:field="*{bidHours}" id="bidHours" placeholder="Bid Hours">
     <span th:if="${#fields.hasErrors('bidHours')}" th:errors="*{bidHours}"></span>
-    <input type="submit" value="Add Item">
+    <input type="submit" value="Save Item">
 </form>
+<button onclick="window.location.href='/home';">Cancel</button>
 </body>
 </html>

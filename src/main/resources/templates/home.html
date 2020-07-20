@@ -12,7 +12,7 @@
 <!--          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"-->
 <!--          crossorigin="anonymous">-->
 
-    <link href="main.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
 </head>
 <body>
 <header>
@@ -38,6 +38,7 @@
 <div class="admin-access">
         <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToAddEDitItem';">Add Item</button>
         <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToUploadImage';">Go to upload image</button>
+        <button class="btn-input" onclick="window.location.href='/logout';">Logout</button>
 </div>
 
 </header>

@@ -78,6 +78,11 @@ public class ItemsController {
         } else {
             existingItem = new Item();
         }
+        if (item.getCurrentPrice() <= (existingItem != null ? existingItem.getCurrentPrice() : 0)) {
+            ModelAndView modelAndView = new ModelAndView("item-details", "item", existingItem);
+            modelAndView.addObject("wrongBid", "true");
+            return modelAndView;
+        }
         existingItem.setBidDate(LocalDateTime.now().plusHours(4));
         existingItem.setCurrentPrice(item.getCurrentPrice());
         ItemPrice currentItemPrice = new ItemPrice();
@@ -89,7 +94,7 @@ public class ItemsController {
         return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 
-    @RequestMapping("/home")
+    @RequestMapping(value = {"/", "/home"})
     public ModelAndView home(ModelAndView modelAndView) {
         return fillModel(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
@@ -101,8 +106,14 @@ public class ItemsController {
     }
 
 
-    @PostMapping(value = "/item/add/{id}")
-    public ModelAndView addItem (@PathVariable int id, Item item) {
+    @PostMapping(value = "/item/addEdit/{id}")
+    public ModelAndView editItem (@PathVariable int id, Item item) {
+        itemRepository.save(item);
+        return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+    }
+
+    @PostMapping(value = "/item/addEdit")
+    public ModelAndView addItem (Item item) {
         itemRepository.save(item);
         return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
@@ -116,14 +127,18 @@ public class ItemsController {
     @GetMapping("/goToAddEDitItem/{id}")
     public ModelAndView goToAddEDitItem(@PathVariable Integer id) {
         ModelAndView modelAndView = new ModelAndView();
-        if (id != null) {
             Item existingItem = itemRepository.findById(id).orElse(null);
             modelAndView.addObject("item", existingItem);
-        } else {
-            modelAndView.addObject(new Item());
-        }
         modelAndView.setViewName("add-edit-item");
         return modelAndView;
+    }
+
+    @GetMapping("/goToAddEDitItem")
+    public ModelAndView goToAddItem() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject(new Item());
+        modelAndView.setViewName("add-edit-item");
+            return modelAndView;
     }
 
     @PostMapping(value = "/image")

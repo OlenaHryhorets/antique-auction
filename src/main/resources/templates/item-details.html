@@ -14,14 +14,13 @@
           crossorigin="anonymous">
 
     <!-- main CSS -->
-    <link href="../static/main.css" rel="stylesheet" />
+    <link href="../static/css/main.css" rel="stylesheet" />
 
     <script th:inline="javascript">
         // Set the date we're counting down to
         var bidDateValue = [[${item.bidDate}]];
         var countDownDate = new Date(bidDateValue.toString()).getTime();
         // var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
-        alert(countDownDate);
         // Update the count down every 1 second
         var x = setInterval(function() {
 
@@ -54,12 +53,16 @@
 <!-- здесь будет выводиться наше приложение -->
 <div id="app"></div>
 <p th:text="${item.name}">Test</p>
-<p th:text="${item.itemPrices}">Test</p>
+<!--<p th:text="${item.itemPrices}">Test</p>-->
 <div th:each="itemPrice: ${item.itemPrices}">
 <!--<div th:text="${itemPrice.priceValue}"></div>-->
+
+<!--<div th:text="${wrongBid}"> The TEst </div>-->
 <div th:text="${itemPrice.priceValue}">
 </div>
 </div>
+
+<div class="ui-state-error" th:if="${wrongBid == 'true'}"> The error </div>
 
 <div id="countDownTimer"></div>
 
@@ -73,6 +76,7 @@
     <input type="submit" value="Add Bid">
 </form>
 
+<button onclick="window.location.href='/home';">Cancel</button>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 

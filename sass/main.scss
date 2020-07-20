@@ -9,6 +9,7 @@ $hover-color: #00008b;
   box-sizing: border-box;
 }
 body {
+  height: 100%;
   font-family: Noto Sans, Tahoma, Geneva, Verdana, sans-serif;
   text-decoration-color: $main-color;
   margin: 0;
@@ -87,9 +88,11 @@ a {
   display: inline-block;
 }
 footer {
-  height: 15%;
+  min-height: calc(100vh - 40px);
   text-align: center;
   vertical-align: top;
   background-color: darken($main-color,9);
+  //position:fixed;
+  //bottom:0;
 }
 
