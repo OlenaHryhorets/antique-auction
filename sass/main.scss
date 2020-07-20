@@ -1,32 +1,61 @@
 
-$main-color: #3ba77b;
+$main-color: #4b4b4b;
+$back-color: #3ba77b;
 $border-color: #fefefe;
 $secondary-color: #ff8828;
 $filter-input: #8dff71;
+$hover-color: #00008b;
 *{
   box-sizing: border-box;
 }
 body {
-  font-family: Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Noto Sans, Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration-color: $main-color;
   margin: 0;
 }
-main {
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  background-color: $main-color;
 header{
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  background-color: darken($main-color,9);
+  background-color: darken($back-color,9);
+  div {
+    flex: 1 0 25%;
+    margin: 5px 10px;
+    padding: 5px;
+  }
+  h1{
+    text-decoration-color: $main-color;
+    font-size: 48px;
+    font-weight: 400;
+    word-spacing: 0.08em;
+    display: inline-block;
+    text-align: center;
+    flex: 0 1 100%;
+  }
 }
-.header{
-  text-align: center;
+.btn-input {
+  display: inline;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  height: 35px;
+  border: 1px $border-color solid;
+  &:hover {
+    background: $filter-input;
+    color: $hover-color;
+  }
 }
+
+main {
+  height: auto;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  background-color: $back-color;
 
 .item {
 
-  border: 3px #fff solid;
+  border: 3px $border-color solid;
   &:hover{
     opacity: 0.5;
     border-color: $secondary-color;
@@ -36,6 +65,13 @@ header{
 
 }
 }
+a {
+  text-decoration: none !important;
+  text-decoration-color: $border-color;
+  &:hover {
+    text-decoration-color: $hover-color;
+  }
+}
 .btn {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -43,22 +79,17 @@ header{
   margin-bottom: 0.3rem;
   &:hover {
     background: $secondary-color;
-    color: $secondary-color;
+    color: $hover-color;
   }
 }
-.btn-input {
+
+.pagination > div {
   display: inline-block;
-  padding: 0.5rem 1rem;
-  margin-bottom: 0.5rem;
-  height: 25px;
-  border: 1px $border-color solid;
-  &:hover {
-    background: $filter-input;
-    color: $filter-input;
-  }
 }
 footer {
-
+  height: 15%;
+  text-align: center;
+  vertical-align: top;
   background-color: darken($main-color,9);
 }
 
