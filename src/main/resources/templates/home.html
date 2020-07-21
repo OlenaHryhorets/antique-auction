@@ -16,10 +16,12 @@
 </head>
 <body>
 <header>
-<h1>Antique auction</h1>
+    <h1>Antique auction</h1>
+    <button class="btn-input logout" onclick="window.location.href='/logout';">Logout</button>
+    <div class="header-panel">
 <div class="filter-search">
         <form action="#" th:action="@{/items}" method="get">
-            <input class="btn-input" type="text" name="param" id="param" placeholder="Param">
+            <input class="btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
             <input class="btn-input" type="submit" value="Search">
         </form>
 </div>
@@ -27,9 +29,9 @@
 <div class="filter-sort">
         <form action="#" th:action="@{/items}" method="get">
             <select class="btn-input" id="sortOrder" name="sortOrder">
-                <option value="default">Default</option>
-                <option value="asc">Sort by Price ascending</option>
-                <option value="desc">Sort by Price descending</option>
+                <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
+                <option th:selected="${sortOrder} == 'asc'" value="asc">Sort by Price ascending</option>
+                <option th:selected="${sortOrder} == 'desc'" value="desc">Sort by Price descending</option>
             </select>
             <input class="btn-input" type="submit" value="Sort">
         </form>
@@ -38,9 +40,9 @@
 <div class="admin-access">
         <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToAddEDitItem';">Add Item</button>
         <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToUploadImage';">Go to upload image</button>
-        <button class="btn-input" onclick="window.location.href='/logout';">Logout</button>
-</div>
 
+</div>
+    </div>
 </header>
 
 <main>
@@ -67,7 +69,7 @@
         <div class="pagination-control left-arrow"> << </div>
 <div class="number-button" th:if="${itemPage.totalPages > 0}"
      th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/items(size=${itemPage.size}, page=${pageNumber})}"
+    <a th:href="@{/items(size=${itemPage.size}, page=${pageNumber}, sortOrder=${sortOrder}, searchParam=${searchParam})}"
        th:text=${pageNumber}
        th:class="${pageNumber==itemPage.number + 1} ? active"></a>
 </div>
@@ -85,8 +87,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
-<script src="app.js"></script>
+<script src="../static/js/app.js"></script>
 
-<script src="items.js"></script>
+<script src="../static/js/items.js"></script>
 </body>
 </html>

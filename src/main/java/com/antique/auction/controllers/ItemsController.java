@@ -9,12 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,10 +45,10 @@ public class ItemsController {
     public ModelAndView getItems (ModelAndView modelAndView,
                                 @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size,
-                                @RequestParam("param") Optional<String> param,
+                                @RequestParam("searchParam") Optional<String> searchParam,
                                   @RequestParam("sortOrder") Optional<String> sortOrder) {
 
-        return fillModel(modelAndView, page, size, param, sortOrder);
+        return fillModel(modelAndView, page, size, searchParam, sortOrder);
     }
 
     private ModelAndView fillModel(ModelAndView modelAndView, @RequestParam("page") Optional<Integer> page,
@@ -59,6 +66,8 @@ public class ItemsController {
                     .collect(Collectors.toList());
             modelAndView.addObject("pageNumbers", pageNumbers);
         }
+        sortOrder.ifPresent(s -> modelAndView.addObject("sortOrder", s));
+        searchParam.ifPresent(s -> modelAndView.addObject("searchParam", s));
         modelAndView.setViewName("home");
         return modelAndView;
     }
@@ -113,7 +122,14 @@ public class ItemsController {
     }
 
     @PostMapping(value = "/item/addEdit")
-    public ModelAndView addItem (Item item) {
+    public ModelAndView addItem (HttpServletRequest request, Item item) {
+        LocalDateTime dateTime = LocalDateTime.parse(item.getDateString(),
+                new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm")
+                        .optionalStart()
+                        .appendPattern(",yyyy-MM-dd HH:mm")
+                        .optionalEnd()
+                        .toFormatter());
+        item.setBidDate(dateTime);
         itemRepository.save(item);
         return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
@@ -143,12 +159,31 @@ public class ItemsController {
 
     @PostMapping(value = "/image")
 //    @ResponseBody
-    public ModelAndView getImage(@PathVariable(value = "file") String imageName) throws IOException {
+    public ModelAndView getImage() throws IOException {
 
-        File serverFile = new File("/static" + imageName + ".jpg");
+        File serverFile = new File("/static/" + "some name" + ".jpg");
 
         Files.readAllBytes(serverFile.toPath());
         return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+    }
+
+    @RequestMapping(value="/savefile",method=RequestMethod.POST)
+    public ModelAndView upload(@RequestParam CommonsMultipartFile file, HttpSession session){
+        String path=session.getServletContext().getRealPath("/");
+        String filename=file.getOriginalFilename();
+
+        System.out.println(path+" "+filename);
+        try{
+            byte barr[]=file.getBytes();
+
+            BufferedOutputStream bout=new BufferedOutputStream(
+                    new FileOutputStream(path+"/"+filename));
+            bout.write(barr);
+            bout.flush();
+            bout.close();
+
+        }catch(Exception e){System.out.println(e);}
+        return new ModelAndView("upload-success","filename",path+"/"+filename);
     }
 
 }

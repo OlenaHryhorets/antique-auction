@@ -21,14 +21,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
-//                .loginPage("/login")
                 .permitAll()
                 .successForwardUrl("/home")
                 .and()
                 .logout()
                 .permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/login").and()
+                .cors().and().csrf().disable();
     }
 
     @Autowired

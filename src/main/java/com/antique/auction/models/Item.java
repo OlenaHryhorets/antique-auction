@@ -14,6 +14,7 @@ public class Item {
     private String name;
     private String description;
     private int currentPrice;
+    private String dateString;
     private LocalDateTime bidDate;
     private Integer bidHours;
 
@@ -74,5 +75,13 @@ public class Item {
 
     public void setBidHours(Integer bidHours) {
         this.bidHours = bidHours;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }

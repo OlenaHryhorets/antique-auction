@@ -3,28 +3,32 @@
 
 body {
   height: 100%;
-  font-family: Noto Sans, Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Arial, Geneva, Verdana, sans-serif;
   text-decoration-color: #4b4b4b;
   margin: 0; }
 
 header {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  text-align: center;
   background-color: #2f8562; }
-  header div {
-    flex: 1 0 25%;
-    margin: 5px 10px;
-    padding: 5px; }
+  header .logout {
+    position: absolute; }
+  header .header-panel {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
+    align-items: flex-start; }
+    header .header-panel div {
+      margin: 0.5em;
+      padding: 0.5em; }
   header h1 {
     text-decoration-color: #4b4b4b;
     font-size: 48px;
     font-weight: 400;
     word-spacing: 0.08em;
     display: inline-block;
-    text-align: center;
-    flex: 0 1 100%; }
+    text-align: center; }
 
 .btn-input {
   display: inline;

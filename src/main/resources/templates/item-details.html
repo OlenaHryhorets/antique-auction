@@ -18,8 +18,8 @@
 
     <script th:inline="javascript">
         // Set the date we're counting down to
-        var bidDateValue = [[${item.bidDate}]];
-        var countDownDate = new Date(bidDateValue.toString()).getTime();
+        var dateStringValue = [[${item.dateString}]];
+        var countDownDate = new Date(dateStringValue).getTime();
         // var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
         // Update the count down every 1 second
         var x = setInterval(function() {
@@ -87,10 +87,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
 <!-- основной файл скриптов -->
-<script src="app.js"></script>
+<script src="../static/js/app.js"></script>
 
 <!-- products scripts -->
-<script src="items.js"></script>
+<script src="../static/js/items.js"></script>
 <!--<script src="app/products/create-product.js"></script>-->
 <!--<script src="app/products/read-one-product.js"></script>-->
 <!--<script src="app/products/update-product.js"></script>-->

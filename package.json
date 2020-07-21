@@ -4,7 +4,7 @@
   "description": "responsive",
   "main": "index.js",
   "scripts": {
-    "sass": "node-sass -w sass/ -o src/main/resources/static/ --recursive"
+    "sass": "node-sass -w sass/ -o src/main/resources/static/css/ --recursive"
   },
 
   "author": "",
