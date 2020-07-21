@@ -22,7 +22,7 @@ header {
     header .header-panel div {
       margin: 0.5em;
       padding: 0.5em; }
-  header h1 {
+  header h1, header h2 {
     text-decoration-color: #4b4b4b;
     font-size: 48px;
     font-weight: 400;
@@ -76,3 +76,6 @@ footer {
   text-align: center;
   vertical-align: top;
   background-color: #343434; }
+
+.error-msg {
+  text-decoration-color: #ff0e11 !important; }

@@ -5,7 +5,7 @@ $border-color: #fefefe;
 $secondary-color: #ff8828;
 $filter-input: #8dff71;
 $hover-color: #00008b;
-$black: #000000;
+$warn-color: #ff0e11;
 *{
   box-sizing: border-box;
 }
@@ -36,7 +36,7 @@ header{
     }
   }
 
-  h1{
+  h1, h2 {
     text-decoration-color: $main-color;
     font-size: 48px;
     font-weight: 400;
@@ -104,5 +104,8 @@ footer {
   background-color: darken($main-color,9);
   //position:fixed;
   //bottom:0;
+}
+.error-msg {
+  text-decoration-color: $warn-color!important;
 }
 

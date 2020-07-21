@@ -4,96 +4,85 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Item Details</title>
 
-    <title>Получение товаров</title>
-
-    <!-- bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
-
-    <!-- main CSS -->
-    <link href="../static/css/main.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
 
     <script th:inline="javascript">
         // Set the date we're counting down to
         var dateStringValue = [[${item.dateString}]];
         var countDownDate = new Date(dateStringValue).getTime();
-        // var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
         // Update the count down every 1 second
         var x = setInterval(function() {
-
             // Get today's date and time
             var now = new Date().getTime();
-
             // Find the distance between now and the count down date
             var distance = countDownDate - now;
-
             // Time calculations for days, hours, minutes and seconds
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Output the result in an element with id="demo"
             document.getElementById("countDownTimer").innerHTML = days + "d " + hours + "h "
                 + minutes + "m " + seconds + "s ";
 
-            // If the count down is over, write some text
             if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("countDownTimer").innerHTML = "EXPIRED";
+
+                document.getElementById("countDownTimer").className = "error-msg";
+                document.getElementById("countDownTimer").innerHTML = "Auction is over!";
             }
         }, 1000);
     </script>
 </head>
+
 <body>
 
-<!-- здесь будет выводиться наше приложение -->
-<div id="app"></div>
-<p th:text="${item.name}">Test</p>
-<!--<p th:text="${item.itemPrices}">Test</p>-->
+<header>
+<h2 th:text="${item.name}"></h2>
+</header>
+<!--countdown timer-->
+<div>
+    <h3>Auction time:</h3>
+    <div id="countDownTimer"></div>
+</div>
+
+<!--bidding history-->
+<div>
+    <h3>Bidding history:</h3>
 <div th:each="itemPrice: ${item.itemPrices}">
-<!--<div th:text="${itemPrice.priceValue}"></div>-->
-
-<!--<div th:text="${wrongBid}"> The TEst </div>-->
-<div th:text="${itemPrice.priceValue}">
-</div>
+    <div th:text="${itemPrice.priceValue}"></div>
 </div>
 
-<div class="ui-state-error" th:if="${wrongBid == 'true'}"> The error </div>
+<!--making bid form-->
+<div>
+    <h3>Make a bid:</h3>
+    <div class="error-msg" th:if="${wrongBid == 'true'}">Please bid above the current price!</div>
+    <div>Current price is:</div>
 
-<div id="countDownTimer"></div>
-
-<form action="#" th:action="@{/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
-    <label for="currentPrice">Bid Price</label>
-    <input type="text" th:field="*{currentPrice}" id="currentPrice" placeholder="Price">
+    <form action="#" th:action="@{/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
+<!--    <label for="currentPrice">Make a bid:</label>-->
+<!--        -->
+    <input type="text" th:field="*{currentPrice}" id="currentPrice" >
     <span th:if="${#fields.hasErrors('currentPrice')}" th:errors="*{currentPrice}"></span>
-<!--    <label for="email">Email</label>-->
-<!--    <input type="text" th:field="*{email}" id="email" placeholder="Email">-->
-<!--    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>-->
-    <input type="submit" value="Add Bid">
+    <input type="submit" value="Submit">
 </form>
+</div>
 
-<button onclick="window.location.href='/home';">Cancel</button>
-<!-- jQuery -->
+<div>
+    <button onclick="window.location.href='/home';">Back</button>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- bootstrap JavaScript -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-<!-- для всплывающих окон -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<!--<script src="../static/js/app.js"></script>-->
+<!--<script src="../static/js/items.js"></script>-->
 
-<!-- основной файл скриптов -->
-<script src="../static/js/app.js"></script>
-
-<!-- products scripts -->
-<script src="../static/js/items.js"></script>
-<!--<script src="app/products/create-product.js"></script>-->
-<!--<script src="app/products/read-one-product.js"></script>-->
-<!--<script src="app/products/update-product.js"></script>-->
-<!--<script src="app/products/delete-product.js"></script>-->
 </body>
 </html>
