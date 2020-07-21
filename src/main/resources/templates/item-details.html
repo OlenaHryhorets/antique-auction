@@ -42,10 +42,12 @@
 </head>
 
 <body>
-
+<main>
 <header>
 <h2 th:text="${item.name}"></h2>
 </header>
+
+    <div id="container" class="form">
 <!--countdown timer-->
 <div>
     <h3>Auction time:</h3>
@@ -53,31 +55,31 @@
 </div>
 
 <!--bidding history-->
-<div>
+<div class="history">
     <h3>Bidding history:</h3>
 <div th:each="itemPrice: ${item.itemPrices}">
     <div th:text="${itemPrice.priceValue}"></div>
 </div>
-
+</div>
 <!--making bid form-->
 <div>
     <h3>Make a bid:</h3>
-    <div class="error-msg" th:if="${wrongBid == 'true'}">Please bid above the current price!</div>
+    <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
     <div>Current price is:</div>
 
-    <form action="#" th:action="@{/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
-<!--    <label for="currentPrice">Make a bid:</label>-->
-<!--        -->
+<form action="#" th:action="@{/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
     <input type="text" th:field="*{currentPrice}" id="currentPrice" >
     <span th:if="${#fields.hasErrors('currentPrice')}" th:errors="*{currentPrice}"></span>
-    <input type="submit" value="Submit">
+    <input sec:authorize="hasRole('USER')" class="btn btn-input" type="submit" value="Submit">
 </form>
 </div>
 
 <div>
-    <button onclick="window.location.href='/home';">Back</button>
+    <button class="btn btn-input" onclick="window.location.href='/home';">Back</button>
 </div>
-
+    </div>
+</main>
+<footer></footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>

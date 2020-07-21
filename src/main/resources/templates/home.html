@@ -15,38 +15,43 @@
     <link href="/css/main.css" rel="stylesheet" />
 </head>
 <body>
+<main>
 <header>
     <h1>Antique auction</h1>
-    <button class="btn-input logout" onclick="window.location.href='/logout';">Logout</button>
+    <div class="logout">
+        <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+        <button class="btn btn-input" onclick="window.location.href='/logout';">Logout</button>
+    </div>
     <div class="header-panel">
 <div class="filter-search">
         <form action="#" th:action="@{/items}" method="get">
-            <input class="btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
-            <input class="btn-input" type="submit" value="Search">
+            <input class=" btn btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
+            <input class="btn btn-input" type="submit" value="Search">
         </form>
 </div>
 
 <div class="filter-sort">
         <form action="#" th:action="@{/items}" method="get">
-            <select class="btn-input" id="sortOrder" name="sortOrder">
+            <select class="btn btn-input" id="sortOrder" name="sortOrder">
                 <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
                 <option th:selected="${sortOrder} == 'asc'" value="asc">Sort by Price ascending</option>
                 <option th:selected="${sortOrder} == 'desc'" value="desc">Sort by Price descending</option>
             </select>
-            <input class="btn-input" type="submit" value="Sort">
+            <input class="btn btn-input" type="submit" value="Sort">
         </form>
 </div>
 
 <div class="admin-access">
-        <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToAddEDitItem';">Add Item</button>
-        <button class="btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToUploadImage';">Go to upload image</button>
+        <button class="btn btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToAddEDitItem';">Add Item</button>
+        <button class="btn btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToUploadImage';">Go to upload image</button>
 
 </div>
     </div>
 </header>
 
-<main>
 
+<div id="container">
+    <div id="main-grid">
 <div th:each="item: ${itemPage.content}">
         <div class="item">
     <div th:text="${item.id}"></div>
@@ -58,7 +63,9 @@
     <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/goToItemsDetail/{id}(id=${item.id})}">Item Details</a>
     <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/goToAddEDitItem/{id}(id=${item.id})}">Edit</a>
     <a class="btn" sec:authorize="hasRole('ADMIN')" th:method="delete" th:href="@{/delete/{id}(id=${item.id})}">Delete</a>
-    </div>
+        </div>
+</div>
+</div>
 </div>
 </main>
 
@@ -74,7 +81,6 @@
        th:class="${pageNumber==itemPage.number + 1} ? active"></a>
 </div>
         <div class="pagination-control right-arrow"> >> </div>
-    <div class="number-button" th:text="${itemPage.totalPages}"></div>
 </div>
 </footer>
 

@@ -2,24 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Item add-edit form</title>
     <link href="/css/jquery.datetimepicker.min.css" rel="stylesheet"/>
-
+    <link href="/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-<form action="#" th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}" method="post">
-    <label for="name">Name</label>
-    <input type="text" th:field="*{name}" id="name" placeholder="Name">
-    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-    <label for="description">Description</label>
-    <input type="text" th:field="*{description}" id="description" placeholder="Description">
-    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-    <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder="Bid Date">
-    <span th:if="${#fields.hasErrors('dateString')}" th:errors="*{dateString}"></span>
-    <input type="submit" value="Save Item">
-</form>
-<button onclick="window.location.href='/home';">Cancel</button>
+<main>
+<header>
+    <h3>Auction item form</h3>
+</header>
 
+    <div id="container">
+
+<form class="form form-add" action="#" th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}" method="post">
+    <div class="form-control">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Name">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+        <span class="form-add" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    </div>
+    <div class="form-control">
+        <label for="description">Description</label>
+        <input type="text" th:field="*{description}" id="description" placeholder="Description">
+        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+    </div>
+    <div class="form-control">
+        <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder="Bid Date">
+        <span th:if="${#fields.hasErrors('dateString')}" th:errors="*{dateString}"></span>
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+    </div>
+
+    <input class="form-add" type="submit" value="Save">
+    <button class="btn form-add" onclick="window.location.href='/home';">Back</button>
+</form>
+    </div>
+</main>
+<footer></footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!--<script src="/js/jquery.datetimepicker.full.js"></script>-->
 <!--<script src="/js/jquery.datetimepicker.min.js"></script>-->

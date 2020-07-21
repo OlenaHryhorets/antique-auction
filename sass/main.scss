@@ -1,16 +1,18 @@
 
-$main-color: #4b4b4b;
+$main-color: #212529;
 $back-color: #3ba77b;
-$border-color: #fefefe;
+$border-color: #EEEEEE;
 $secondary-color: #ff8828;
-$filter-input: #8dff71;
+$filter-input: #007BFF;
 $hover-color: #00008b;
 $warn-color: #ff0e11;
 *{
   box-sizing: border-box;
 }
-body {
+html,body {
   height: 100%;
+}
+body{
   font-family: Arial, Geneva, Verdana, sans-serif;
   text-decoration-color: $main-color;
   margin: 0;
@@ -18,31 +20,40 @@ body {
 header{
   text-align: center;
   background-color: darken($back-color,9);
-.logout{
-  position: absolute;
-
-}
+  .logout{
+    margin: 20px;
+    position: fixed;
+    right:0;
+    top:0;
+  }
   .header-panel{
     padding: 0;
-   display: flex;
+    display: flex;
    flex-direction: row;
    flex-wrap: wrap-reverse;
    justify-content: flex-end;
    align-items: flex-start;
     div {
-
       margin: 0.5em;
       padding: 0.5em;
     }
   }
 
-  h1, h2 {
+  h1, h2, h3{
     text-decoration-color: $main-color;
-    font-size: 48px;
+    font-size: 3.5em;
     font-weight: 400;
     word-spacing: 0.08em;
     display: inline-block;
     text-align: center;
+  }
+  h2{
+    font-size: 2.5em;
+    font-weight: 300;
+  }
+  h3{
+    font-size: 1.5em;
+    font-weight: 200;
   }
 }
 .btn-input {
@@ -56,13 +67,21 @@ header{
     color: $hover-color;
   }
 }
-
 main {
-  height: auto;
+  min-height: 100%;
+  background-color: $back-color;
+}
+#container {
+  overflow: auto;
+  padding-bottom: 10vh;
+}
+
+#main-grid {
+
   display: grid;
   grid-gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  background-color: $back-color;
+
 
 .item {
 
@@ -73,8 +92,23 @@ main {
 
   }
   width: 100%;
-
 }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap-reverse;
+  align-content: center;
+  align-items: stretch;
+  width: max-content;
+  margin: auto;
+  padding: auto;
+}
+.history {
+  border: 1px $border-color solid;
+  border-radius: 5px;
+  text-align: center;
 }
 a {
   text-decoration: none !important;
@@ -85,26 +119,38 @@ a {
 }
 .btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.5em 1em;
   border: 1px $border-color solid;
-  margin-bottom: 0.3rem;
+  border-radius: 5px;
+  margin: 0.3em;
   &:hover {
-    background: $secondary-color;
+    background: $filter-input;
     color: $hover-color;
   }
 }
 
-.pagination > div {
-  display: inline-block;
+.pagination {
+  color: $border-color;
+  div {
+    display: inline-block;
+  }
+.left-arrow, .right-arrow, .number-button > a {
+  &:hover {
+    color: $filter-input;
+  }
+}
 }
 footer {
-  min-height: calc(100vh - 40px);
+
   text-align: center;
   vertical-align: top;
   background-color: darken($main-color,9);
-  //position:fixed;
-  //bottom:0;
+  position: relative;
+  height: 10vh;
+  margin-top: -10vh;
+  clear: both;
 }
+
 .error-msg {
   text-decoration-color: $warn-color!important;
 }

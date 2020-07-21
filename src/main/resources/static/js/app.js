@@ -1,68 +1,48 @@
-
-// изменение заголовка страницы
-// function changePageTitle(page_title){
-//
-//     // измение заголовка страницы
-//     $('#page-title').text(page_title);
-//
-//     // измение заголовка вкладки браузера
-//     document.title=page_title;
-// }
-
-// функция для создания значений формы в формате json
-// $.fn.serializeObject = function() {
-//     var o = {};
-//     var a = this.serializeArray();
-//     $.each(a, function() {
-//         if (o[this.name] !== undefined) {
-//             if (!o[this.name].push) {
-//                 o[this.name] = [o[this.name]];
-//             }
-//             o[this.name].push(this.value || '');
-//         } else {
-//             o[this.name] = this.value || '';
-//         }
-//     });
-//     return o;
-// };
+function search() {
+    const form = document.getElementById('form');
+    const name = document.getElementById('name');
+    const description = document.getElementById('description');
+    const bidDate = document.getElementById('bidDate');
 
 
-//Pagination
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        checkInputs();
+    });
 
-// var
-//     // search = $("#search"),
-//     control = $("#pagination"),
-//     table = $("#table tbody tr"),
-//     pageParts = null,
-//     perPage = 10;
+    function checkInputs() {
+        // trim to remove the whitespaces
+        const nameValue = name.value.trim();
+        const descriptionValue = description.value.trim();
+        const bidDateValue = bidDate.value.trim();
+        if (nameValue === '') {
+            setErrorFor(name, 'Name cannot be blank');
+        } else {
+            setSuccessFor(name);
+        }
+        if (descriptionValue === '') {
+            setErrorFor(description, 'Description cannot be blank');
+        } else if (!descriptionValue) {
+            setErrorFor(description, 'Not a valid description');
+        } else {
+            setSuccessFor(description);
+        }
+        if (bidDateValue === '') {
+            setErrorFor(bidDate, 'Pick a bidDate');
+        } else {
+            setSuccessFor(bidDate);
+        }
 
-// search.on("keyup", function() {
-//     var value = $(this).val().toLowerCase();
-//     table.filter(function() {
-//         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-//     });
-//     updPagination();
-// });
+        function setErrorFor(input, message) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            formControl.className = 'form-control error';
+            small.innerText = message;
+        }
 
-// control.pagination({
-//     itemsOnPage: perPage,
-//     cssStyle: "light-theme",
-//     onPageClick: function(pageNum) {
-//         var start = perPage * (pageNum - 1);
-//         var end = start + perPage;
-//         if (pageParts) {
-//             pageParts.hide()
-//                 .slice(start, end).show();
-//         }
-//     }
-// });
-//
-// function updPagination() {
-//     pageParts = table.filter(function() { return $(this).css("display") !== 'none' });
-//     pageParts.slice(perPage).hide();
-//     control.pagination('selectPage', 1);
-//     control.pagination('updateItems', pageParts.length);
-//     console.log("ffffuck");
-// }
-//
-// updPagination();
+        function setSuccessFor(input) {
+            const formControl = input.parentElement;
+            formControl.className = 'form-control success';
+        }
+    }
+}
