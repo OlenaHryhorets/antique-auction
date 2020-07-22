@@ -21,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -202,25 +204,32 @@ public class ItemsController {
 
 
     private void addInitialDemoData() {
-        itemService.save(getItem("demoItem1", "demo description 1", 10));
-        itemService.save(getItem("demoItem2", "demo description 21", 20));
-        itemService.save(getItem("demoItem3", "demo description 31", 100));
-        itemService.save(getItem("demoItem4", "demo description 41", 15));
-        itemService.save(getItem("demoItem5", "demo description 51", 10));
-        itemService.save(getItem("demoItem6", "demo description 61", 35));
-        itemService.save(getItem("demoItem7", "demo description 71", 11));
-        itemService.save(getItem("demoItem8", "demo description 81", 30));
-        itemService.save(getItem("demoItem9", "demo description 91", 10));
-        itemService.save(getItem("demoItem10", "demo description 101", 10));
-        itemService.save(getItem("demoItem11", "demo description 102", 55));
+        saveItem("demoItem1", "demo description 1", 10);
+        saveItem("demoItem2", "demo description 21", 20);
+        saveItem("demoItem3", "demo description 31", 100);
+        saveItem("demoItem4", "demo description 41", 15);
+        saveItem("demoItem5", "demo description 51", 10);
+        saveItem("demoItem6", "demo description 61", 35);
+        saveItem("demoItem7", "demo description 71", 11);
+        saveItem("demoItem8", "demo description 81", 30);
+        saveItem("demoItem9", "demo description 91", 10);
+        saveItem("demoItem10", "demo description 101", 10);
+        saveItem("demoItem11", "demo description 102", 55);
     }
 
-    private Item getItem(String name, String description, int price) {
+    private Item saveItem(String name, String description, int price) {
         Item item = new Item();
         item.setName(name);
         item.setDescription(description);
         item.setCurrentPrice(price);
         item.setImageName(name + ".png");
+        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+        item.setDateString(LocalDateTime.now().plusHours(5).format(customFormatter));
+        ItemPrice itemPrice = new ItemPrice();
+        itemPrice.setPriceValue(item.getCurrentPrice());
+        itemPrice.setItem(item);
+        itemService.save(item);
+        itemPriceService.save(itemPrice);
         return item;
     }
 
