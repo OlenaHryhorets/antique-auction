@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Item add-edit form</title>
-<!--    <link rel="stylesheet" href="/css/dark.css">-->
-<!--    <link rel="stylesheet" href="/css/flatpickr.min.css">-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>-->
+    <!--    <link rel="stylesheet" href="/css/dark.css">-->
+    <!--    <link rel="stylesheet" href="/css/flatpickr.min.css">-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>-->
 
-<!--    <link rel="stylesheet" href="https://flatpickr.js.org/site.css">-->
+    <!--    <link rel="stylesheet" href="https://flatpickr.js.org/site.css">-->
 
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/flatpickr.css">-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/flatpickr.css">-->
 
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/confirmDate/confirmDate.css">-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/confirmDate/confirmDate.css">-->
 
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css">-->
-<!--    <link href="/css/jquery.datetimepicker.min.css" rel="stylesheet"/>-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/plugins/monthSelect/style.css">-->
+    <!--    <link href="/css/jquery.datetimepicker.min.css" rel="stylesheet"/>-->
     <!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
     <!--          rel="stylesheet"-->
     <!--          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"-->
     <!--          crossorigin="anonymous">-->
     <link href="/css/main.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/1a22ca464c.js"></script>
+    <script src="https://kit.fontawesome.com/c511db0bb6.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <main>
@@ -27,52 +29,59 @@
         <h3>Auction item form</h3>
     </header>
 
-    <div id="container">
+    <div class="container">
 
-        <form id="form" class="form form-add" action="#" onsubmit="return formValidation()" th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}"
+        <form class="form-main" action="#" onsubmit="return formValidation()"
+              th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}"
               method="post">
             <div class="form-div">
                 <label for="name">Name</label>
-                <input type="text" th:field="*{name}" id="name" placeholder="Name">
+                <input type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
+                <span style="color: #009000;">
                 <i class="fas fa-check-circle"></i>
+                </span>
+                <span style="color: #b30000;">
                 <i class="fas fa-exclamation-circle"></i>
+                     </span>
                 <small></small>
                 <span class="form-add" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
             <div class="form-div">
                 <label for="description">Description</label>
-                <input type="text" th:field="*{description}" id="description" placeholder="Description">
+                <textarea rows="6" type="text" th:field="*{description}" id="description" placeholder=" Enter item description here ">
+                </textarea>
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                <span style="color: #009000;">
                 <i class="fas fa-check-circle"></i>
+                </span>
+                <span style="color: #b30000;">
                 <i class="fas fa-exclamation-circle"></i>
+                     </span>
                 <small></small>
             </div>
-<!--            <div>-->
-                <div class="flatpickr">
-                    <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder="Bid Date" data-input>
-                    <!-- input is mandatory -->
-
-                    <a class="button" title="Select" data-toggle>
-                        <img src="https://img.icons8.com/ios/50/000000/calendar.png"/>
-                    </a>
-
-                    <a class="input-button" title="clear" data-clear>
-                        <img src="https://img.icons8.com/ios/50/000000/calendar.png"/>
-                    </a>
-                </div>
-                <!--        <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder="Bid Date">-->
-                <!--        <span th:if="${#fields.hasErrors('dateString')}" th:errors="*{dateString}"></span>-->
-                <!--        <i class="fas fa-check-circle"></i>-->
-                <!--        <i class="fas fa-exclamation-circle"></i>-->
-                <!--        <small>Error message</small>-->
-<!--            </div>-->
-
-            <input class="form-add" type="submit" value="Save">
+            <div class="flatpickr form-div">
+                <label for="dateTimePicker">Close date</label>
+                <div>
+                <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder=" Pick a date and time here " data-input>
+                <a class="button" title="Select" data-toggle>
+                         <span style="color: #009000;">
+                <i class="fas fa-check-circle"></i>
+                         </span></a>
+                <a class="input-button" title="clear" data-clear>
+                        <span style="color: #b30000;">
+                <i class="fas fa-close"></i>
+                     </span></a></div>
+            </div>
+            <div class="form-div">
+                <input class="form-submit" type="submit" value="Save">
+            </div>
         </form>
-        <button class="btn form-add" onclick="window.location.href='/home';">Back</button>
-        <a class="input-button" title="clear" data-clear>
-            <i class="ui-icon-close"></i>
-        </a>
+        <div class="form-main">
+        <div class="form-div">
+            <button class="form-submit" onclick="window.location.href='/home';">Back</button>
+        </div>
+        </div>
+
     </div>
 </main>
 <footer></footer>
