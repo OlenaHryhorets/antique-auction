@@ -78,8 +78,7 @@ main {
       font-weight: 300;
       letter-spacing: .09em;
       text-transform: uppercase;
-      flex: 1 0 170px;
-      max-width: 250px; }
+      max-width: 300px; }
     .form-main .form-div label, .form-main .form-div div + * {
       flex: 1 0 220px; }
     .form-main .form-div .form-submit, .form-main .form-div .current-price {
@@ -94,6 +93,13 @@ main {
       .form-main .form-div .form-submit:hover, .form-main .form-div .current-price:hover {
         background: #EEEEEE;
         color: #ff8828; }
+
+.margin {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+#currentPrice {
+  color: #212529 !important; }
 
 #main-grid {
   display: grid;
@@ -112,6 +118,10 @@ div.form-div.history {
   border-radius: 5px;
   justify-content: space-between;
   padding-right: 20px; }
+  div.form-div.history div {
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: end; }
 
 a {
   text-decoration: none;
@@ -128,6 +138,9 @@ a {
   .btn:hover {
     background: #007BFF;
     color: #00008b; }
+
+.btn-back {
+  margin-right: 15px !important; }
 
 .pagination, a {
   color: #EEEEEE; }
@@ -148,4 +161,4 @@ footer {
   clear: both; }
 
 .error-msg {
-  text-decoration-color: #ff0e11 !important; }
+  color: #ff0e11 !important; }

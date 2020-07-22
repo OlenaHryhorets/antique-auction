@@ -108,8 +108,8 @@ main {
       font-weight: 300;
       letter-spacing: .09em;
       text-transform: uppercase;
-      flex: 1 0 170px;
-      max-width: 250px;
+      //flex: 1 0 170px;
+      max-width: 300px;
     }
 
     label, div + * {
@@ -134,8 +134,13 @@ main {
   }
 
 }
-
-
+.margin {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#currentPrice {
+  color: $main-color !important;
+}
 #main-grid {
 
   display: grid;
@@ -163,6 +168,12 @@ div.form-div.history {
   border-radius: 5px;
   justify-content: space-between;
   padding-right: 20px;
+
+  div {
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: end;
+  }
 }
 
 a {
@@ -185,6 +196,10 @@ a {
     background: $filter-input;
     color: $hover-color;
   }
+}
+
+.btn-back {
+  margin-right: 15px !important;
 }
 
 .pagination, a {
@@ -217,6 +232,6 @@ footer {
 }
 
 .error-msg {
-  text-decoration-color: $warn-color !important;
+  color: $warn-color !important;
 }
 

@@ -6,15 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Item Details</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
     <link href="/css/main.css" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/js/item-details.js}"></script>
     <script th:inline="javascript">
@@ -41,7 +35,7 @@
             <!--bidding history-->
             <div class="form-div history">
                 <h3>Bidding history:</h3>
-                <div>
+                <div class="margin">
                     <div th:each="itemPrice: ${item.itemPrices}">
                         <div th:text="${itemPrice.priceValue}"></div>
                     </div>
@@ -52,13 +46,13 @@
             <div class="form-div bid-make">
                 <h3 sec:authorize="hasRole('USER')">Make a bid:</h3>
                 <div>
+                    <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                     <span>Current price is:</span>
                     <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>
 
                     <form class="form-main" sec:authorize="hasRole('USER')" action="#"
                           th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
 
-                        <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                         <input type="text" th:field="*{currentPrice}" id="currentPrice">
 
                         <div class="form-div">
@@ -70,7 +64,7 @@
 
             </div>
             <div class="form-div">
-                <button class="form-submit" onclick="window.location.href='/home';">Back</button>
+                <button class="form-submit btn-back" onclick="window.location.href='/home';">Back</button>
             </div>
         </div>
 
