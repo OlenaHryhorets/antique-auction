@@ -15,7 +15,7 @@ public class Item {
     private String description;
     private int currentPrice;
     private String dateString;
-    private LocalDateTime bidDate;
+//    private LocalDateTime bidDate;
     private Integer bidHours;
 
     @OneToMany(mappedBy="item",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
@@ -61,13 +61,13 @@ public class Item {
         this.itemPrices = itemPrices;
     }
 
-    public LocalDateTime getBidDate() {
-        return bidDate;
-    }
-
-    public void setBidDate(LocalDateTime bidDate) {
-        this.bidDate = bidDate;
-    }
+//    public LocalDateTime getBidDate() {
+//        return bidDate;
+//    }
+//
+//    public void setBidDate(LocalDateTime bidDate) {
+//        this.bidDate = bidDate;
+//    }
 
     public Integer getBidHours() {
         return bidHours;

@@ -57,7 +57,7 @@
     <div th:text="${item.id}"></div>
     <div th:text="${item.name}"></div>
     <div th:text="${item.currentPrice}"></div>
-    <div id="bidDate" th:text="${item.bidDate}"></div>
+    <div id="dateString" th:text="${item.dateString}"></div>
     <div th:text="${item.description}"></div>
     <a class="btn" sec:authorize="hasRole('USER')" th:href="@{/goToItemsDetail/{id}(id=${item.id})}">Bid Now</a>
     <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/goToItemsDetail/{id}(id=${item.id})}">Item Details</a>

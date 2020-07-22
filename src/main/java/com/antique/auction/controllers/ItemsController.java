@@ -92,7 +92,7 @@ public class ItemsController {
             modelAndView.addObject("wrongBid", "true");
             return modelAndView;
         }
-        existingItem.setBidDate(LocalDateTime.now().plusHours(4));
+//        existingItem.setBidDate(LocalDateTime.now().plusHours(4));
         existingItem.setCurrentPrice(item.getCurrentPrice());
         ItemPrice currentItemPrice = new ItemPrice();
         currentItemPrice.setItem(existingItem);
@@ -122,14 +122,24 @@ public class ItemsController {
     }
 
     @PostMapping(value = "/item/addEdit")
-    public ModelAndView addItem (HttpServletRequest request, Item item) {
-        LocalDateTime dateTime = LocalDateTime.parse(item.getDateString(),
-                new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm")
-                        .optionalStart()
-                        .appendPattern(",yyyy-MM-dd HH:mm")
-                        .optionalEnd()
-                        .toFormatter());
-        item.setBidDate(dateTime);
+    public ModelAndView addItem (Item item) {
+//        if (item.getDateString() != null && !item.getDateString().isEmpty()) {
+//
+//        }
+//        LocalDateTime dateTime = LocalDateTime.parse(item.getDateString(),
+//                new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm")
+//                        .optionalStart()
+//                        .appendPattern(",yyyy-MM-dd HH:mm")
+//                        .optionalEnd()
+//                        .toFormatter());
+//        item.setBidDate(dateTime);
+        //todo sometimes flatpicker returns value like '2020-07-22 02:25,2020-07-22 02:25'. Probably it's a bug,
+        //I take just the left part of the value
+        String s = "2020-07-22 02:25";
+        int indexOfComma = item.getDateString().indexOf(',');
+        if (indexOfComma != -1) {
+            item.setDateString(item.getDateString().substring(0, indexOfComma));
+        }
         itemRepository.save(item);
         return fillModel(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }

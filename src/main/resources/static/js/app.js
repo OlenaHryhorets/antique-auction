@@ -1,20 +1,18 @@
-function search() {
+function formValidation() {
     const form = document.getElementById('form');
     const name = document.getElementById('name');
     const description = document.getElementById('description');
-    const bidDate = document.getElementById('bidDate');
 
 
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        checkInputs();
-    });
+    // form.addEventListener('submit', e => {
+    //     e.preventDefault();
+    //     checkInputs();
+    // });
 
-    function checkInputs() {
         // trim to remove the whitespaces
+    let isValid = true;
         const nameValue = name.value.trim();
         const descriptionValue = description.value.trim();
-        const bidDateValue = bidDate.value.trim();
         if (nameValue === '') {
             setErrorFor(name, 'Name cannot be blank');
         } else {
@@ -27,22 +25,21 @@ function search() {
         } else {
             setSuccessFor(description);
         }
-        if (bidDateValue === '') {
-            setErrorFor(bidDate, 'Pick a bidDate');
-        } else {
-            setSuccessFor(bidDate);
-        }
+
+        return isValid;
 
         function setErrorFor(input, message) {
             const formControl = input.parentElement;
             const small = formControl.querySelector('small');
-            formControl.className = 'form-control error';
+            formControl.className = 'form-div error';
             small.innerText = message;
+            isValid = false;
         }
 
         function setSuccessFor(input) {
             const formControl = input.parentElement;
-            formControl.className = 'form-control success';
+            const small = formControl.querySelector('small');
+            formControl.className = 'form-div success';
+            small.innerText = '';
         }
-    }
 }
