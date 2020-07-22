@@ -1,6 +1,13 @@
 package com.antique.auction.models;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ItemPrice {
@@ -10,8 +17,8 @@ public class ItemPrice {
     private int id;
     private int priceValue;
 
-    @ManyToOne(fetch= FetchType.EAGER)
-    @JoinTable(name="item_prices",joinColumns=@JoinColumn(name="id"),inverseJoinColumns=@JoinColumn(name="item_id"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "item_prices", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Item item;
 
     public int getId() {

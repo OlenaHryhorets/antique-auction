@@ -1,7 +1,6 @@
 package com.antique.auction.models;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,6 @@ public class Item {
     private String description;
     private int currentPrice;
     private String dateString;
-//    private LocalDateTime bidDate;
-    private Integer bidHours;
 
     @OneToMany(mappedBy="item",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     private List<ItemPrice> itemPrices = new ArrayList<>();
@@ -55,26 +52,6 @@ public class Item {
 
     public List<ItemPrice> getItemPrices() {
         return itemPrices;
-    }
-
-    public void setItemPrices(List<ItemPrice> itemPrices) {
-        this.itemPrices = itemPrices;
-    }
-
-//    public LocalDateTime getBidDate() {
-//        return bidDate;
-//    }
-//
-//    public void setBidDate(LocalDateTime bidDate) {
-//        this.bidDate = bidDate;
-//    }
-
-    public Integer getBidHours() {
-        return bidHours;
-    }
-
-    public void setBidHours(Integer bidHours) {
-        this.bidHours = bidHours;
     }
 
     public String getDateString() {

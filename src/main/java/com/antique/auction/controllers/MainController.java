@@ -16,6 +16,10 @@ public class MainController {
         this.itemRepository = itemRepository;
     }
 
+    /**
+     * This method is used to generate demo data
+     * @return the name of home view
+     */
     @GetMapping("/start")
     public String start () {
         itemRepository.save(getItem("first", "some first", 10));
@@ -35,6 +39,7 @@ public class MainController {
         itemRepository.save(getItem("first", "some first", 10));
         return "home";
     }
+
     private Item getItem(String name, String description, int price) {
         Item item = new Item();
         item.setName(name);

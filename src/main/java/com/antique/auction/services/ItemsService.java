@@ -17,8 +17,11 @@ import java.util.Optional;
 @Service
 public class ItemsService {
 
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    public ItemsService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     public Page<Item> findPaginated(Pageable pageable, Optional<String> searchParam, Optional<String> sortOrder) {
         List<Item> itemsList = new ArrayList<>();
