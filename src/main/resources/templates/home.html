@@ -35,8 +35,8 @@
                 <form action="#" th:action="@{/items}" method="get">
                     <select class="btn btn-input" id="sortOrder" name="sortOrder">
                         <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
-                        <option th:selected="${sortOrder} == 'asc'" value="asc">Sort by Price ascending</option>
-                        <option th:selected="${sortOrder} == 'desc'" value="desc">Sort by Price descending</option>
+                        <option th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending</option>
+                        <option th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price descending</option>
                     </select>
                     <input class="btn btn-input" type="submit" value="Sort">
                 </form>
@@ -62,6 +62,8 @@
                     <div th:text="${item.id}"></div>
                     <div th:text="${item.name}"></div>
                     <div th:text="${item.currentPrice}"></div>
+                    <div><img th:src="@{/items/images/{id}(id=${item.id})}" alt="No Image"
+                              style="height:30px;width:30px"></div>
                     <div id="dateString" th:text="${item.dateString}"></div>
                     <div th:text="${item.description}"></div>
                     <a class="btn" sec:authorize="hasRole('USER')" th:href="@{/item/details/{id}(id=${item.id})}">Bid

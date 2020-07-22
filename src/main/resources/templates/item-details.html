@@ -30,7 +30,8 @@
 
     <div class="container">
         <div class="form-main">
-
+            <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
+                 style="height:100px;width:100px">
             <!--countdown timer-->
             <div class="countdown form-div">
                 <h3>Auction time:</h3>
@@ -53,27 +54,29 @@
                 <div>
                     <span>Current price is:</span>
                     <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>
-<div class="form-main">
-                    <form class="form-div" sec:authorize="hasRole('USER')" action="#"
+
+                    <form class="form-main" sec:authorize="hasRole('USER')" action="#"
                           th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
 
-                    <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
-                    <input type="text" th:field="*{currentPrice}" id="currentPrice">
+                        <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
+                        <input type="text" th:field="*{currentPrice}" id="currentPrice">
 
-                        <input class="form-submit" type="submit" value="Submit">
-                        <span th:if="${#fields.hasErrors('currentPrice')}" th:errors="*{currentPrice}"></span>
+                        <div class="form-div">
+                            <input class="form-submit" type="submit" value="Submit">
+                        </div>
+
                     </form>
-</div>
-
                 </div>
-            </div>
 
-            <div class="form-div">
-                <button class="form-submit" onclick="window.location.href='/home';">Back</button>
             </div>
         </div>
+
+        <div class="form-div">
+            <button class="form-submit" onclick="window.location.href='/home';">Back</button>
+        </div>
+    </div>
     </div>
 </main>
-<footer></footer>
+
 </body>
 </html>

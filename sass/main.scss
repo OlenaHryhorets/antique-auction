@@ -1,4 +1,3 @@
-
 $main-color: #212529;
 $back-color: #3AAFAB;
 $border-color: #EEEEEE;
@@ -6,40 +5,46 @@ $secondary-color: #ff8828;
 $filter-input: #007BFF;
 $hover-color: #00008b;
 $warn-color: #ff0e11;
-*{
+* {
   box-sizing: border-box;
 }
-html,body {
+
+html, body {
   height: 100%;
 }
-body{
+
+body {
   font-family: "Fira Sans", "Helvetica Neue", sans-serif;
   text-decoration-color: $main-color;
   margin: 0;
 }
-header{
+
+header {
   text-align: center;
-  background-color: darken($back-color,9);
-  .logout{
+  background-color: darken($back-color, 9);
+
+  .logout {
     margin: 20px;
     position: fixed;
-    right:0;
-    top:0;
+    right: 0;
+    top: 0;
   }
-  .header-panel{
+
+  .header-panel {
     padding: 0;
     display: flex;
-   flex-direction: row;
-   flex-wrap: wrap-reverse;
-   justify-content: flex-end;
-   align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
+    align-items: flex-start;
+
     div {
       margin: 0.5em;
       padding: 0.5em;
     }
   }
 
-  h1, h2, h3{
+  h1, h2, h3 {
     text-decoration-color: $main-color;
     font-size: 3.5em;
     font-weight: 400;
@@ -47,30 +52,36 @@ header{
     display: inline-block;
     text-align: center;
   }
-  h2{
+
+  h2 {
     font-size: 2.5em;
     font-weight: 300;
   }
-  h3{
+
+  h3 {
     font-size: 1.5em;
     font-weight: 200;
   }
 }
+
 .btn-input {
   display: inline;
   padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
   height: 35px;
   border: 1px $border-color solid;
+
   &:hover {
     background: $filter-input;
     color: $hover-color;
   }
 }
+
 main {
   min-height: 100%;
   background-color: $back-color;
 }
+
 .container {
   background: $main-color;
   color: $border-color;
@@ -79,18 +90,20 @@ main {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .form-main {
-max-width: 800px;
-margin: 0 auto;
-padding: 0;
-  .form-div{
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+
+  .form-div {
     display: flex;
     flex-wrap: wrap;
     align-items: start;
     justify-content: space-between;
     margin-top: 20px;
-    label, h3, div
-    {
+
+    label, h3, div {
       padding: 8px;
       font-weight: 300;
       letter-spacing: .09em;
@@ -98,9 +111,11 @@ padding: 0;
       flex: 1 0 170px;
       max-width: 250px;
     }
-    label, div + *{
+
+    label, div + * {
       flex: 1 0 220px;
     }
+
     .form-submit, .current-price {
       margin-left: auto;
       padding: 8px 16px;
@@ -110,6 +125,7 @@ padding: 0;
       text-transform: uppercase;
       letter-spacing: .09em;
       border-radius: 3px;
+
       &:hover {
         background: $border-color;
         color: $secondary-color;
@@ -120,7 +136,6 @@ padding: 0;
 }
 
 
-
 #main-grid {
 
   display: grid;
@@ -128,16 +143,18 @@ padding: 0;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
 
-.item {
+  .item {
 
-  border: 3px $border-color solid;
-  &:hover{
-    opacity: 0.5;
-    border-color: $secondary-color;
+    border: 3px $border-color solid;
 
+    &:hover {
+      opacity: 0.5;
+      border-color: $secondary-color;
+
+    }
+
+    width: 100%;
   }
-  width: 100%;
-}
 }
 
 div.form-div.history {
@@ -151,16 +168,19 @@ div.form-div.history {
 a {
   text-decoration: none;
   text-decoration-color: $border-color;
+
   &:hover {
     text-decoration-color: $hover-color;
   }
 }
+
 .btn {
   display: inline-block;
   padding: 0.5em 1em;
   border: 1px $border-color solid;
   border-radius: 5px;
   margin: 0.3em;
+
   &:hover {
     background: $filter-input;
     color: $hover-color;
@@ -169,20 +189,27 @@ a {
 
 .pagination, a {
   color: $border-color;
+
   div {
     display: inline-block;
   }
-.left-arrow, .right-arrow, .number-button > a {
-  &:hover, &:active {
-    color: $secondary-color;
+
+  .left-arrow, .right-arrow, .number-button > a {
+    &:hover {
+      color: $secondary-color;
+    }
+
+    &:active {
+      color: $secondary-color;
+    }
   }
 }
-}
+
 footer {
 
   text-align: center;
   vertical-align: top;
-  background-color: darken($main-color,9);
+  background-color: darken($main-color, 9);
   position: relative;
   height: 10vh;
   margin-top: -10vh;
@@ -190,6 +217,6 @@ footer {
 }
 
 .error-msg {
-  text-decoration-color: $warn-color!important;
+  text-decoration-color: $warn-color !important;
 }
 

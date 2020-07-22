@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MainController {
@@ -17,27 +18,24 @@ public class MainController {
     }
 
     /**
-     * This method is used to generate demo data
+     * This method is used to generate demo data, authenticate  and then head to localhost:8080/start
      * @return the name of home view
      */
     @GetMapping("/start")
+    @ResponseBody
     public String start () {
-        itemRepository.save(getItem("first", "some first", 10));
-        itemRepository.save(getItem("second", "some fijujurst", 10));
-        itemRepository.save(getItem("ttttt", "some firjujust", 100));
-        itemRepository.save(getItem("rrrrr", "some first", 10));
-        itemRepository.save(getItem("firseet", "some first", 10));
-        itemRepository.save(getItem("firsewwt", "some jujuj", 10));
-        itemRepository.save(getItem("first", "some first", 10));
-        itemRepository.save(getItem("firdfgfdst", "some ikiki", 30));
-        itemRepository.save(getItem("firfdgst", "some first", 10));
-        itemRepository.save(getItem("hjhjhj", "some first", 10));
-        itemRepository.save(getItem("first", "some first", 10));
-        itemRepository.save(getItem("firstnvb", "some first", 10));
-        itemRepository.save(getItem("fidgfdgrst", "some first", 10));
-        itemRepository.save(getItem("fibnvbnrst", "some first", 50));
-        itemRepository.save(getItem("first", "some first", 10));
-        return "home";
+        itemRepository.save(getItem("demoItem1", "demo description 1", 10));
+        itemRepository.save(getItem("demoItem2", "demo description 21", 20));
+        itemRepository.save(getItem("demoItem3", "demo description 31", 100));
+        itemRepository.save(getItem("demoItem4", "demo description 41", 15));
+        itemRepository.save(getItem("demoItem5", "demo description 51", 10));
+        itemRepository.save(getItem("demoItem6", "demo description 61", 35));
+        itemRepository.save(getItem("demoItem7", "demo description 71", 11));
+        itemRepository.save(getItem("demoItem8", "demo description 81", 30));
+        itemRepository.save(getItem("demoItem9", "demo description 91", 10));
+        itemRepository.save(getItem("demoItem10", "demo description 101", 10));
+        itemRepository.save(getItem("demoItem11", "demo description 102", 55));
+        return "Items are generated";
     }
 
     private Item getItem(String name, String description, int price) {
