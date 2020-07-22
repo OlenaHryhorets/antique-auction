@@ -33,11 +33,11 @@
             <div class="form-div">
                 <label for="name">Name</label>
                 <input type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
-                <span style="color: #009000;">
-                <i class="fas fa-check-circle"></i>
-                </span>
-                <span style="color: #b30000;">
-                <i class="fas fa-exclamation-circle"></i>
+<!--                <span style="color: #009000;">-->
+<!--                <i class="fas fa-check-circle"></i>-->
+<!--                </span>-->
+<!--                <span style="color: #b30000;">-->
+<!--                <i class="fas fa-exclamation-circle"></i>-->
                      </span>
                 <small></small>
                 <span class="form-add" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
@@ -47,12 +47,12 @@
                 <textarea rows="6" type="text" th:field="*{description}" id="description" placeholder=" Enter item description here ">
                 </textarea>
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-                <span style="color: #009000;">
-                <i class="fas fa-check-circle"></i>
-                </span>
-                <span style="color: #b30000;">
-                <i class="fas fa-exclamation-circle"></i>
-                     </span>
+<!--                <span style="color: #009000;">-->
+<!--                <i class="fas fa-check-circle"></i>-->
+<!--                </span>-->
+<!--                <span style="color: #b30000;">-->
+<!--                <i class="fas fa-exclamation-circle"></i>-->
+<!--                     </span>-->
                 <small></small>
             </div>
             <div class="flatpickr form-div">
@@ -61,12 +61,11 @@
                 <input type="text" th:field="*{dateString}" id="dateTimePicker" placeholder=" Pick a date and time here " data-input>
                 <a class="button" title="Select" data-toggle>
                          <span style="color: #009000;">
-                <i class="fas fa-check-circle"></i>
-                         </span></a>
+                <i class="fas fa-check-circle"></i></span></a>
+
                 <a class="input-button" title="clear" data-clear>
                         <span style="color: #b30000;">
-                <i class="fas fa-close"></i>
-                     </span></a></div>
+                <i class="fas fa-close"></i></span></a></div>
             </div>
             <div class="form-div">
                 <input class="form-submit" type="submit" value="Save">

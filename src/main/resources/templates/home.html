@@ -8,79 +8,88 @@
     <title>Home page</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-    <link href="/css/main.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet"/>
     <script src="/js/main.js"></script>
 </head>
 <body>
 <main>
-<header>
-    <h1>Antique auction</h1>
-    <div class="logout">
-        <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-        <button class="btn btn-input" onclick="window.location.href='/logout';">Logout</button>
-    </div>
-    <div class="header-panel">
-<div class="filter-search">
-        <form action="#" th:action="@{/items}" method="get">
-            <input class=" btn btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
-            <input class="btn btn-input" type="submit" value="Search">
-        </form>
-</div>
-
-<div class="filter-sort">
-        <form action="#" th:action="@{/items}" method="get">
-            <select class="btn btn-input" id="sortOrder" name="sortOrder">
-                <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
-                <option th:selected="${sortOrder} == 'asc'" value="asc">Sort by Price ascending</option>
-                <option th:selected="${sortOrder} == 'desc'" value="desc">Sort by Price descending</option>
-            </select>
-            <input class="btn btn-input" type="submit" value="Sort">
-        </form>
-</div>
-
-<div class="admin-access">
-        <button class="btn btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/item/add/view';">Add Item</button>
-        <button class="btn btn-input" sec:authorize="hasRole('ADMIN')" onclick="window.location.href='/goToUploadImage';">Go to upload image</button>
-
-</div>
-    </div>
-</header>
-
-
-<div id="container">
-    <div id="main-grid">
-<div th:each="item: ${itemPage.content}">
-        <div class="item">
-    <div th:text="${item.id}"></div>
-    <div th:text="${item.name}"></div>
-    <div th:text="${item.currentPrice}"></div>
-    <div id="dateString" th:text="${item.dateString}"></div>
-    <div th:text="${item.description}"></div>
-    <a class="btn" sec:authorize="hasRole('USER')" th:href="@{/item/details/{id}(id=${item.id})}">Bid Now</a>
-    <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/item/details/{id}(id=${item.id})}">Item Details</a>
-    <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
-    <a class="btn" sec:authorize="hasRole('ADMIN')" th:method="delete" th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
+    <header>
+        <h1>Antique auction</h1>
+        <div class="logout">
+            <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+            <button class="btn btn-input" onclick="window.location.href='/logout';">Logout</button>
         </div>
-</div>
-</div>
-</div>
+        <div class="header-panel">
+            <div class="filter-search">
+                <form action="#" th:action="@{/items}" method="get">
+                    <input class="btn btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
+                    <input class="btn btn-input" type="submit" value="Search">
+                </form>
+            </div>
+
+            <div class="filter-sort">
+                <form action="#" th:action="@{/items}" method="get">
+                    <select class="btn btn-input" id="sortOrder" name="sortOrder">
+                        <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
+                        <option th:selected="${sortOrder} == 'asc'" value="asc">Sort by Price ascending</option>
+                        <option th:selected="${sortOrder} == 'desc'" value="desc">Sort by Price descending</option>
+                    </select>
+                    <input class="btn btn-input" type="submit" value="Sort">
+                </form>
+            </div>
+
+            <div class="admin-access">
+                <button class="btn btn-input" sec:authorize="hasRole('ADMIN')"
+                        onclick="window.location.href='/item/add/view';">Add Item
+                </button>
+                <button class="btn btn-input" sec:authorize="hasRole('ADMIN')"
+                        onclick="window.location.href='/goToUploadImage';">Go to upload image
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+
+    <div id="container">
+        <div id="main-grid">
+            <div th:each="item: ${itemPage.content}">
+                <div class="item">
+                    <div th:text="${item.id}"></div>
+                    <div th:text="${item.name}"></div>
+                    <div th:text="${item.currentPrice}"></div>
+                    <div id="dateString" th:text="${item.dateString}"></div>
+                    <div th:text="${item.description}"></div>
+                    <a class="btn" sec:authorize="hasRole('USER')" th:href="@{/item/details/{id}(id=${item.id})}">Bid
+                        Now</a>
+                    <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/item/details/{id}(id=${item.id})}">Item
+                        Details</a>
+                    <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
+                    <a class="btn" sec:authorize="hasRole('ADMIN')" th:method="delete"
+                       th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer>
 
-<div class="pagination">
+    <div class="pagination">
 
-        <div class="pagination-control left-arrow"> << </div>
-<div class="number-button" th:if="${itemPage.totalPages > 0}"
-     th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{/items(size=${itemPage.size}, page=${pageNumber}, sortOrder=${sortOrder}, searchParam=${searchParam})}"
-       th:text=${pageNumber}
-       th:class="${pageNumber==itemPage.number + 1} ? active"></a>
-</div>
-        <div class="pagination-control right-arrow"> >> </div>
-</div>
+        <div class="pagination-control left-arrow"> <<</div>
+        <div class="number-button" th:if="${itemPage.totalPages > 0}"
+             th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/items(size=${itemPage.size}, page=${pageNumber}, sortOrder=${sortOrder}, searchParam=${searchParam})}"
+               th:text=${pageNumber}
+               th:class="${pageNumber==itemPage.number + 1} ? active"></a>
+        </div>
+        <div class="pagination-control right-arrow"> >></div>
+    </div>
 </footer>
 
 </body>

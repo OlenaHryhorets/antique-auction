@@ -86,30 +86,34 @@ padding: 0;
   .form-div{
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 20px;
-    label
+    align-items: start;
+    justify-content: space-between;
+    margin-top: 20px;
+    label, h3, div
     {
       padding: 8px;
       font-weight: 300;
       letter-spacing: .09em;
       text-transform: uppercase;
-      flex: 1 0 120px;
-      max-width: 220px;
+      flex: 1 0 170px;
+      max-width: 250px;
     }
-    label + *{
+    label, div + *{
       flex: 1 0 220px;
     }
-    .form-submit {
+    .form-submit, .current-price {
       margin-left: auto;
-      margin-right: 20px;
       padding: 8px 16px;
       border: none;
       background: $secondary-color;
       color: $border-color;
       text-transform: uppercase;
       letter-spacing: .09em;
-      border-radius: 2px;
+      border-radius: 3px;
+      &:hover {
+        background: $border-color;
+        color: $secondary-color;
+      }
     }
   }
 
@@ -135,22 +139,15 @@ padding: 0;
   width: 100%;
 }
 }
-//
-//.form {
-//  display: flex;
-//  flex-direction: column;
-//  flex-wrap: wrap-reverse;
-//  align-content: center;
-//  align-items: stretch;
-//  width: max-content;
-//  margin: auto;
-//  padding: auto;
-//}
-.history {
+
+div.form-div.history {
+  align-items: start;
   border: 1px $border-color solid;
   border-radius: 5px;
-  text-align: center;
+  justify-content: space-between;
+  padding-right: 20px;
 }
+
 a {
   text-decoration: none;
   text-decoration-color: $border-color;
@@ -170,14 +167,14 @@ a {
   }
 }
 
-.pagination {
+.pagination, a {
   color: $border-color;
   div {
     display: inline-block;
   }
 .left-arrow, .right-arrow, .number-button > a {
-  &:hover {
-    color: $filter-input;
+  &:hover, &:active {
+    color: $secondary-color;
   }
 }
 }
