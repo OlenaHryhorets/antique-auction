@@ -27,9 +27,9 @@
 
     <div class="container">
 
-        <div class="form-main" action="#" enctype="multipart/form-data" onsubmit="return formValidation()"
-             th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}"
-             method="post">
+        <form class="form-main" action="#" enctype="multipart/form-data" onsubmit="return formValidation()"
+              th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}"
+              method="post">
             <div class="form-div">
                 <label for="name">Name</label>
                 <input type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
@@ -86,13 +86,13 @@
             <div class="form-div">
                 <input class="form-submit" type="submit" value="Save">
             </div>
-            </form>
-            <div class="form-main">
-                <div class="form-div">
-                    <button class="form-submit" onclick="window.location.href='/home';">Back</button>
-                </div>
+        </form>
+        <div class="form-main">
+            <div class="form-div">
+                <button class="form-submit" onclick="window.location.href='/home';">Back</button>
             </div>
         </div>
+
     </div>
 </main>
 
