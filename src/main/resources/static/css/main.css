@@ -144,12 +144,12 @@ a {
 
 .pagination, a {
   color: #EEEEEE; }
+  .pagination:hover, a:hover {
+    color: #ff8828; }
+  .pagination .active, a .active {
+    color: #ff8828; }
   .pagination div, a div {
     display: inline-block; }
-  .pagination .left-arrow:hover, .pagination .right-arrow:hover, .pagination .number-button > a:hover, a .left-arrow:hover, a .right-arrow:hover, a .number-button > a:hover {
-    color: #ff8828; }
-  .pagination .left-arrow:active, .pagination .right-arrow:active, .pagination .number-button > a:active, a .left-arrow:active, a .right-arrow:active, a .number-button > a:active {
-    color: #ff8828; }
 
 footer {
   text-align: center;

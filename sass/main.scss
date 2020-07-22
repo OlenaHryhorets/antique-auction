@@ -134,13 +134,16 @@ main {
   }
 
 }
+
 .margin {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 #currentPrice {
   color: $main-color !important;
 }
+
 #main-grid {
 
   display: grid;
@@ -205,19 +208,18 @@ a {
 .pagination, a {
   color: $border-color;
 
+  &:hover {
+    color: $secondary-color;
+  }
+
+  .active {
+    color: $secondary-color;
+  }
+
   div {
     display: inline-block;
   }
 
-  .left-arrow, .right-arrow, .number-button > a {
-    &:hover {
-      color: $secondary-color;
-    }
-
-    &:active {
-      color: $secondary-color;
-    }
-  }
 }
 
 footer {

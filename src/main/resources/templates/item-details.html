@@ -24,8 +24,14 @@
 
     <div class="container">
         <div class="form-main">
-            <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
-                 style="height:100px;width:100px">
+
+            <!--image & description-->
+            <div class="form-div">
+                <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
+                     style="height:100px;width:100px">
+                <div th:text="${item.description}"></div>
+            </div>
+
             <!--countdown timer-->
             <div class="countdown form-div">
                 <h3>Auction time:</h3>
@@ -53,7 +59,7 @@
                     <form class="form-main" sec:authorize="hasRole('USER')" action="#"
                           th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
 
-                        <input type="text" th:field="*{currentPrice}" id="currentPrice">
+                        <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
 
                         <div class="form-div">
                             <input class="form-submit" type="submit" value="Submit">
