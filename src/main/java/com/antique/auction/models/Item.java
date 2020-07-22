@@ -14,7 +14,7 @@ public class Item {
     private String description;
     private int currentPrice;
     private String dateString;
-    private String imagePath;
+    private String imageName;
 
     @OneToMany(mappedBy="item",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     private List<ItemPrice> itemPrices = new ArrayList<>();
@@ -63,11 +63,11 @@ public class Item {
         this.dateString = dateString;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

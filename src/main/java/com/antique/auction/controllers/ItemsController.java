@@ -6,7 +6,6 @@ import com.antique.auction.services.ItemPriceService;
 import com.antique.auction.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -71,11 +70,15 @@ public class ItemsController {
             modelAndView.addObject("wrongBid", "true");
             return modelAndView;
         }
-        existingItem.setCurrentPrice(item.getCurrentPrice());
+        if (existingItem != null) {
+            existingItem.setCurrentPrice(item.getCurrentPrice());
+        }
         ItemPrice currentItemPrice = new ItemPrice();
         currentItemPrice.setItem(existingItem);
         currentItemPrice.setPriceValue(item.getCurrentPrice());
-        existingItem.getItemPrices().add(currentItemPrice);
+        if (existingItem != null) {
+            existingItem.getItemPrices().add(currentItemPrice);
+        }
         itemPriceService.save(currentItemPrice);
         itemService.save(existingItem);
         return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
@@ -83,6 +86,9 @@ public class ItemsController {
 
     @RequestMapping(value = {"/", "/home"})
     public ModelAndView home(ModelAndView modelAndView) {
+        if (itemService.count() == 0) {
+            addInitialDemoData();
+        }
         return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 
@@ -111,8 +117,7 @@ public class ItemsController {
                 Path copyLocation = Paths
                         .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
                 Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-                String itemImageName = uploadDir + "/" + filename;
-                item.setImagePath(itemImageName);
+                item.setImageName(filename);
             } catch (IOException | RuntimeException e) {
                 e.printStackTrace();
             }
@@ -150,9 +155,9 @@ public class ItemsController {
         Item item = itemService.findById(id);
         BufferedImage img = null;
         try {
-            String imagePath = item.getImagePath();
-            if (imagePath != null && !imagePath.isEmpty()) {
-                img = ImageIO.read(new File(imagePath));
+            String imageName = item.getImageName();
+            if (imageName != null && !imageName.isEmpty()) {
+                img = ImageIO.read(new File(uploadDir + "/" + imageName));
             }
         } catch (IOException ignored) {
         }
@@ -193,6 +198,30 @@ public class ItemsController {
         if (indexOfComma != -1) {
             item.setDateString(item.getDateString().substring(0, indexOfComma));
         }
+    }
+
+
+    private void addInitialDemoData() {
+        itemService.save(getItem("demoItem1", "demo description 1", 10));
+        itemService.save(getItem("demoItem2", "demo description 21", 20));
+        itemService.save(getItem("demoItem3", "demo description 31", 100));
+        itemService.save(getItem("demoItem4", "demo description 41", 15));
+        itemService.save(getItem("demoItem5", "demo description 51", 10));
+        itemService.save(getItem("demoItem6", "demo description 61", 35));
+        itemService.save(getItem("demoItem7", "demo description 71", 11));
+        itemService.save(getItem("demoItem8", "demo description 81", 30));
+        itemService.save(getItem("demoItem9", "demo description 91", 10));
+        itemService.save(getItem("demoItem10", "demo description 101", 10));
+        itemService.save(getItem("demoItem11", "demo description 102", 55));
+    }
+
+    private Item getItem(String name, String description, int price) {
+        Item item = new Item();
+        item.setName(name);
+        item.setDescription(description);
+        item.setCurrentPrice(price);
+        item.setImageName(name + ".png");
+        return item;
     }
 
 }

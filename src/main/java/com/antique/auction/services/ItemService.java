@@ -14,4 +14,6 @@ public interface ItemService {
     void deleteById(Integer id);
 
     Page<Item> findPaginated(Pageable pageable, Optional<String> searchParam, Optional<String> sortOrder);
+
+    long count();
 }

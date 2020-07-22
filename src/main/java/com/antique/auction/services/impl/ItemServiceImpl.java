@@ -59,6 +59,11 @@ public class ItemServiceImpl implements ItemService {
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), itemsList.size());
     }
 
+    @Override
+    public long count() {
+        return itemRepository.count();
+    }
+
     private boolean isSortValueCorrect(Optional<String> sortOrder) {
         return sortOrder.isPresent() && !sortOrder.get().isEmpty() && !sortOrder.get().equals(DEFAULT_ORDER_NAME);
     }
