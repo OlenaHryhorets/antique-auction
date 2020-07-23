@@ -14,14 +14,19 @@ $(document).ready(function () {
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("countDownTimer").innerHTML = days + "d " + hours + "h "
+            let countDownTimer = document.getElementById("countDownTimer");
+            countDownTimer.innerHTML = days + "d " + hours + "h "
                 + minutes + "m " + seconds + "s ";
 
             if (distance < 0) {
                 clearInterval(x);
 
-                document.getElementById("countDownTimer").className = "error-msg";
-                document.getElementById("countDownTimer").innerHTML = "Auction is over!";
+                countDownTimer.className = "error-msg";
+                countDownTimer.innerHTML = "Auction is over!";
+                document.getElementById("currentPrice").disabled=true;
+                document.getElementById("bidsubmit").disabled=true;
+
+
             }
         }, 1000);
     }

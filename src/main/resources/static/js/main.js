@@ -6,12 +6,12 @@ function formValidation() {
         const nameValue = name.value.trim();
         const descriptionValue = description.value.trim();
         if (nameValue === '') {
-            setErrorFor(name, 'Name cannot be blank');
+            setErrorFor(name, 'cannot be blank');
         } else {
             setSuccessFor(name);
         }
         if (descriptionValue === '') {
-            setErrorFor(description, 'Description cannot be blank');
+            setErrorFor(description, 'cannot be blank');
         } else if (!descriptionValue) {
             setErrorFor(description, 'Not a valid description');
         } else {
@@ -21,17 +21,17 @@ function formValidation() {
         return isValid;
 
         function setErrorFor(input, message) {
-            const formControl = input.parentElement;
-            const small = formControl.querySelector('small');
-            formControl.className = 'form-div error';
+            const parentElement = input.parentElement;
+            const small = parentElement.querySelector('small');
+            parentElement.className = 'form-div error-msg';
             small.innerText = message;
             isValid = false;
         }
 
         function setSuccessFor(input) {
-            const formControl = input.parentElement;
-            const small = formControl.querySelector('small');
-            formControl.className = 'form-div success';
+            const parentElement = input.parentElement;
+            const small = parentElement.querySelector('small');
+            parentElement.className = 'form-div success';
             small.innerText = '';
         }
 }
