@@ -48,20 +48,25 @@
         <div id="main-grid">
             <div th:each="item: ${itemPage.content}">
                 <div class="item">
-                    <div><img th:src="@{/items/images/{id}(id=${item.id})}" alt="No image"
-                              style="height:200px;width:200px"></div>
-                    <div th:text="${item.name}"></div>
-                    <div th:text="${item.currentPrice}"></div>
-                    <div id="dateString" th:text="${item.dateString}"></div>
-                    <a class="form-submit" sec:authorize="hasRole('USER')"
-                       th:href="@{/item/details/{id}(id=${item.id})}">Bid
-                        Now</a>
-                    <div id="admin-access" sec:authorize="hasRole('ADMIN')">
+                    <div class="flex-box">
+                    <img th:src="@{/items/images/{id}(id=${item.id})}" alt="No image"
+                              style="height:200px;width:200px">
+                        <div class="flex-2">Name:
+                    <span th:text="${item.name}"></span></div>
+                        <div class="flex-2">Price:
+                    <span th:text="${item.currentPrice}"></span></div>
+                        <div class="flex-2">Close date:
+                    <div id="dateString" th:text="${item.dateString}">not set</div></div>
+                        <div class="flex-2" sec:authorize="hasRole('USER')">
+                            <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Bid Now</a>
+                        </div>
+                    <div id="admin-access" class="flex-1" sec:authorize="hasRole('ADMIN')">
                         <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Item
                             Details</a>
                         <a class="form-submit" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
                         <a class="form-submit" th:method="Delete"
                            th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
+                    </div>
                     </div>
                 </div>
             </div>

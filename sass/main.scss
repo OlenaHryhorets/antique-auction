@@ -201,6 +201,7 @@ header {
     position: relative;
     border: 3px $border-color solid;
     border-radius: 6px;
+    padding: 15px;
 
     &:hover {
       opacity: 0.5;
@@ -208,19 +209,39 @@ header {
     }
 
     width: 100%;
+    .flex-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      div {
+        border: $main-color;
+        margin: 5px;
+        align-self: center;
+        flex: 1 0 200px ;
+      }
+      img {
+        order: 1;
+      }
+      .flex-1 {
+        order: 2;
+      }
+      .flex-2 {
+        order: 3;
+      }
+    }
 
   }
 }
 
 #admin-access {
-
-  width: 150px;
-margin-top: 20px;
-
+  margin-top: 20px;
   a {
+    width:220px;
     display: block;
     float: left;
     clear: both;
+    margin-bottom: 5px;
   }
 }
 

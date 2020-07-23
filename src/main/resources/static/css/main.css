@@ -140,18 +140,35 @@ header {
     position: relative;
     border: 3px #D0C1A9 solid;
     border-radius: 6px;
+    padding: 15px;
     width: 100%; }
     #main-grid .item:hover {
       opacity: 0.5;
       border-color: #563B2C; }
+    #main-grid .item .flex-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; }
+      #main-grid .item .flex-box div {
+        border: #26110C;
+        margin: 5px;
+        align-self: center;
+        flex: 1 0 200px; }
+      #main-grid .item .flex-box img {
+        order: 1; }
+      #main-grid .item .flex-box .flex-1 {
+        order: 2; }
+      #main-grid .item .flex-box .flex-2 {
+        order: 3; }
 
 #admin-access {
-  width: 150px;
   margin-top: 20px; }
   #admin-access a {
+    width: 220px;
     display: block;
     float: left;
-    clear: both; }
+    clear: both;
+    margin-bottom: 5px; }
 
 div.form-div.history {
   align-items: start;
