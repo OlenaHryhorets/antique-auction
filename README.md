@@ -13,11 +13,8 @@ create schema auction;
 ## Run project:
 1. Download [auction.jar](https://...) file
 2. Unzip Images.zip folder to currently logged systems user'home folder. 
-   (example for  Linux:
-```bash
-/home/username/
-```
-   )
+   ( for example for Linux: /home/username/ )
+
 3. Open terminal in folder where auction.jar is and run command:
 ```bash
 java -jar auction.jar

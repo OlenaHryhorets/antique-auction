@@ -1,33 +1,98 @@
-$main-color: #212529;
-$back-color: #3AAFAB;
-$border-color: #EEEEEE;
-$secondary-color: #ff8828;
-$filter-input: #007BFF;
-$hover-color: #00008b;
+$main-color: #26110C;
+$back-color: #BC9E8B;
+$border-color: #D0C1A9;
+$secondary-color: #563B2C;
+$filter-input: #BD997D;
+$hover-color: #261E18;
 $warn-color: #ff0e11;
 * {
   box-sizing: border-box;
+
 }
 
 html, body {
-  height: 100%;
+  min-height: 100vh;
 }
 
 body {
+  position: relative;
   font-family: "Fira Sans", "Helvetica Neue", sans-serif;
   text-decoration-color: $main-color;
   margin: 0;
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+.btn {
+
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: 1px $border-color solid;
+  border-radius: 5px;
+  margin: 0.3em;
+
+  &:hover {
+    background: $filter-input;
+    color: $hover-color;
+  }
+}
+
+.btn-input {
+  display: inline;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  height: 35px;
+  border: 1px $border-color solid;
+
+  &:hover {
+    background: $filter-input;
+    color: $hover-color;
+  }
+}
+
+.btn-back {
+  margin-right: 15px !important;
+}
+
+.form-submit, .current-price {
+  margin-left: auto;
+  padding: 8px 16px;
+  border: none;
+  background: $secondary-color;
+  color: $border-color;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  border-radius: 3px;
+
+  &:hover {
+    background: $border-color;
+    color: $secondary-color;
+  }
+}
+
+.margin {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 header {
   text-align: center;
-  background-color: darken($back-color, 9);
+  background: rgb(171, 134, 110);
+  background: linear-gradient(rgba(171, 134, 110, 1) 30%, rgba(188, 158, 139, 1));
 
   .logout {
     margin: 20px;
     position: fixed;
     right: 0;
     top: 0;
+
+    button {
+      float: left;
+      clear: both;
+    }
   }
 
   .header-panel {
@@ -64,28 +129,22 @@ header {
   }
 }
 
-.btn-input {
-  display: inline;
-  padding: 0.5rem 1rem;
-  margin-bottom: 0.5rem;
-  height: 35px;
-  border: 1px $border-color solid;
-
-  &:hover {
-    background: $filter-input;
-    color: $hover-color;
-  }
-}
 
 main {
   min-height: 100%;
-  background-color: $back-color;
+  background: rgb(188, 158, 139);
+  background: linear-gradient(rgba(188, 158, 139, 1) 70%, rgba(49, 36, 28, 1));
+}
+
+#container {
+  padding-bottom: 50px;
+  margin: 0 auto;
 }
 
 .container {
   background: $main-color;
   color: $border-color;
-  padding: 50px 0;
+  padding: 50px 20px;
   width: 80%;
   max-width: 1200px;
   margin: 0 auto;
@@ -116,29 +175,10 @@ main {
       flex: 1 0 220px;
     }
 
-    .form-submit, .current-price {
-      margin-left: auto;
-      padding: 8px 16px;
-      border: none;
-      background: $secondary-color;
-      color: $border-color;
-      text-transform: uppercase;
-      letter-spacing: .09em;
-      border-radius: 3px;
-
-      &:hover {
-        background: $border-color;
-        color: $secondary-color;
-      }
-    }
   }
 
 }
 
-.margin {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 
 #currentPrice {
   color: $main-color !important;
@@ -152,16 +192,32 @@ main {
 
 
   .item {
-
+    position: relative;
     border: 3px $border-color solid;
+    border-radius: 6px;
 
     &:hover {
       opacity: 0.5;
       border-color: $secondary-color;
-
     }
 
     width: 100%;
+
+    a {
+      position: absolute;
+    }
+
+  }
+}
+
+#admin-access {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+
+  a {
+    display: block;
   }
 }
 
@@ -186,51 +242,48 @@ a {
   &:hover {
     text-decoration-color: $hover-color;
   }
+
 }
 
-.btn {
-  display: inline-block;
-  padding: 0.5em 1em;
-  border: 1px $border-color solid;
-  border-radius: 5px;
-  margin: 0.3em;
+a.fas {
+  position: relative;
 
-  &:hover {
-    background: $filter-input;
-    color: $hover-color;
+  span {
+    position: absolute;
+    right: 5px;
+
   }
 }
 
-.btn-back {
-  margin-right: 15px !important;
+#i-left {
+  right: 20px;
 }
 
-.pagination, a {
-  color: $border-color;
-
-  &:hover {
-    color: $secondary-color;
+.pagination {
+  a {
+    color: $main-color;
+    font-weight: bold;
+    &:hover {
+      color: $filter-input;
+    }
+    .active {
+      color: darken($filter-input, 20%);
+    }
   }
-
-  .active {
-    color: $secondary-color;
-  }
-
   div {
     display: inline-block;
   }
-
 }
 
 footer {
-
+  width: 100%;
   text-align: center;
   vertical-align: top;
-  background-color: darken($main-color, 9);
-  position: relative;
-  height: 10vh;
-  margin-top: -10vh;
-  clear: both;
+  background: rgb(49, 36, 28);
+  background: linear-gradient(rgba(49, 36, 28, 0) 30%, rgba(38, 17, 12, 1));
+  height: 40px;
+  position: fixed;
+  bottom: 0;
 }
 
 .error-msg {

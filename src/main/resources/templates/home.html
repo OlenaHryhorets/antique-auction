@@ -16,14 +16,17 @@
     <header>
         <h1>Antique auction</h1>
         <div class="logout">
-            <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-            <button class="btn btn-input" onclick="window.location.href='/logout';">Logout</button>
+            <div th:text="${#authentication.getPrincipal().getUsername()}"></div>
+            <button class="btn form-submit" onclick="window.location.href='/logout';">Logout</button>
+            <button class="btn form-submit" sec:authorize="hasRole('ADMIN')"
+                    onclick="window.location.href='/item/add/view';">Add Item
+            </button>
         </div>
         <div class="header-panel">
             <div class="filter-search">
                 <form action="#" th:action="@{/items}" method="get">
                     <input class="btn btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
-                    <input class="btn btn-input" type="submit" value="Search">
+                    <input class="form-submit" type="submit" value="Search">
                 </form>
             </div>
 
@@ -34,14 +37,8 @@
                         <option th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending</option>
                         <option th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price descending</option>
                     </select>
-                    <input class="btn btn-input" type="submit" value="Sort">
+                    <input class="form-submit" type="submit" value="Sort">
                 </form>
-            </div>
-
-            <div class="admin-access">
-                <button class="btn btn-input" sec:authorize="hasRole('ADMIN')"
-                        onclick="window.location.href='/item/add/view';">Add Item
-                </button>
             </div>
         </div>
     </header>
@@ -56,14 +53,15 @@
                     <div th:text="${item.name}"></div>
                     <div th:text="${item.currentPrice}"></div>
                     <div id="dateString" th:text="${item.dateString}"></div>
-                    <a class="btn" sec:authorize="hasRole('USER')" th:href="@{/item/details/{id}(id=${item.id})}">Bid
+                    <a class="form-submit" sec:authorize="hasRole('USER')"
+                       th:href="@{/item/details/{id}(id=${item.id})}">Bid
                         Now</a>
-                    <div sec:authorize="hasRole('ADMIN')">
-                    <a class="btn" th:href="@{/item/details/{id}(id=${item.id})}">Item
-                        Details</a>
-                    <a class="btn" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
-                    <a class="btn" th:method="Delete"
-                       th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
+                    <div id="admin-access" sec:authorize="hasRole('ADMIN')">
+                        <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Item
+                            Details</a>
+                        <a class="form-submit" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
+                        <a class="form-submit" th:method="Delete"
+                           th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
                     </div>
                 </div>
             </div>

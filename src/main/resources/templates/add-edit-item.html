@@ -32,21 +32,25 @@
               method="post">
             <div class="form-div">
                 <label for="name">Name</label>
-                <input class="input" type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
+                <input class="input" type="text" th:field="*{name}" id="name"
+                       placeholder=" Enter antique item name here ">
                 <!--                <span style="color: #009000;">-->
                 <!--                <i class="fas fa-check-circle"></i>-->
                 <!--                </span>-->
                 <!--                <span style="color: #b30000;">-->
                 <!--                <i class="fas fa-exclamation-circle"></i>-->
                 <!--                   </span>-->
+
                 <small></small>
                 <span class="form-add" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
             </div>
             <div class="form-div">
                 <label for="description">Description</label>
                 <textarea rows="6" th:field="*{description}" id="description"
                           placeholder=" Enter item description here ">
                 </textarea>
+
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                 <!--                <span style="color: #009000;">-->
                 <!--                <i class="fas fa-check-circle"></i>-->
@@ -55,22 +59,18 @@
                 <!--                <i class="fas fa-exclamation-circle"></i>-->
                 <!--                     </span>-->
                 <small></small>
+
             </div>
             <div class="flatpickr form-div">
                 <label for="dateTimePicker">Close date</label>
-
-                    <input class="input" type="text" th:field="*{dateString}" id="dateTimePicker"
-                           placeholder=" Pick a date and time here " data-input>
-                    <a class="button" title="Select" data-toggle>
-                         <span style="color: #009000;">
-                <i class="fas fa-check-circle"></i></span></a>
-
-                    <a class="input-button" title="clear" data-clear>
-                        <span style="color: #b30000;">
+                <input class="input" type="text" th:field="*{dateString}" id="dateTimePicker"
+                       placeholder=" Pick a date and time here " data-input>
+                <a class="button fas" title="Select" data-toggle>
+                         <span id="i-left" style="color: #009000;">
+                <i class="fas fa-check-circle" style="font-size: large"></i></span></a>
+                <a class="input-button fas" title="clear" data-clear>
+                        <span style="color: #b30000; font-size: large">
                 <i class="fas fa-close"></i></span></a></div>
-
-
-            <!--            <div class="form-div">-->
             <div>
                 <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
                      style="height:100px;width:100px">
@@ -96,6 +96,7 @@
     </div>
 </main>
 
-
+<footer>
+</footer>
 </body>
 </html>
