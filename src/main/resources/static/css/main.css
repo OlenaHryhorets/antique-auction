@@ -73,12 +73,13 @@ main {
     align-items: start;
     justify-content: space-between;
     margin-top: 20px; }
-    .form-main .form-div label, .form-main .form-div h3, .form-main .form-div div {
+    .form-main .form-div label, .form-main .form-div h3, .form-main .form-div div, .form-main .form-div textarea, .form-main .form-div input.input {
       padding: 8px;
       font-weight: 300;
       letter-spacing: .09em;
       text-transform: uppercase;
-      max-width: 300px; }
+      flex: 1 0 220px;
+      max-width: 450px; }
     .form-main .form-div label, .form-main .form-div div + * {
       flex: 1 0 220px; }
     .form-main .form-div .form-submit, .form-main .form-div .current-price {

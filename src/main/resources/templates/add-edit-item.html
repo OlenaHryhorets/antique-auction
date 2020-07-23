@@ -32,7 +32,7 @@
               method="post">
             <div class="form-div">
                 <label for="name">Name</label>
-                <input type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
+                <input class="input" type="text" th:field="*{name}" id="name" placeholder=" Enter antique item name here ">
                 <!--                <span style="color: #009000;">-->
                 <!--                <i class="fas fa-check-circle"></i>-->
                 <!--                </span>-->
@@ -58,8 +58,8 @@
             </div>
             <div class="flatpickr form-div">
                 <label for="dateTimePicker">Close date</label>
-                <div>
-                    <input type="text" th:field="*{dateString}" id="dateTimePicker"
+
+                    <input class="input" type="text" th:field="*{dateString}" id="dateTimePicker"
                            placeholder=" Pick a date and time here " data-input>
                     <a class="button" title="Select" data-toggle>
                          <span style="color: #009000;">
@@ -68,7 +68,7 @@
                     <a class="input-button" title="clear" data-clear>
                         <span style="color: #b30000;">
                 <i class="fas fa-close"></i></span></a></div>
-            </div>
+
 
             <!--            <div class="form-div">-->
             <div>
