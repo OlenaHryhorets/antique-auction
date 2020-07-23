@@ -1,14 +1,26 @@
-1. Should be installed java 8 or newer
-2. Should be installed mysql server
-3. Should be created schema with name 'auction' with command:
+# Antique Auction
 
+## Prerequisites:
+
+1. install java 8 or newer
+2. install mysql server
+3. create schema with name 'auction' with command:
+```bash
 create schema auction;
+```
+## Build project:
 
-4. Should be installed maven if you want to build project yourself or
-5. Auction jar could be put to any folder and could be started then
-with command:
+## Run project:
+1. Download [auction.jar](https://...) file
+2. Unzip Images.zip folder to currently logged systems user'home folder. 
+   (example for  Linux:
+```bash
+/home/username/
+```
+   )
+3. Open terminal in folder where auction.jar is and run command:
+```bash
 java -jar auction.jar
-
-6. Images.zip should be unzipped to currently logged systems user'
-home folder. 
-7. Go to localhost:8081 in browser and try.
+```
+7. Go to localhost:8081 in browser.
+8. Login into the system with: admin/admin or user/user
