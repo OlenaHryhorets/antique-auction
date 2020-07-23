@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -37,6 +38,9 @@ public class ItemsController {
 
     @Value("${user.home}")
     public String uploadDir;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Autowired
     public ItemsController(ItemService itemsService, ItemPriceService itemPriceService) {
@@ -105,7 +109,7 @@ public class ItemsController {
 
 
     @PostMapping(value = "/item/add/edit/{id}")
-    public RedirectView editItem(@PathVariable int id, Item item, @RequestParam ("file") MultipartFile file) {
+    public RedirectView editItem(@PathVariable int id, Item item, @RequestParam("file") MultipartFile file) {
         Item existingItem = itemService.findById(id);
         fixItemDoubleDateParam(item);
         existingItem.setId(item.getId());
@@ -120,7 +124,7 @@ public class ItemsController {
     }
 
     @PostMapping(value = "/item/add/edit")
-    public RedirectView addItem(Item item, @RequestParam ("file") MultipartFile file) {
+    public RedirectView addItem(Item item, @RequestParam("file") MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             setImage(item, file);
         }
@@ -163,24 +167,26 @@ public class ItemsController {
         return modelAndView;
     }
 
-    @Autowired
-    ResourceLoader resourceLoader;
-
     @GetMapping(value = "/items/images/{id}")
-    public @ResponseBody byte[] getImage(@PathVariable Integer id) throws IOException {
+    public @ResponseBody
+    byte[] getImage(@PathVariable Integer id, HttpServletResponse httpServletResponse) {
+        httpServletResponse.addHeader("Cache-Control", "max-age=60, must-revalidate, no-transform");
         Item item = itemService.findById(id);
-        BufferedImage img = null;
+        BufferedImage img;
+        byte[] response = new byte[0];
         try {
             String imageName = item.getImageName();
             if (imageName != null && !imageName.isEmpty()) {
                 img = ImageIO.read(new File(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + imageName));
+                response = toByteArrayAutoClosable(img, "png");
             }
         } catch (IOException ignored) {
         }
-        return toByteArrayAutoClosable(img, "png");
+        return response;
     }
+
     private static byte[] toByteArrayAutoClosable(BufferedImage image, String type) throws IOException {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()){
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             if (image != null) {
                 ImageIO.write(image, type, out);
             }
