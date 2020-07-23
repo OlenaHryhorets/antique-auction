@@ -13,6 +13,24 @@ body {
     max-width: 100%;
     display: block; }
 
+main {
+  min-height: 100vh;
+  background: #bc9e8b;
+  background: linear-gradient(#bc9e8b 70%, #31241c); }
+
+#container {
+  padding-bottom: 50px;
+  margin: 0 auto; }
+
+.container {
+  background: #26110C;
+  border-radius: 10px;
+  color: #D0C1A9;
+  padding: 50px 20px;
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto; }
+
 .btn {
   display: inline-block;
   padding: 0.5em 1em;
@@ -61,7 +79,8 @@ header {
     margin: 20px;
     position: fixed;
     right: 0;
-    top: 0; }
+    top: 0;
+    z-index: 1; }
     header .logout button {
       float: left;
       clear: both; }
@@ -88,23 +107,6 @@ header {
   header h3 {
     font-size: 1.5em;
     font-weight: 200; }
-
-main {
-  min-height: 100%;
-  background: #bc9e8b;
-  background: linear-gradient(#bc9e8b 70%, #31241c); }
-
-#container {
-  padding-bottom: 50px;
-  margin: 0 auto; }
-
-.container {
-  background: #26110C;
-  color: #D0C1A9;
-  padding: 50px 20px;
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto; }
 
 .form-main {
   max-width: 800px;
@@ -141,16 +143,14 @@ main {
     #main-grid .item:hover {
       opacity: 0.5;
       border-color: #563B2C; }
-    #main-grid .item a {
-      position: absolute; }
 
 #admin-access {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px; }
+  width: 150px;
+  margin-top: 20px; }
   #admin-access a {
-    display: block; }
+    display: block;
+    float: left;
+    clear: both; }
 
 div.form-div.history {
   align-items: start;
@@ -183,8 +183,9 @@ a.fas {
   font-weight: bold; }
   .pagination a:hover {
     color: #BD997D; }
-  .pagination a .active {
-    color: #8d6647; }
+
+.pagination a.active {
+  color: #8d6647; }
 
 .pagination div {
   display: inline-block; }

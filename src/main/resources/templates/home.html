@@ -48,7 +48,7 @@
         <div id="main-grid">
             <div th:each="item: ${itemPage.content}">
                 <div class="item">
-                    <div><img th:src="@{/items/images/{id}(id=${item.id})}" alt="No Image"
+                    <div><img th:src="@{/items/images/{id}(id=${item.id})}"
                               style="height:200px;width:200px"></div>
                     <div th:text="${item.name}"></div>
                     <div th:text="${item.currentPrice}"></div>

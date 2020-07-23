@@ -25,7 +25,27 @@ body {
     display: block;
   }
 }
+main {
+  min-height: 100vh;
+  background: rgb(188, 158, 139);
+  background: linear-gradient(rgba(188, 158, 139, 1) 70%, rgba(49, 36, 28, 1));
+}
 
+#container {
+  padding-bottom: 50px;
+  margin: 0 auto;
+}
+
+.container {
+  background: $main-color;
+  border-radius: 10px;
+  color: $border-color;
+  padding: 50px 20px;
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+}
 .btn {
 
   display: inline-block;
@@ -88,6 +108,7 @@ header {
     position: fixed;
     right: 0;
     top: 0;
+    z-index: 1;
 
     button {
       float: left;
@@ -130,25 +151,7 @@ header {
 }
 
 
-main {
-  min-height: 100%;
-  background: rgb(188, 158, 139);
-  background: linear-gradient(rgba(188, 158, 139, 1) 70%, rgba(49, 36, 28, 1));
-}
 
-#container {
-  padding-bottom: 50px;
-  margin: 0 auto;
-}
-
-.container {
-  background: $main-color;
-  color: $border-color;
-  padding: 50px 20px;
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
 .form-main {
   max-width: 800px;
@@ -203,21 +206,18 @@ main {
 
     width: 100%;
 
-    a {
-      position: absolute;
-    }
-
   }
 }
 
 #admin-access {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px;
+
+  width: 150px;
+margin-top: 20px;
 
   a {
     display: block;
+    float: left;
+    clear: both;
   }
 }
 
@@ -266,9 +266,10 @@ a.fas {
     &:hover {
       color: $filter-input;
     }
-    .active {
-      color: darken($filter-input, 20%);
-    }
+
+  }
+  a.active {
+    color: darken($filter-input, 20%);
   }
   div {
     display: inline-block;
