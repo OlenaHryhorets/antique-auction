@@ -27,8 +27,8 @@
 
             <!--image & description-->
             <div class="form-div">
-                <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
-                     style="height:100px;width:100px">
+                <small><img th:src="@{/items/images/{id}(id=${item.id})}" alt="No image"
+                     style="height:100px;width:100px"></small>
                 <div th:text="${item.description}"></div>
             </div>
 

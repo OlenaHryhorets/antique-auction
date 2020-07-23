@@ -71,19 +71,20 @@
                 <a class="input-button fas" title="clear" data-clear>
                         <span style="color: #b30000; font-size: large">
                 <i class="fas fa-close"></i></span></a></div>
-            <div>
-                <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image alternate text"
+            <div class="form-div">
+                <label>
+                <img th:src="@{/items/images/{id}(id=${item.id})}" alt="Image"
                      style="height:100px;width:100px">
-                <div>
+
                     <table>
                         <tr>
                             <td>File to upload:</td>
                             <td><input type="file" name="file"/></td>
                         </tr>
                     </table>
-                </div>
-            </div>
-            <div class="form-div">
+
+                </label>
+
                 <input class="form-submit" type="submit" value="Save">
             </div>
         </form>
