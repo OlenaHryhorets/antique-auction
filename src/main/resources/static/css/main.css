@@ -41,15 +41,16 @@ main {
     background: #BD997D;
     color: #261E18; }
 
-.btn-input {
+#param, #sortOrder, option.sort {
   display: inline;
-  padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
   height: 35px;
-  border: 1px #D0C1A9 solid; }
-  .btn-input:hover {
-    background: #BD997D;
-    color: #261E18; }
+  width: 200px;
+  background: #BD997D !important;
+  color: #261E18 !important; }
+  #param:hover, #sortOrder:hover, option.sort:hover {
+    background: #26110C !important;
+    color: #BD997D !important; }
 
 .btn-back {
   margin-right: 15px !important; }

@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Home page</title>
+    <title>Auction</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="/css/main.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/main.js"></script>
 </head>
 <body>
@@ -25,17 +25,17 @@
         <div class="header-panel">
             <div class="filter-search">
                 <form action="#" th:action="@{/items}" method="get">
-                    <input class="btn btn-input" type="text" name="searchParam" id="param" th:value="${searchParam}">
+                    <input class="btn" type="text" name="searchParam" id="param" th:value="${searchParam}">
                     <input class="form-submit" type="submit" value="Search">
                 </form>
             </div>
 
             <div class="filter-sort">
                 <form action="#" th:action="@{/items}" method="get">
-                    <select class="btn btn-input" id="sortOrder" name="sortOrder">
-                        <option th:selected="${sortOrder} == 'default'" value="default">Default</option>
-                        <option th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending</option>
-                        <option th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price descending</option>
+                    <select class="btn" id="sortOrder" name="sortOrder">
+                        <option class="sort" th:selected="${sortOrder} == 'default'" value="default">Default</option>
+                        <option class="sort" th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending</option>
+                        <option class="sort" th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price descending</option>
                     </select>
                     <input class="form-submit" type="submit" value="Sort">
                 </form>

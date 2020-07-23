@@ -60,16 +60,18 @@ main {
   }
 }
 
-.btn-input {
+#param, #sortOrder, option.sort {
   display: inline;
-  padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
   height: 35px;
-  border: 1px $border-color solid;
+  width: 200px;
+  background: $filter-input!important;
+  color: $hover-color!important;
 
   &:hover {
-    background: $filter-input;
-    color: $hover-color;
+    background: $main-color!important;
+    color: $filter-input!important;
+
   }
 }
 

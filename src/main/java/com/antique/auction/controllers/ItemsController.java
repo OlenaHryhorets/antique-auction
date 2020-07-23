@@ -31,6 +31,7 @@ import java.util.stream.IntStream;
 
 @RestController
 public class ItemsController {
+    private static final String ANTIQUE_AUCTION_IMAGES_DIR_NAME = "antique-auction-images";
     private final ItemService itemService;
     private final ItemPriceService itemPriceService;
 
@@ -51,6 +52,13 @@ public class ItemsController {
                                  @RequestParam("sortOrder") Optional<String> sortOrder) {
 
         return populateModelAndView(modelAndView, page, size, searchParam, sortOrder);
+    }
+
+    @GetMapping(value = "/login")
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
 
     @GetMapping(value = "/item/details/{id}")
@@ -105,7 +113,7 @@ public class ItemsController {
         existingItem.setName(item.getName());
         existingItem.setDescription(item.getDescription());
         if (file != null && !file.isEmpty()) {
-            setImageName(existingItem, file);
+            setImage(existingItem, file);
         }
         itemService.save(existingItem);
         return new RedirectView("/home");
@@ -114,17 +122,17 @@ public class ItemsController {
     @PostMapping(value = "/item/add/edit")
     public RedirectView addItem(Item item, @RequestParam ("file") MultipartFile file) {
         if (file != null && !file.isEmpty()) {
-            setImageName(item, file);
+            setImage(item, file);
         }
         itemService.save(item);
         return new RedirectView("/home");
     }
 
-    private void setImageName(Item item, @RequestParam("file") MultipartFile file) {
+    private void setImage(Item item, @RequestParam("file") MultipartFile file) {
         try {
             String filename = file.getOriginalFilename();
             Path copyLocation = Paths
-                    .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+                    .get(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
             item.setImageName(filename);
         } catch (IOException | RuntimeException e) {
@@ -165,7 +173,7 @@ public class ItemsController {
         try {
             String imageName = item.getImageName();
             if (imageName != null && !imageName.isEmpty()) {
-                img = ImageIO.read(new File(uploadDir + "/" + imageName));
+                img = ImageIO.read(new File(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + imageName));
             }
         } catch (IOException ignored) {
         }
