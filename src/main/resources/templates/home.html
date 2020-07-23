@@ -19,7 +19,7 @@
             <div th:text="${#authentication.getPrincipal().getUsername()}"></div>
             <button class="btn form-submit" onclick="window.location.href='/logout';">Logout</button>
             <button class="btn form-submit" sec:authorize="hasRole('ADMIN')"
-                    onclick="window.location.href='/item/add/view';">Add Item
+                    onclick="window.location.href='/item/add/go';">Add Item
             </button>
         </div>
         <div class="header-panel">

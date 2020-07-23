@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -95,41 +96,46 @@ public class ItemsController {
     }
 
 
-    @PostMapping(value = "/item/addEdit/{id}")
-    public ModelAndView editItem(@PathVariable int id, Item item, @RequestParam ("file") MultipartFile file) {
-        setImagePathToItem(item, file);
+    @PostMapping(value = "/item/add/edit/{id}")
+    public RedirectView editItem(@PathVariable int id, Item item, @RequestParam ("file") MultipartFile file) {
+        Item existingItem = itemService.findById(id);
         fixItemDoubleDateParam(item);
-        itemService.save(item);
-        return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+        existingItem.setId(item.getId());
+        existingItem.setDateString(item.getDateString());
+        existingItem.setName(item.getName());
+        existingItem.setDescription(item.getDescription());
+        if (file != null && !file.isEmpty()) {
+            setImageName(existingItem, file);
+        }
+        itemService.save(existingItem);
+        return new RedirectView("/home");
     }
 
-    @PostMapping(value = "/item/addEdit")
-    public ModelAndView addItem(Item item, @RequestParam ("file") MultipartFile file) {
-        //todo multiple values are passed here... To check and fix
-        fixItemDoubleDateParam(item);
-        setImagePathToItem(item, file);
+    @PostMapping(value = "/item/add/edit")
+    public RedirectView addItem(Item item, @RequestParam ("file") MultipartFile file) {
+        if (file != null && !file.isEmpty()) {
+            setImageName(item, file);
+        }
         itemService.save(item);
-        return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+        return new RedirectView("/home");
     }
 
-    private void setImagePathToItem(Item item, @RequestParam("file") MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                String filename = file.getOriginalFilename();
-                Path copyLocation = Paths
-                        .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-                Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-                item.setImageName(filename);
-            } catch (IOException | RuntimeException e) {
-                e.printStackTrace();
-            }
+    private void setImageName(Item item, @RequestParam("file") MultipartFile file) {
+        try {
+            String filename = file.getOriginalFilename();
+            Path copyLocation = Paths
+                    .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+            item.setImageName(filename);
+        } catch (IOException | RuntimeException e) {
+            e.printStackTrace();
         }
     }
 
     @GetMapping(value = "/item/delete/{id}")
-    public ModelAndView addItem(@PathVariable Integer id) {
+    public RedirectView addItem(@PathVariable Integer id) {
         itemService.deleteById(id);
-        return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+        return new RedirectView("/home");
     }
 
     @GetMapping("/item/edit/view/{id}")
@@ -141,7 +147,7 @@ public class ItemsController {
         return modelAndView;
     }
 
-    @GetMapping("/item/add/view")
+    @GetMapping("/item/add/go")
     public ModelAndView addItem() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject(new Item());

@@ -28,7 +28,7 @@
     <div class="container">
 
         <form class="form-main" action="#" enctype="multipart/form-data" onsubmit="return formValidation()"
-              th:action="@{/item/addEdit/{id}(id=${item.id})}" th:object="${item}"
+              th:action="@{/item/add/edit/{id}(id=${item.id})}" th:object="${item}"
               method="post">
             <div class="form-div">
                 <label for="name">Name</label>
