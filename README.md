@@ -1,4 +1,5 @@
 # Antique Auction
+The project is deployed [here](http://auction.mircloud.us)
 
 ## Prerequisites:
 
@@ -22,8 +23,7 @@ As an option build could be avoided. Ready to use **auction-0.0.1-SNAPSHOT.jar**
 
 ## Run project:
 1. Unzip antique-auction-images.zip (which is in project directory) to 
-user home folder 
-(in Linux: /home/[username]/). 
+user home folder ( in Linux: /home/[username]/ ) 
 
 2. Open terminal in folder where **auction-0.0.1-SNAPSHOT.jar** is and run command:
 ```bash
