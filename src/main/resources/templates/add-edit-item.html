@@ -27,6 +27,7 @@
 
     <div class="container">
         <form class="form-main" action="#" enctype="multipart/form-data" oninput="return formValidation()"
+              onsubmit="return formValidation()"
               th:action="@{/item/add/edit/{id}(id=${item.id})}" th:object="${item}"
               method="post">
 
