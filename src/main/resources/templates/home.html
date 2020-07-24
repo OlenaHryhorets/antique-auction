@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Auction</title>
-
     <link href="/css/main.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/main.js"></script>
@@ -29,13 +27,15 @@
                     <input class="form-submit" type="submit" value="Search">
                 </form>
             </div>
-
             <div class="filter-sort">
                 <form action="#" th:action="@{/items}" method="get">
                     <select class="btn" id="sortOrder" name="sortOrder">
                         <option class="sort" th:selected="${sortOrder} == 'default'" value="default">Default</option>
-                        <option class="sort" th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending</option>
-                        <option class="sort" th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price descending</option>
+                        <option class="sort" th:selected="${sortOrder} == 'ASC'" value="ASC">Sort by Price ascending
+                        </option>
+                        <option class="sort" th:selected="${sortOrder} == 'DESC'" value="DESC">Sort by Price
+                            descending
+                        </option>
                     </select>
                     <input class="form-submit" type="submit" value="Sort">
                 </form>
@@ -43,30 +43,29 @@
         </div>
     </header>
 
-
     <div id="container">
         <div id="main-grid">
             <div th:each="item: ${itemPage.content}">
                 <div class="item">
                     <div class="flex-box">
-                    <img th:src="@{/items/images/{id}(id=${item.id})}" alt="No image"
-                              style="height:200px;width:200px">
+                        <img th:src="@{/items/images/{id}(id=${item.id})}" alt="No image"
+                             style="height:200px;width:200px">
                         <div class="flex-2">Name:
-                    <span th:text="${item.name}"></span></div>
+                            <span th:text="${item.name}"></span></div>
                         <div class="flex-2">Price:
-                    <span th:text="${item.currentPrice}"></span></div>
+                            <span th:text="${item.currentPrice}"></span></div>
                         <div class="flex-2">Close date:
-                    <div id="dateString" th:text="${item.dateString}">not set</div></div>
+                            <span id="dateString" th:text="${item.dateString}">not set</span></div>
                         <div class="flex-2" sec:authorize="hasRole('USER')">
                             <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Bid Now</a>
                         </div>
-                    <div id="admin-access" class="flex-1" sec:authorize="hasRole('ADMIN')">
-                        <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Item
-                            Details</a>
-                        <a class="form-submit" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
-                        <a class="form-submit" th:method="Delete"
-                           th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
-                    </div>
+                        <div id="admin-access" class="flex-1" sec:authorize="hasRole('ADMIN')">
+                            <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Item
+                                Details</a>
+                            <a class="form-submit" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
+                            <a class="form-submit" th:method="Delete"
+                               th:href="@{/item/delete/{id}(id=${item.id})}">Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,9 +74,7 @@
 </main>
 
 <footer>
-
     <div class="pagination">
-
         <div class="pagination-control left-arrow"><a
                 th:href="@{/items(size=${itemPage.size}, page=1, sortOrder=${sortOrder}, searchParam=${searchParam})}"
         ><<</a></div>

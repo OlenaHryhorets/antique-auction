@@ -16,7 +16,7 @@ public class Item {
     private String dateString;
     private String imageName;
 
-    @OneToMany(mappedBy="item",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ItemPrice> itemPrices = new ArrayList<>();
 
     public Integer getId() {

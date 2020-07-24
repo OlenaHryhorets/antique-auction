@@ -2,8 +2,10 @@ function formValidation() {
     const name = document.getElementById('name');
     const description = document.getElementById('description');
     let isValid = true;
+
     const nameValue = name.value.trim();
     const descriptionValue = description.value.trim();
+
     if (nameValue === '') {
         setErrorFor(name, 'cannot be blank');
     } else {
@@ -11,8 +13,8 @@ function formValidation() {
     }
     if (descriptionValue === '') {
         setErrorFor(description, 'cannot be blank');
-    } else if (!descriptionValue) {
-        setErrorFor(description, 'Not a valid description');
+    } else if (descriptionValue.length >= 100) {
+        setErrorFor(description, 'is too long! Please enter less than 100 chars');
     } else {
         setSuccessFor(description);
     }
@@ -30,6 +32,6 @@ function formValidation() {
         const parentElement = input.parentElement;
         const small = parentElement.querySelector('small');
         parentElement.className = 'form-div success';
-        small.innerText = '';
+        small.innerText = 'ok';
     }
 }

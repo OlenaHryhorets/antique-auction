@@ -54,7 +54,6 @@ public class ItemsController {
                                  @RequestParam("size") Optional<Integer> size,
                                  @RequestParam("searchParam") Optional<String> searchParam,
                                  @RequestParam("sortOrder") Optional<String> sortOrder) {
-
         return populateModelAndView(modelAndView, page, size, searchParam, sortOrder);
     }
 
@@ -106,7 +105,6 @@ public class ItemsController {
         }
         return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
-
 
     @PostMapping(value = "/item/add/edit/{id}")
     public RedirectView editItem(@PathVariable int id, Item item, @RequestParam("file") MultipartFile file) {
@@ -222,7 +220,6 @@ public class ItemsController {
         }
     }
 
-
     private void addInitialDemoData() {
         saveItem("demoItem1", "demo description 1", 10);
         saveItem("demoItem2", "demo description 21", 20);
@@ -252,5 +249,4 @@ public class ItemsController {
         itemPriceService.save(itemPrice);
         return item;
     }
-
 }
