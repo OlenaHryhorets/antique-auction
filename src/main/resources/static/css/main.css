@@ -266,6 +266,10 @@ a.fas span {
     top: 8px;
 }
 
+#description-field {
+    word-wrap: break-word;
+}
+
 #i-left {
     right: 20px;
 }

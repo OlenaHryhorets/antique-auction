@@ -109,7 +109,6 @@ public class ItemsController {
     @PostMapping(value = "/item/add/edit/{id}")
     public RedirectView editItem(@PathVariable int id, Item item, @RequestParam("file") MultipartFile file) {
         Item existingItem = itemService.findById(id);
-        fixItemDoubleDateParam(item);
         existingItem.setId(item.getId());
         existingItem.setDateString(item.getDateString());
         existingItem.setName(item.getName());
@@ -211,13 +210,6 @@ public class ItemsController {
         searchParam.ifPresent(s -> modelAndView.addObject("searchParam", s));
         modelAndView.setViewName("home");
         return modelAndView;
-    }
-
-    private void fixItemDoubleDateParam(Item item) {
-        int indexOfComma = item.getDateString().indexOf(',');
-        if (indexOfComma != -1) {
-            item.setDateString(item.getDateString().substring(0, indexOfComma));
-        }
     }
 
     private void addInitialDemoData() {
