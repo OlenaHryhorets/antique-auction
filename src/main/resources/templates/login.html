@@ -16,18 +16,23 @@
         <form class="form-main" method="post" action="/login">
             <div class="form-div">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
+                <input type="text" id="username" name="username" placeholder="Username" required
                        autofocus>
             </div>
             <div class="form-div">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                <input type="password" id="password" name="password" placeholder="Password"
                        required>
             </div>
             <div class="form-div">
                 <button class="form-submit" type="submit">Sign in</button>
             </div>
         </form>
+        <div class="form-main">
+        <div class="form-div">
+            <button class="form-submit" onclick="window.location.href='/registration';">Registration</button>
+        </div>
+        </div>
     </div>
 </main>
 </body>

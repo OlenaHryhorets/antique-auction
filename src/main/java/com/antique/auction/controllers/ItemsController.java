@@ -6,7 +6,6 @@ import com.antique.auction.services.ItemPriceService;
 import com.antique.auction.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.util.StringUtils;
@@ -38,9 +37,6 @@ public class ItemsController {
 
     @Value("${user.home}")
     public String uploadDir;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
 
     @Autowired
     public ItemsController(ItemService itemsService, ItemPriceService itemPriceService) {

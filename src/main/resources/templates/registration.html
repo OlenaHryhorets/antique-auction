@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Registration</title>
+    <link href="/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<main>
+    <header>
+        <h2>Please, fill out the form:</h2>
+    </header>
+    <div class="container">
+        <form class="form-main" method="post" action="/registration">
+            <div class="form-div">
+                <label for="username">Enter username:</label>
+                <input class="input" type="text" id="username" name="username" placeholder="Username" required
+                       autofocus>
+            </div>
+            <div class="form-div">
+                <label for="password">Create a password:</label>
+                <input class="input" type="password" id="password" name="password" placeholder="Password"
+                       required>
+            </div>
+            <div class="form-div">
+                <label for="email">Enter your email:</label>
+                <input class="input" type="email" id="email" name="email" placeholder="Email"
+                       required>
+            </div>
+            <div class="form-div">
+                <button class="form-submit" type="submit">Registration</button>
+            </div>
+            <div class="form-div">
+                <button class="form-submit" onclick="window.location.href='/logout';">Cancel</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

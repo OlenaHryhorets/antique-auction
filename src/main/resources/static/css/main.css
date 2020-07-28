@@ -166,7 +166,7 @@ header h3 {
     margin-top: 20px;
 }
 
-.form-main .form-div label, .form-main .form-div h3, .form-main .form-div div, .form-main .form-div textarea, .form-main .form-div input.input {
+.form-main .form-div h3, .form-main .form-div div, .form-main .form-div textarea, .form-main .form-div input.input, .form-main .form-div label {
     padding: 8px;
     font-weight: 300;
     letter-spacing: .09em;
