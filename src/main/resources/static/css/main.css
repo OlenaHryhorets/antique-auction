@@ -43,7 +43,7 @@ main {
 .btn {
     display: inline-block;
     padding: 0.5em 1em;
-    border: 1px #D0C1A9 solid;
+    border: 1px #31241c solid;
     border-radius: 5px;
     margin: 0.3em;
 }
@@ -94,6 +94,8 @@ main {
 
 header {
     text-align: center;
+    margin: 0;
+    padding: 0;
     background: #ab866e;
     background: linear-gradient(#ab866e 30%, #bc9e8b);
 }
@@ -126,17 +128,23 @@ header .header-panel div {
 }
 
 header h1, header h2, header h3 {
+    padding: 20px;
+    margin: 0 2em 0 0;
     text-decoration-color: #26110C;
-    font-size: 3.5em;
-    font-weight: 400;
     word-spacing: 0.08em;
     display: inline-block;
     text-align: center;
 }
 
+header h1, header h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 5.5em;
+    font-weight: 800;
+}
+
 header h2 {
     font-size: 2.5em;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 header h3 {
@@ -184,13 +192,14 @@ header h3 {
 #main-grid .item {
     position: relative;
     border-radius: 8px;
+    border: 1px #31241c solid;
     box-shadow: -6px 7px 10px -4px #26110C;
     padding: 15px;
     width: 100%;
 }
 
 #main-grid .item:hover {
-    border: 1px #563B2C solid;
+    border: 3px #D0C1A9 solid;
 }
 
 #main-grid .item .flex-box {
