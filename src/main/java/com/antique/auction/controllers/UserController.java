@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collections;
 
@@ -25,8 +26,11 @@ public class UserController {
     }
 
     @GetMapping(value = "/registration")
-    public String goToRegistrationForm() {
-        return "registration";
+    public ModelAndView goToRegistrationForm() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject(new User());
+        modelAndView.setViewName("registration");
+        return modelAndView;
     }
 
     @PostMapping(value = "/registration")
