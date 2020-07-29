@@ -1,21 +1,30 @@
 package com.antique.auction.controllers;
 
+import com.antique.auction.email.EmailService;
 import com.antique.auction.models.Item;
 import com.antique.auction.models.ItemPrice;
+import com.antique.auction.models.Role;
+import com.antique.auction.models.User;
+import com.antique.auction.repositories.RoleRepository;
+import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.ItemPriceService;
 import com.antique.auction.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -24,6 +33,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,14 +44,25 @@ public class ItemsController {
     private static final String ANTIQUE_AUCTION_IMAGES_DIR_NAME = "antique-auction-images";
     private final ItemService itemService;
     private final ItemPriceService itemPriceService;
+    private final EmailService emailService;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Value("${user.home}")
     public String uploadDir;
 
     @Autowired
-    public ItemsController(ItemService itemsService, ItemPriceService itemPriceService) {
+    public ItemsController(ItemService itemsService, ItemPriceService itemPriceService, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.itemService = itemsService;
         this.itemPriceService = itemPriceService;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/items")
@@ -60,11 +81,16 @@ public class ItemsController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/sendEmail")
+    public @ResponseBody String sendEmail() {
+        emailService.sendSimpleMessage("adamenkolena7@gmail.com", "Test email", "This is email text HELLO!)))");
+        return "Email is sent";
+    }
+
     @GetMapping(value = "/item/details/{id}")
     public ModelAndView gotToItemsDetail(@PathVariable int id) {
         Item item = itemService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("item-details", "item", item);
-        return modelAndView;
+        return new ModelAndView("item-details", "item", item);
     }
 
     @PostMapping(value = "/item/bid/add/{id}")
@@ -99,7 +125,53 @@ public class ItemsController {
         if (itemService.count() == 0) {
             addInitialDemoData();
         }
+        addUsersAndRolesIfNeeded();
         return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+    }
+
+    private void addUsersAndRolesIfNeeded() {
+        Role adminRole = createRoleIfNotFound("ADMIN");
+        Role userRole = createRoleIfNotFound("USER");
+
+        User admin = userRepository.findByLogin("admin");
+        if (admin == null) {
+            admin = new User();
+            admin.setLogin("admin");
+            admin.setFirstName("Admin");
+            admin.setLastName("Admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+//            admin.setPassword("admin");
+            admin.setEmail("admin@test.com");
+            admin.setEnabled(true);
+            admin.setRoles(Collections.singletonList(adminRole));
+            userRepository.save(admin);
+        }
+
+        User user = userRepository.findByLogin("user");
+        if (user == null) {
+            user = new User();
+            user.setLogin("user");
+            user.setFirstName("user");
+            user.setLastName("user");
+            user.setPassword(passwordEncoder.encode("user"));
+//            user.setPassword("user");
+            user.setEmail("user@test.com");
+            user.setRoles(Collections.singletonList(userRole));
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
+
+    @Transactional
+    Role createRoleIfNotFound(
+            String name) {
+
+        Role role = roleRepository.findByName(name);
+        if (role == null) {
+            role = new Role(name);
+            roleRepository.save(role);
+        }
+        return role;
     }
 
     @PostMapping(value = "/item/add/edit/{id}")

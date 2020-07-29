@@ -17,7 +17,7 @@
         <div class="logout">
             <div th:text="${#authentication.getPrincipal().getUsername()}"></div>
             <button class="btn form-submit" onclick="window.location.href='/logout';">Logout</button>
-            <button class="btn form-submit" sec:authorize="hasRole('ADMIN')"
+            <button class="btn form-submit" sec:authorize="hasRole('ROLE_ADMIN')"
                     onclick="window.location.href='/item/add/go';">Add Item
             </button>
         </div>
@@ -57,10 +57,10 @@
                             <span th:text="${item.currentPrice}"></span></div>
                         <div class="flex-2">Close date:
                             <span id="dateString" th:text="${item.dateString}">not set</span></div>
-                        <div class="flex-2" sec:authorize="hasRole('USER')">
+                        <div class="flex-2" sec:authorize="hasRole('ROLE_USER')">
                             <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Bid Now</a>
                         </div>
-                        <div id="admin-access" class="flex-1" sec:authorize="hasRole('ADMIN')">
+                        <div id="admin-access" class="flex-1" sec:authorize="hasRole('ROLE_ADMIN')">
                             <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Item
                                 Details</a>
                             <a class="form-submit" th:href="@{/item/edit/view/{id}(id=${item.id})}">Edit</a>
