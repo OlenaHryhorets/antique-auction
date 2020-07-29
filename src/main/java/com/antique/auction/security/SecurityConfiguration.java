@@ -14,6 +14,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final AuctionUserDetailsService userDetailsService;
+
+    public SecurityConfiguration(AuctionUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -35,14 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN");
+        auth.userDetailsService(userDetailsService);
     }
 
     @Bean
