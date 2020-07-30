@@ -12,6 +12,7 @@
     <script th:inline="javascript">
         let dateStringValue = [[${item.dateString}]];
         let itemId = [[${item.id}]];
+        let currentPrice = [[${item.currentPrice}]];
     </script>
 </head>
 
@@ -45,28 +46,30 @@
             </div>
 
             <div class="form-div">
-                <h3 sec:authorize="hasRole('USER')">Make a bid:</h3>
+                <div>
+                <p sec:authorize="hasRole('USER')">Make a bid:</p>
+                </div>
                 <div>
                     <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                     <span>Current price is:</span>
-                    <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>
-
-                    <form class="form-main" sec:authorize="hasRole('USER')" action="#"
-                          th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
-                        <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
-                        <div class="form-div">
-                            <input id="bidsubmit" class="form-submit" type="submit" value="Submit">
-                        </div>
-                    </form>
-
+                    <div id="showCurrentPrice"></div>
+<!--                    <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>-->
                 </div>
             </div>
+                    <form class="form-div" sec:authorize="hasRole('USER')" action="#"
+                          th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
+                        <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
+                        <input id="bidsubmit" class="form-submit" type="submit" value="Submit">
+                    </form>
+
+            </div>
+        <div class="form-main">
             <div class="form-div">
                 <button class="form-submit btn-back" onclick="window.location.href='/home';">Back</button>
             </div>
-
-            <div id="cand">old value</div>
         </div>
+            <div id="cand">old value</div>
+
     </div>
 </main>
 <footer>

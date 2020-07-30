@@ -170,13 +170,10 @@ header h3 {
     padding: 8px;
     font-weight: 300;
     letter-spacing: .09em;
-    text-transform: uppercase;
     flex: 1 0 220px;
     max-width: 450px;
 }
-.form-main .form-div input.input {
-    text-transform: none;
-}
+
 
 .form-main .form-div label, .form-main .form-div div + * {
     flex: 1 0 220px;
@@ -314,12 +311,12 @@ footer {
     bottom: 0;
 }
 
-.error-msg .lost {
+.error-msg, .lost {
     color: #ff0e11 !important;
 }
-.success .won {
+.success, .won {
     color: #009000;
 }
-.inprogress {
+.in_progress {
     color: #ffec1c;
 }
