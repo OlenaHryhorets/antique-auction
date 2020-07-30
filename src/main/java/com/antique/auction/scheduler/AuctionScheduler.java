@@ -1,7 +1,6 @@
 package com.antique.auction.scheduler;
 
 import com.antique.auction.services.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

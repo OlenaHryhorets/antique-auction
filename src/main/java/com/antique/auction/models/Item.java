@@ -1,7 +1,6 @@
 package com.antique.auction.models;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class Item {
     private boolean awarded;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemPrice> itemPrices = new ArrayList<>();
+    private List<Bid> bids = new ArrayList<>();
 
     @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
@@ -57,8 +56,8 @@ public class Item {
         this.currentPrice = currentPrice;
     }
 
-    public List<ItemPrice> getItemPrices() {
-        return itemPrices;
+    public List<Bid> getBids() {
+        return bids;
     }
 
     public String getDateString() {

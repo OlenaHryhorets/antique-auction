@@ -9,18 +9,20 @@ import javax.persistence.JoinTable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Entity
-public class ItemPrice {
+public class Bid {
 
     @Id
     @GeneratedValue
     private int id;
     private int priceValue;
+    private LocalDateTime bidDate;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "item_prices", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+    @JoinTable(name = "item_bids", joinColumns = @JoinColumn(name = "bid_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Item item;
 
     public int getId() {
@@ -45,5 +47,13 @@ public class ItemPrice {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public LocalDateTime getBidDate() {
+        return bidDate;
+    }
+
+    public void setBidDate(LocalDateTime bidDate) {
+        this.bidDate = bidDate;
     }
 }

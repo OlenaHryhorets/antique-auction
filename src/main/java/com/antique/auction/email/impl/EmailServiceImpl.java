@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
 
-        String htmlBody = thymeleafTemplateEngine.process("awardedemail.html", thymeleafContext);
+        String htmlBody = thymeleafTemplateEngine.process("awarded-email.html", thymeleafContext);
 
         sendHtmlMessage(to, subject, htmlBody);
     }

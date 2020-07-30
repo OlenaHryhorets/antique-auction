@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
                 //send email to bid user
                 Map<String, Object> params = new HashMap<>();
                 params.put("itemName", item.getName());
-                params.put("itemPrice", item.getCurrentPrice());
+                params.put("bid", item.getCurrentPrice());
                 try {
                     if (bidUser != null) {
                         emailService.sendMessageUsingThymeleafTemplate(bidUser.getEmail(), "Item is Awarded!", params);

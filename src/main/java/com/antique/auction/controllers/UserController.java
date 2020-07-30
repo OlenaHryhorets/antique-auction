@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -74,39 +71,30 @@ public class UserController {
         User user = userRepository.findByLogin(login);
 
 
-        List<ItemDTO> biddedItems = new ArrayList<>();
+        List<ItemDTO> bidItems = new ArrayList<>();
 
-
-// list of inProgress items:
-        user.getItems().stream().filter(item -> !item.isAwarded() && item.getBidUserLogin().equals(login)).forEach(item1 -> {
+        user.getItems().forEach(item -> {
+            Optional<ItemDTO> dtoItemOptional = bidItems.stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
+            dtoItemOptional.ifPresent(bidItems::remove);
             ItemDTO dtoItem = new ItemDTO();
-            dtoItem.setName(item1.getName());
-            dtoItem.setId(item1.getId());
-            dtoItem.setStatusName("In progress");
-            biddedItems.add(dtoItem);
-        });
+                dtoItem.setName(item.getName());
+                dtoItem.setId(item.getId());
 
-// list of awarded items:
-        user.getItems().stream().filter(item -> item.isAwarded() && item.getBidUserLogin().equals(login)).forEach(item1 -> {
-            ItemDTO dtoItem = new ItemDTO();
-            dtoItem.setName(item1.getName());
-            dtoItem.setId(item1.getId());
-            dtoItem.setStatusName("Won");
-            biddedItems.add(dtoItem);
-            dtoItem.setFinalPrice(item1.getCurrentPrice());
-            userDTO.getAwardedItems().add(dtoItem);
+            if (isUserCurrentBidderForItem(login, item)) {
+                if (item.isAwarded()) {
+                    dtoItem.setStatusName("WON");
+                    Optional<ItemDTO> awardedDtoItemOptional = userDTO.getAwardedItems().stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
+                    awardedDtoItemOptional.ifPresent(userDTO.getAwardedItems()::remove);
+                    userDTO.getAwardedItems().add(dtoItem);
+                } else {
+                    dtoItem.setStatusName("IN_PROGRESS");
+                }
+            } else {
+                dtoItem.setStatusName("LOST");
+            }
+            bidItems.add(dtoItem);
         });
-
-// list of lost items:
-        user.getItems().stream().filter(item -> !item.getBidUserLogin().equals(login)).forEach(item1 -> {
-            ItemDTO dtoItem = new ItemDTO();
-            dtoItem.setName(item1.getName());
-            dtoItem.setId(item1.getId());
-            dtoItem.setStatusName("Lost");
-            biddedItems.add(dtoItem);
-        });
-
-        userDTO.getItems().addAll(biddedItems);
+        userDTO.getItems().addAll(bidItems);
 
 
 
@@ -119,6 +107,10 @@ public class UserController {
 //            itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
 //        }
         return userDTO;
+    }
+
+    private boolean isUserCurrentBidderForItem(@PathVariable String login, Item item) {
+        return item.getBidUserLogin().equals(login);
     }
 
     private boolean registerNewUserAccount(User user) {

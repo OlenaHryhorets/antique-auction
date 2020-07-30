@@ -10,6 +10,7 @@ public class ItemDTO {
     private List<String> bidUsers;
     private String name;
     private String statusName;
+    private boolean isAwarded;
 
     public Integer getId() { return id; }
 
@@ -63,5 +64,9 @@ public class ItemDTO {
         this.statusName = statusName;
     }
 
+
+    public void setItemAwarded() {
+        isAwarded = true;
+    }
 
 }

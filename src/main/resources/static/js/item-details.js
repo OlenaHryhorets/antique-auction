@@ -19,23 +19,29 @@ $(document).ready(function () {
                     // let goodData = JSON.stringify(data);
                     // alert(goodData);
                     // $('#cand').html(data.currentPrice);
-                    $('#cand').html(data.finalPriceUserName);
+                    $('#showCurrentPrice').html(data.currentPrice);
+                    if (currentPrice !== data.currentPrice) {
+                        $('#currentPrice').val(data.currentPrice);
+                    }
+                        // $('input#currentPrice').prop('min', data.currentPrice);
+
+
                 },
             });
             if (distance < 0) {
                 clearInterval(x);
-                $.ajax({
-                    type: 'GET',
-                    url: '/item/status/get',
-                    data: { itemId: itemId },
-                    success: function (data) {
-                        let goodData = JSON.stringify(data);
-                        alert(goodData);
-
-                        // $('#cand').innerText('ffffff');
-                    },
-
-                });
+                // $.ajax({
+                //     type: 'GET',
+                //     url: '/item/status/get',
+                //     data: { itemId: itemId },
+                //     success: function (data) {
+                //         let goodData = JSON.stringify(data);
+                //         alert(goodData);
+                //
+                //         // $('#cand').innerText('ffffff');
+                //     },
+                //
+                // });
                 countDownTimer.className = "error-msg";
                 countDownTimer.innerHTML = "Auction is over!";
                 document.getElementById("currentPrice").disabled = true;

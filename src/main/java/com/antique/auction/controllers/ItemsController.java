@@ -1,14 +1,14 @@
 package com.antique.auction.controllers;
 
 import com.antique.auction.email.EmailService;
+import com.antique.auction.models.Bid;
 import com.antique.auction.models.Item;
-import com.antique.auction.models.ItemPrice;
 import com.antique.auction.models.Role;
 import com.antique.auction.models.User;
 import com.antique.auction.models.dto.ItemDTO;
 import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
-import com.antique.auction.services.ItemPriceService;
+import com.antique.auction.services.BidService;
 import com.antique.auction.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +44,7 @@ import java.util.stream.IntStream;
 public class ItemsController {
     private static final String ANTIQUE_AUCTION_IMAGES_DIR_NAME = "antique-auction-images";
     private final ItemService itemService;
-    private final ItemPriceService itemPriceService;
+    private final BidService bidService;
     private final EmailService emailService;
 
     @Autowired
@@ -59,9 +59,9 @@ public class ItemsController {
     public String uploadDir;
 
     @Autowired
-    public ItemsController(ItemService itemsService, ItemPriceService itemPriceService, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public ItemsController(ItemService itemsService, BidService bidService, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.itemService = itemsService;
-        this.itemPriceService = itemPriceService;
+        this.bidService = bidService;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -100,9 +100,15 @@ public class ItemsController {
 
     @GetMapping(value = "/item/status/get/{itemId}", produces = { "application/json" })
     public ItemDTO getItemStatus(@PathVariable int itemId) {
+        itemService.finalizeBids();
         Item item = itemService.findById(itemId);
         ItemDTO itemDto = new ItemDTO();
-        itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
+        if (item.getCurrentPrice() != null) {
+            itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
+        }
+        if (item.isAwarded()) {
+            itemDto.setItemAwarded();
+        }
         itemDto.setFinalPrice(item.getCurrentPrice());
         List<User> users = item.getUsers();
         if (users != null && !users.isEmpty()) {
@@ -122,7 +128,7 @@ public class ItemsController {
         } else {
             existingItem = new Item();
         }
-        if (item.getCurrentPrice() <= (existingItem != null ? existingItem.getCurrentPrice() : 0)) {
+        if (item.getCurrentPrice().compareTo((existingItem != null && existingItem.getCurrentPrice() != null ? existingItem.getCurrentPrice() : 0)) <= 0) {
             ModelAndView modelAndView = new ModelAndView("item-details", "item", existingItem);
             modelAndView.addObject("wrongBid", "true");
             return modelAndView;
@@ -130,13 +136,14 @@ public class ItemsController {
         if (existingItem != null) {
             existingItem.setCurrentPrice(item.getCurrentPrice());
         }
-        ItemPrice currentItemPrice = new ItemPrice();
-        currentItemPrice.setItem(existingItem);
-        currentItemPrice.setPriceValue(item.getCurrentPrice());
+        Bid currentBid = new Bid();
+        currentBid.setItem(existingItem);
+        currentBid.setBidDate(LocalDateTime.now());
+        currentBid.setPriceValue(item.getCurrentPrice());
         if (existingItem != null) {
-            existingItem.getItemPrices().add(currentItemPrice);
+            existingItem.getBids().add(currentBid);
         }
-        itemPriceService.save(currentItemPrice);
+        bidService.save(currentBid);
         currentUser.addItem(item);
         userRepository.save(currentUser);
         if (existingItem != null) {
@@ -146,7 +153,7 @@ public class ItemsController {
         if (existingItem != null) {
             existingItem.getUsers().stream().filter(user -> !user.equals(currentUser)).forEach(user -> {
                 emailService.sendSimpleMessage(user.getEmail(), "Bid is added", "There is a new bid on item " +
-                        existingItem.getName() + "; new price is - " + currentItemPrice.getPriceValue());
+                        existingItem.getName() + "; new price is - " + currentBid.getPriceValue());
             });
         }
         return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
@@ -329,12 +336,13 @@ public class ItemsController {
         item.setCurrentPrice(price);
         item.setImageName(name + ".png");
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-        item.setDateString(LocalDateTime.now().plusHours(5).format(customFormatter));
-        ItemPrice itemPrice = new ItemPrice();
-        itemPrice.setPriceValue(item.getCurrentPrice());
-        itemPrice.setItem(item);
+        item.setDateString(LocalDateTime.now().plusHours(20).format(customFormatter));
+        Bid bid = new Bid();
+        bid.setPriceValue(item.getCurrentPrice());
+        bid.setItem(item);
+        bid.setBidDate(LocalDateTime.now());
         itemService.save(item);
-        itemPriceService.save(itemPrice);
+        bidService.save(bid);
         return item;
     }
 }
