@@ -1,5 +1,7 @@
 package com.antique.auction.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ public class ItemPrice {
     private int id;
     private int priceValue;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "item_prices", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Item item;

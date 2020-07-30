@@ -39,9 +39,7 @@ public class AuctionUserDetailsService implements UserDetailsService {
         User user = userRepository.findByLogin(login);
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
-              " ", " ", true, true, true, true, 
-              getAuthorities(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"))));
+              " ", " ", true, true, true, true, new ArrayList<>());
         }
 
         return org.springframework.security.core.userdetails.User.builder()

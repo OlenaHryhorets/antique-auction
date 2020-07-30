@@ -5,6 +5,7 @@ import com.antique.auction.models.Item;
 import com.antique.auction.models.ItemPrice;
 import com.antique.auction.models.Role;
 import com.antique.auction.models.User;
+import com.antique.auction.models.dto.ItemDTO;
 import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.ItemPriceService;
@@ -13,15 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -76,6 +77,10 @@ public class ItemsController {
 
     @GetMapping(value = "/login")
     public ModelAndView login() {
+        if (itemService.count() == 0) {
+            addInitialDemoData();
+        }
+        addUsersAndRolesIfNeeded();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
@@ -93,8 +98,24 @@ public class ItemsController {
         return new ModelAndView("item-details", "item", item);
     }
 
+    @GetMapping(value = "/item/status/get/{itemId}", produces = { "application/json" })
+    public ItemDTO getItemStatus(@PathVariable int itemId) {
+        Item item = itemService.findById(itemId);
+        ItemDTO itemDto = new ItemDTO();
+        itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
+        itemDto.setFinalPrice(String.valueOf(item.getCurrentPrice()));
+        List<User> users = item.getUsers();
+        if (users != null && !users.isEmpty()) {
+            itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
+        }
+        return itemDto;
+    }
+
     @PostMapping(value = "/item/bid/add/{id}")
     public ModelAndView addBid(@PathVariable int id, Item item) {
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findByLogin(principal.getUsername());
+        item.addUser(currentUser);
         Item existingItem;
         if (item.getId() != null) {
             existingItem = itemService.findById(id);
@@ -116,16 +137,23 @@ public class ItemsController {
             existingItem.getItemPrices().add(currentItemPrice);
         }
         itemPriceService.save(currentItemPrice);
+        currentUser.addItem(item);
+        userRepository.save(currentUser);
+        if (existingItem != null) {
+            existingItem.setBidUserLogin(currentUser.getLogin());
+        }
         itemService.save(existingItem);
+        if (existingItem != null) {
+            existingItem.getUsers().stream().filter(user -> !user.equals(currentUser)).forEach(user -> {
+                emailService.sendSimpleMessage(user.getEmail(), "Bid is added", "There is a new bid on item " +
+                        existingItem.getName() + "; new price is - " + currentItemPrice.getPriceValue());
+            });
+        }
         return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 
     @RequestMapping(value = {"/", "/home"})
     public ModelAndView home(ModelAndView modelAndView) {
-        if (itemService.count() == 0) {
-            addInitialDemoData();
-        }
-        addUsersAndRolesIfNeeded();
         return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 

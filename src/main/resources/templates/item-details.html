@@ -11,6 +11,7 @@
     <script th:src="@{/js/item-details.js}"></script>
     <script th:inline="javascript">
         let dateStringValue = [[${item.dateString}]];
+        let itemId = [[${item.id}]];
     </script>
 </head>
 
@@ -63,6 +64,8 @@
             <div class="form-div">
                 <button class="form-submit btn-back" onclick="window.location.href='/home';">Back</button>
             </div>
+
+            <div id="cand">old value</div>
         </div>
     </div>
 </main>

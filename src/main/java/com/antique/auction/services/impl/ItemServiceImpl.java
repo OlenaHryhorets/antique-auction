@@ -1,8 +1,12 @@
 package com.antique.auction.services.impl;
 
+import com.antique.auction.email.EmailService;
 import com.antique.auction.models.Item;
+import com.antique.auction.models.User;
 import com.antique.auction.repositories.ItemRepository;
+import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -10,10 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import javax.mail.MessagingException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -21,9 +25,11 @@ public class ItemServiceImpl implements ItemService {
     private static final String ORDERED_FIELD_NAME = "currentPrice";
     private static final String DEFAULT_ORDER_NAME = "default";
     private final ItemRepository itemRepository;
+    private final EmailService emailService;
 
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, EmailService emailService) {
         this.itemRepository = itemRepository;
+        this.emailService = emailService;
     }
 
     public Page<Item> findPaginated(Pageable pageable, Optional<String> searchParam, Optional<String> sortOrder) {
@@ -62,6 +68,43 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public long count() {
         return itemRepository.count();
+    }
+
+    @Override
+    public void finalizeBids() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        List<Item> items = itemRepository.findAllByDateStringIsNotNullAndCurrentPriceIsNotNullAndAwardedFalse();
+        items.forEach(item -> {
+            LocalDateTime itemDate = LocalDateTime.parse(item.getDateString(), formatter);
+            if (itemDate.isBefore(LocalDateTime.now()) || itemDate.isEqual(LocalDateTime.now())) {
+                item.setAwarded(true);
+                itemRepository.save(item);
+                List<User> users = item.getUsers();
+                User bidUser = null;
+                if (users != null && !users.isEmpty()) {
+                    bidUser =  users.get(users.size() - 1);
+                }
+
+                //send email to bid user
+                Map<String, Object> params = new HashMap<>();
+                params.put("itemName", item.getName());
+                params.put("itemPrice", item.getCurrentPrice());
+                try {
+                    if (bidUser != null) {
+                        emailService.sendMessageUsingThymeleafTemplate(bidUser.getEmail(), "Item is Awarded!", params);
+                    }
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
+                User finalBidUser = bidUser;
+                item.getUsers().stream().filter(user -> !user.equals(finalBidUser)).forEach(user -> {
+                    emailService.sendSimpleMessage(user.getEmail(), "Biding has finished", "Bidding of item with name " +
+                            item.getName() + " has finished");
+                });
+            }
+        });
     }
 
     private boolean isSortValueCorrect(Optional<String> sortOrder) {

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findByNameContainingOrDescriptionContaining(String nameParam, String descriptionParam, Sort sort);
+    List<Item> findAllByDateStringIsNotNullAndCurrentPriceIsNotNullAndAwardedFalse();
 }

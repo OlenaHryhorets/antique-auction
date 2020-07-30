@@ -11,8 +11,31 @@ $(document).ready(function () {
             let countDownTimer = document.getElementById("countDownTimer");
             countDownTimer.innerHTML = days + "d " + hours + "h "
                 + minutes + "m " + seconds + "s ";
+            $.ajax({
+                type: 'GET',
+                url: '/item/status/get/' + itemId,
+                // data: { itemId: itemId },
+                success: function (data) {
+                    // let goodData = JSON.stringify(data);
+                    // alert(goodData);
+                    // $('#cand').html(data.currentPrice);
+                    $('#cand').html(data.finalPriceUserName);
+                },
+            });
             if (distance < 0) {
                 clearInterval(x);
+                $.ajax({
+                    type: 'GET',
+                    url: '/item/status/get',
+                    data: { itemId: itemId },
+                    success: function (data) {
+                        let goodData = JSON.stringify(data);
+                        alert(goodData);
+
+                        // $('#cand').innerText('ffffff');
+                    },
+
+                });
                 countDownTimer.className = "error-msg";
                 countDownTimer.innerHTML = "Auction is over!";
                 document.getElementById("currentPrice").disabled = true;

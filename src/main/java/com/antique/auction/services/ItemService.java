@@ -16,4 +16,6 @@ public interface ItemService {
     Page<Item> findPaginated(Pageable pageable, Optional<String> searchParam, Optional<String> sortOrder);
 
     long count();
+
+    void finalizeBids();
 }

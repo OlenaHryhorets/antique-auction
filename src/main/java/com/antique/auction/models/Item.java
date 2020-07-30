@@ -1,6 +1,7 @@
 package com.antique.auction.models;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +13,17 @@ public class Item {
     private Integer id;
     private String name;
     private String description;
-    private int currentPrice;
+    private Integer currentPrice;
+    private String bidUserLogin;
     private String dateString;
     private String imageName;
+    private boolean awarded;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemPrice> itemPrices = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -43,11 +49,11 @@ public class Item {
         this.description = description;
     }
 
-    public int getCurrentPrice() {
+    public Integer getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(int currentPrice) {
+    public void setCurrentPrice(Integer currentPrice) {
         this.currentPrice = currentPrice;
     }
 
@@ -69,5 +75,33 @@ public class Item {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public boolean isAwarded() {
+        return awarded;
+    }
+
+    public void setAwarded(boolean awarded) {
+        this.awarded = awarded;
+    }
+
+    public String getBidUserLogin() {
+        return bidUserLogin;
+    }
+
+    public void setBidUserLogin(String bidUserLogin) {
+        this.bidUserLogin = bidUserLogin;
     }
 }
