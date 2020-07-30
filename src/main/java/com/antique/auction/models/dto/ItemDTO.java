@@ -5,7 +5,7 @@ import java.util.List;
 public class ItemDTO {
     private Integer id;
     private String currentPrice;
-    private String finalPrice;
+    private Integer finalPrice;
     private String finalPriceUserName;
     private List<String> bidUsers;
     private String name;
@@ -23,11 +23,11 @@ public class ItemDTO {
         this.currentPrice = currentPrice;
     }
 
-    public String getFinalPrice() {
+    public Integer getFinalPrice() {
         return finalPrice;
     }
 
-    public void setFinalPrice(String finalPrice) {
+    public void setFinalPrice(Integer finalPrice) {
         this.finalPrice = finalPrice;
     }
 

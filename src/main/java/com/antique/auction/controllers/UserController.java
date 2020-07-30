@@ -72,14 +72,43 @@ public class UserController {
 //        item.setName("Item name");
 //        userDTO.setItems(Arrays.asList(item));
         User user = userRepository.findByLogin(login);
-        List<ItemDTO> awardedItems = new ArrayList<>();
+
+
+        List<ItemDTO> biddedItems = new ArrayList<>();
+
+
+// list of inProgress items:
+        user.getItems().stream().filter(item -> !item.isAwarded() && item.getBidUserLogin().equals(login)).forEach(item1 -> {
+            ItemDTO dtoItem = new ItemDTO();
+            dtoItem.setName(item1.getName());
+            dtoItem.setId(item1.getId());
+            dtoItem.setStatusName("In progress");
+            biddedItems.add(dtoItem);
+        });
+
+// list of awarded items:
         user.getItems().stream().filter(item -> item.isAwarded() && item.getBidUserLogin().equals(login)).forEach(item1 -> {
             ItemDTO dtoItem = new ItemDTO();
             dtoItem.setName(item1.getName());
             dtoItem.setId(item1.getId());
-            awardedItems.add(dtoItem);
+            dtoItem.setStatusName("Won");
+            biddedItems.add(dtoItem);
+            dtoItem.setFinalPrice(item1.getCurrentPrice());
+            userDTO.getAwardedItems().add(dtoItem);
         });
-        userDTO.getAwardedItems().addAll(awardedItems);
+
+// list of lost items:
+        user.getItems().stream().filter(item -> !item.getBidUserLogin().equals(login)).forEach(item1 -> {
+            ItemDTO dtoItem = new ItemDTO();
+            dtoItem.setName(item1.getName());
+            dtoItem.setId(item1.getId());
+            dtoItem.setStatusName("Lost");
+            biddedItems.add(dtoItem);
+        });
+
+        userDTO.getItems().addAll(biddedItems);
+
+
 
 //        Item item = itemService.findById(itemId);
 //        ItemDto itemDto = new ItemDto();

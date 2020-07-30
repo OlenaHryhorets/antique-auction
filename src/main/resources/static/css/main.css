@@ -314,9 +314,12 @@ footer {
     bottom: 0;
 }
 
-.error-msg {
+.error-msg .lost {
     color: #ff0e11 !important;
 }
-.success {
+.success .won {
     color: #009000;
+}
+.inprogress {
+    color: #ffec1c;
 }

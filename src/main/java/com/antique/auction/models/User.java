@@ -97,7 +97,8 @@ public class User {
         joinColumns = @JoinColumn(
           name = "user_id", referencedColumnName = "id"), 
         inverseJoinColumns = @JoinColumn(
-          name = "role_id", referencedColumnName = "id")) 
+          name = "role_id", referencedColumnName = "id"))
+
     private Collection<Role> roles;
 
     @ManyToMany
@@ -107,6 +108,7 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "item_id", referencedColumnName = "id"))
+
     private Collection<Item> items;
 
     public Collection<Item> getItems() {

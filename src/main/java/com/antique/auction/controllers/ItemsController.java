@@ -103,7 +103,7 @@ public class ItemsController {
         Item item = itemService.findById(itemId);
         ItemDTO itemDto = new ItemDTO();
         itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
-        itemDto.setFinalPrice(String.valueOf(item.getCurrentPrice()));
+        itemDto.setFinalPrice(item.getCurrentPrice());
         List<User> users = item.getUsers();
         if (users != null && !users.isEmpty()) {
             itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
