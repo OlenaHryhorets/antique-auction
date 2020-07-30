@@ -39,7 +39,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject(subject);
             message.setText(text);
 
-            emailSender.send(message);
+//            emailSender.send(message);
         } catch (MailException exception) {
             exception.printStackTrace();
         }
@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
 
         String htmlBody = thymeleafTemplateEngine.process("awarded-email.html", thymeleafContext);
 
-        sendHtmlMessage(to, subject, htmlBody);
+//        sendHtmlMessage(to, subject, htmlBody);
     }
 
     private void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {

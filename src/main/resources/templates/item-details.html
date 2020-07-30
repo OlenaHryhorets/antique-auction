@@ -19,7 +19,7 @@
 <body>
 <main>
     <header>
-        <h2 th:text="${item.name}"></h2>
+        <h2 id="itemName" th:text="${item.name}"></h2>
     </header>
 
     <div class="container">
@@ -38,37 +38,39 @@
 
             <div class="form-div history">
                 <h3>Bidding history:</h3>
-                <div class="margin">
+                <div class="margin bidHistory">
                     <div th:each="bid: ${item.bids}">
                         <div th:text="${bid.priceValue}"></div>
                     </div>
                 </div>
             </div>
 
+            <div class="form-main" id="bidSection">
             <div class="form-div">
                 <div>
-                <p sec:authorize="hasRole('USER')">Make a bid:</p>
+                    <p sec:authorize="hasRole('USER')">Make a bid:</p>
                 </div>
                 <div>
                     <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                     <span>Current price is:</span>
                     <div id="showCurrentPrice"></div>
-<!--                    <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>-->
+                    <!--                    <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>-->
                 </div>
             </div>
-                    <form class="form-div" sec:authorize="hasRole('USER')" action="#"
-                          th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
-                        <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
-                        <input id="bidsubmit" class="form-submit" type="submit" value="Submit">
-                    </form>
-
+            <form class="form-div" sec:authorize="hasRole('USER')" action="#"
+                  th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
+                <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
+                <input id="bidsubmit" class="form-submit" type="submit" value="Submit">
+            </form>
             </div>
+
+        </div>
         <div class="form-main">
             <div class="form-div">
                 <button class="form-submit btn-back" onclick="window.location.href='/home';">Back</button>
             </div>
         </div>
-            <div id="cand">old value</div>
+        <div id="cand">old value</div>
 
     </div>
 </main>

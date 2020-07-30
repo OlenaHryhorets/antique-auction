@@ -106,14 +106,15 @@ public class ItemsController {
         if (item.getCurrentPrice() != null) {
             itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
         }
-        if (item.isAwarded()) {
-            itemDto.setItemAwarded();
-        }
+        itemDto.setItemName(item.getName());
+        itemDto.setItemDescription(item.getDescription());
+        itemDto.setDateStringValue(item.getDateString());
         itemDto.setFinalPrice(item.getCurrentPrice());
         List<User> users = item.getUsers();
         if (users != null && !users.isEmpty()) {
             itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
         }
+        itemDto.setBidPrices(item.getBids().stream().map(Bid::getPriceValue).collect(Collectors.toList()));
         return itemDto;
     }
 

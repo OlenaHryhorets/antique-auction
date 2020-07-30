@@ -20,11 +20,21 @@ $(document).ready(function () {
                     // alert(goodData);
                     // $('#cand').html(data.currentPrice);
                     $('#showCurrentPrice').html(data.currentPrice);
-                    if (currentPrice !== data.currentPrice) {
+                    if (currentPrice != data.currentPrice) {
+                        currentPrice = data.currentPrice;
                         $('#currentPrice').val(data.currentPrice);
                     }
-                        // $('input#currentPrice').prop('min', data.currentPrice);
 
+                    let html = '';
+                    $.each(data.bidPrices, function (index, value) {
+                        html = html + '<div><div>' + value + '</div></div>';
+                    });
+                    $('.bidHistory').html(html);
+                    $('#itemName').html(data.itemName);
+                    $('#description-field').html(data.itemDescription);
+                        // $('input#currentPrice').prop('min', data.currentPrice);
+                    dateStringValue = data.dateStringValue;
+                    countDownDate = new Date(dateStringValue).getTime()
 
                 },
             });
@@ -42,6 +52,14 @@ $(document).ready(function () {
                 //     },
                 //
                 // });
+                $.ajax({
+                    type: 'GET',
+                    url: '/item/status/get/' + itemId,
+                    // data: { itemId: itemId },
+                    success: function (data) {
+                        $('#bidSection').html(data.finalPriceUserName + ' ' + data.finalPrice);
+                    },
+                });
                 countDownTimer.className = "error-msg";
                 countDownTimer.innerHTML = "Auction is over!";
                 document.getElementById("currentPrice").disabled = true;

@@ -4,13 +4,16 @@ import java.util.List;
 
 public class ItemDTO {
     private Integer id;
+    private String itemName;
+    private String itemDescription;
     private String currentPrice;
     private Integer finalPrice;
     private String finalPriceUserName;
     private List<String> bidUsers;
     private String name;
     private String statusName;
-    private boolean isAwarded;
+    private List<Integer> bidPrices;
+    private String dateStringValue;
 
     public Integer getId() { return id; }
 
@@ -64,9 +67,35 @@ public class ItemDTO {
         this.statusName = statusName;
     }
 
-
-    public void setItemAwarded() {
-        isAwarded = true;
+    public List<Integer> getBidPrices() {
+        return bidPrices;
     }
 
+    public void setBidPrices(List<Integer> bidPrices) {
+        this.bidPrices = bidPrices;
+    }
+
+    public String getDateStringValue() {
+        return dateStringValue;
+    }
+
+    public void setDateStringValue(String dateStringValue) {
+        this.dateStringValue = dateStringValue;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
 }
