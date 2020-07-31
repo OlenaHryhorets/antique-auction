@@ -46,24 +46,21 @@ public class ItemsController {
     private final ItemService itemService;
     private final BidService bidService;
     private final EmailService emailService;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Value("${user.home}")
     public String uploadDir;
 
     @Autowired
-    public ItemsController(ItemService itemsService, BidService bidService, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public ItemsController(ItemService itemsService, BidService bidService, EmailService emailService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserRepository userRepository) {
         this.itemService = itemsService;
         this.bidService = bidService;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping(value = "/items")
@@ -87,7 +84,8 @@ public class ItemsController {
     }
 
     @GetMapping(value = "/sendEmail")
-    public @ResponseBody String sendEmail() {
+    public @ResponseBody
+    String sendEmail() {
         emailService.sendSimpleMessage("adamenkolena7@gmail.com", "Test email", "This is email text HELLO!)))");
         return "Email is sent";
     }
@@ -98,7 +96,7 @@ public class ItemsController {
         return new ModelAndView("item-details", "item", item);
     }
 
-    @GetMapping(value = "/item/status/get/{itemId}", produces = { "application/json" })
+    @GetMapping(value = "/item/status/get/{itemId}", produces = {"application/json"})
     public ItemDTO getItemStatus(@PathVariable int itemId) {
         itemService.finalizeBids();
         Item item = itemService.findById(itemId);
@@ -168,7 +166,6 @@ public class ItemsController {
     private void addUsersAndRolesIfNeeded() {
         Role adminRole = createRoleIfNotFound("ADMIN");
         Role userRole = createRoleIfNotFound("USER");
-
         User admin = userRepository.findByLogin("admin");
         if (admin == null) {
             admin = new User();
@@ -176,13 +173,11 @@ public class ItemsController {
             admin.setFirstName("Admin");
             admin.setLastName("Admin");
             admin.setPassword(passwordEncoder.encode("admin"));
-//            admin.setPassword("admin");
             admin.setEmail("admin@test.com");
             admin.setEnabled(true);
             admin.setRoles(Collections.singletonList(adminRole));
             userRepository.save(admin);
         }
-
         User user = userRepository.findByLogin("user");
         if (user == null) {
             user = new User();
@@ -190,7 +185,6 @@ public class ItemsController {
             user.setFirstName("user");
             user.setLastName("user");
             user.setPassword(passwordEncoder.encode("user"));
-//            user.setPassword("user");
             user.setEmail("user@test.com");
             user.setRoles(Collections.singletonList(userRole));
             user.setEnabled(true);
@@ -201,7 +195,6 @@ public class ItemsController {
     @Transactional
     Role createRoleIfNotFound(
             String name) {
-
         Role role = roleRepository.findByName(name);
         if (role == null) {
             role = new Role(name);
@@ -236,8 +229,7 @@ public class ItemsController {
     private void setImage(Item item, @RequestParam("file") MultipartFile file) {
         try {
             String filename = file.getOriginalFilename();
-            Path copyLocation = Paths
-                    .get(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Path copyLocation = Paths.get(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
             item.setImageName(filename);
         } catch (IOException | RuntimeException e) {

@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping(value = "/registration")
     public ModelAndView addUser(User user) {
         ModelAndView modelAndView = new ModelAndView();
-        if(registerNewUserAccount(user)) {
+        if (registerNewUserAccount(user)) {
             modelAndView.addObject(user);
             modelAndView.addObject("registerSuccess", true);
             modelAndView.setViewName("login");
@@ -62,29 +62,26 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/user/status/get/{login}", produces = { "application/json" })
-    public @ResponseBody UserDTO getUserStatus(@PathVariable String login) {
+    @GetMapping(value = "/user/status/get/{login}", produces = {"application/json"})
+    public @ResponseBody
+    UserDTO getUserStatus(@PathVariable String login) {
         UserDTO userDTO = new UserDTO();
-//        Item item = new Item();
-//        item.setName("Item name");
-//        userDTO.setItems(Arrays.asList(item));
         User user = userRepository.findByLogin(login);
-
-
         List<ItemDTO> bidItems = new ArrayList<>();
-
         user.getItems().forEach(item -> {
             Optional<ItemDTO> dtoItemOptional = bidItems.stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
             dtoItemOptional.ifPresent(bidItems::remove);
             ItemDTO dtoItem = new ItemDTO();
-                dtoItem.setName(item.getName());
-                dtoItem.setId(item.getId());
+            dtoItem.setName(item.getName());
+            dtoItem.setId(item.getId());
+
 
             if (isUserCurrentBidderForItem(login, item)) {
                 if (item.isAwarded()) {
                     dtoItem.setStatusName("WON");
                     Optional<ItemDTO> awardedDtoItemOptional = userDTO.getAwardedItems().stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
                     awardedDtoItemOptional.ifPresent(userDTO.getAwardedItems()::remove);
+                    dtoItem.setFinalPrice(item.getCurrentPrice());
                     userDTO.getAwardedItems().add(dtoItem);
                 } else {
                     dtoItem.setStatusName("IN_PROGRESS");
@@ -95,17 +92,6 @@ public class UserController {
             bidItems.add(dtoItem);
         });
         userDTO.getItems().addAll(bidItems);
-
-
-
-//        Item item = itemService.findById(itemId);
-//        ItemDto itemDto = new ItemDto();
-//        itemDto.setCurrentPrice(String.valueOf(item.getCurrentPrice()));
-//        itemDto.setFinalPrice(String.valueOf(item.getCurrentPrice()));
-//        List<User> users = item.getUsers();
-//        if (users != null && !users.isEmpty()) {
-//            itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
-//        }
         return userDTO;
     }
 

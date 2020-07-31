@@ -17,17 +17,24 @@
 <body>
 <main>
     <header>
-        <h2>List of your bids</h2>
+        <h2>Your profile</h2>
     </header>
 
     <div class="container">
         <div class="form-main">
+            <h4>List of your bids:</h4>
             <div class="form-div">
-                <div>Bids:</div>
-                <div>Current state:</div>
+                <div>Bid</div>
+                <div>Current state</div>
             </div>
+            <div id="bidItemsList"></div>
 
-            <div id="awardedList"></div>
+            <h4>Awarded Items:</h4>
+            <div class="form-div">
+                <div>Item</div>
+                <div>Bill</div>
+            </div>
+            <div id="awardedItemsList"></div>
 
             <div class="form-div">
                 <button class="form-submit" onclick="window.location.href='/home';">Back</button>

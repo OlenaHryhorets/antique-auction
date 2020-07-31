@@ -34,7 +34,7 @@ main {
     background: #26110C;
     border-radius: 10px;
     color: #D0C1A9;
-    padding: 50px 20px;
+    padding: 30px;
     width: 80%;
     max-width: 1200px;
     margin: 0 auto;
@@ -68,7 +68,7 @@ main {
 }
 
 .btn-back {
-    margin-right: 15px !important;
+    margin: 0;
 }
 
 .form-submit, .current-price {
@@ -181,6 +181,12 @@ header h3 {
 
 #currentPrice {
     color: #26110C !important;
+    height: 30px;
+    min-width: 60px;
+}
+
+#bidItemsList {
+    margin-bottom: 20px;
 }
 
 #main-grid {
@@ -239,7 +245,6 @@ header h3 {
     float: left;
     clear: both;
     margin-bottom: 5px;
-    background-color: #AB866E;
 }
 
 div.form-div.history {

@@ -33,45 +33,46 @@
 
             <div class="form-div">
                 <h3>Auction time:</h3>
-                <div><h3 id="countDownTimer"></h3></div>
+                <h3 id="countDownTimer"></h3>
             </div>
 
             <div class="form-div history">
                 <h3>Bidding history:</h3>
+                <div><details>
+                    <summary>Open</summary>
                 <div class="margin bidHistory">
                     <div th:each="bid: ${item.bids}">
                         <div th:text="${bid.priceValue}"></div>
                     </div>
                 </div>
+                </details>
+                </div>
             </div>
 
-            <div class="form-main" id="bidSection">
-            <div class="form-div">
-                <div>
-                    <p sec:authorize="hasRole('USER')">Make a bid:</p>
+            <div class="form-div" id="bidSection">
+
+                <div sec:authorize="hasRole('USER')">
+                    <span>Make a bid:</span>
+
+                    <form action="#" th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
+                        <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
+                        <input type="submit" class="form-submit" value="Submit">
+                    </form>
                 </div>
+
                 <div>
-                    <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                     <span>Current price is:</span>
                     <div id="showCurrentPrice"></div>
-                    <!--                    <span sec:authorize="hasRole('ADMIN')" th:text="${item.currentPrice}"></span>-->
                 </div>
             </div>
-            <form class="form-div" sec:authorize="hasRole('USER')" action="#"
-                  th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
-                <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
-                <input id="bidsubmit" class="form-submit" type="submit" value="Submit">
-            </form>
+
+            <!--        <div id="cand">old value</div>-->
+
+            <div class="form-div btn-back">
+            <button class="form-submit" onclick="window.location.href='/home';">Back</button>
             </div>
 
         </div>
-        <div class="form-main">
-            <div class="form-div">
-                <button class="form-submit btn-back" onclick="window.location.href='/home';">Back</button>
-            </div>
-        </div>
-        <div id="cand">old value</div>
-
     </div>
 </main>
 <footer>

@@ -15,8 +15,8 @@
     <header>
         <h1>Antique auction</h1>
         <div class="logout">
-            <div><a th:href="@{/user-profile/view/{login}(login=${#authentication.getPrincipal().getUsername()})}"> <span th:text="${#authentication.getPrincipal().getUsername()}"></span></a></div>
-<!--            <div><a th:href="/user-profile/view/{login}(login=${#authentication.getPrincipal().getUsername()})"></a> <span th:text="${#authentication.getPrincipal().getUsername()}"></span></div>-->
+            <div  sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/user-profile/view/{login}(login=${#authentication.getPrincipal().getUsername()})}"> <span th:text="${#authentication.getPrincipal().getUsername()}"></span>profile</a></div>
+            <div  sec:authorize="hasRole('ROLE_ADMIN')"><span th:text="${#authentication.getPrincipal().getUsername()}"></span></div>
             <button class="btn form-submit" onclick="window.location.href='/logout';">Logout</button>
             <button class="btn form-submit" sec:authorize="hasRole('ROLE_ADMIN')"
                     onclick="window.location.href='/item/add/go';">Add Item

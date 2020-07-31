@@ -57,13 +57,15 @@ $(document).ready(function () {
                     url: '/item/status/get/' + itemId,
                     // data: { itemId: itemId },
                     success: function (data) {
-                        $('#bidSection').html(data.finalPriceUserName + ' ' + data.finalPrice);
+                        $('#bidSection').html('<p class="won">Item was awarded to <span>'
+                            + data.finalPriceUserName + '</span> with final price: <span>'
+                            + data.finalPrice + '</span></p>');
                     },
                 });
                 countDownTimer.className = "error-msg";
                 countDownTimer.innerHTML = "Auction is over!";
-                document.getElementById("currentPrice").disabled = true;
-                document.getElementById("bidsubmit").disabled = true;
+                // document.getElementById("currentPrice").disabled = true;
+                // document.getElementById("bidsubmit").disabled = true;
             }
         }, 1000);
     }
