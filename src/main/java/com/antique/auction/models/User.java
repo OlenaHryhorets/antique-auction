@@ -1,6 +1,7 @@
 package com.antique.auction.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -110,7 +111,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "item_id", referencedColumnName = "id"))
 
-    private Collection<Item> items;
+    private Collection<Item> items = new ArrayList<>();
 
     public Collection<Item> getItems() {
         return items;

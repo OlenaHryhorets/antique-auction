@@ -74,10 +74,10 @@ public class ItemsController {
 
     @GetMapping(value = "/login")
     public ModelAndView login() {
+        addUsersAndRolesIfNeeded();
         if (itemService.count() == 0) {
             addInitialDemoData();
         }
-        addUsersAndRolesIfNeeded();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
@@ -327,6 +327,8 @@ public class ItemsController {
         item.setName(name);
         item.setDescription(description);
         item.setCurrentPrice(price);
+        User currentUser = userRepository.findByLogin("user");
+        item.setBidUserLogin(currentUser.getLogin());
         item.setImageName(name + ".png");
         DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
         item.setDateString(LocalDateTime.now().plusHours(20).format(customFormatter));
@@ -335,6 +337,8 @@ public class ItemsController {
         bid.setItem(item);
         bid.setBidDate(LocalDateTime.now());
         itemService.save(item);
+        currentUser.addItem(item);
+//        userRepository.save(currentUser);
         bidService.save(bid);
         return item;
     }

@@ -6,6 +6,8 @@ import com.antique.auction.models.dto.ItemDTO;
 import com.antique.auction.models.dto.UserDTO;
 import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
+import com.antique.auction.services.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +24,13 @@ public class UserController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ItemService itemService;
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ItemService itemService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.itemService = itemService;
     }
 
     @GetMapping(value = "/registration")
@@ -67,6 +71,7 @@ public class UserController {
     UserDTO getUserStatus(@PathVariable String login) {
         UserDTO userDTO = new UserDTO();
         User user = userRepository.findByLogin(login);
+        itemService.finalizeBids();
         List<ItemDTO> bidItems = new ArrayList<>();
         user.getItems().forEach(item -> {
             Optional<ItemDTO> dtoItemOptional = bidItems.stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
@@ -82,6 +87,7 @@ public class UserController {
                     Optional<ItemDTO> awardedDtoItemOptional = userDTO.getAwardedItems().stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
                     awardedDtoItemOptional.ifPresent(userDTO.getAwardedItems()::remove);
                     dtoItem.setFinalPrice(item.getCurrentPrice());
+                    dtoItem.setDateStringValue(item.getDateString());
                     userDTO.getAwardedItems().add(dtoItem);
                 } else {
                     dtoItem.setStatusName("IN_PROGRESS");
