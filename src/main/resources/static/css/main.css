@@ -40,6 +40,15 @@ main {
     margin: 0 auto;
 }
 
+a {
+    text-decoration: none;
+    text-decoration-color: #D0C1A9;
+}
+
+a:hover {
+    text-decoration-color: #261E18;
+}
+
 .btn {
     display: inline-block;
     padding: 0.5em 1em;
@@ -248,7 +257,7 @@ header h3 {
 }
 
 div.form-div.history {
-    align-items: start;
+    align-items: center;
     border: 1px #D0C1A9 solid;
     border-radius: 5px;
     justify-content: space-between;
@@ -261,13 +270,11 @@ div.form-div.history div {
     text-align: end;
 }
 
-a {
-    text-decoration: none;
-    text-decoration-color: #D0C1A9;
+details, summary {
+    border: none!important;
 }
-
-a:hover {
-    text-decoration-color: #261E18;
+summary:focus {
+    outline: 0;
 }
 
 a.fas {
@@ -327,15 +334,27 @@ footer {
 }
 
 .bill-div {
-    border: solid 2px;
     background: #FFF;
-    width: 250px;
-    padding: 10px;
+    width: 300px;
+    padding: 5px;
     position: relative;
     color: black;
+    border-radius: 6px;
+}
+
+.bill-div div{
+    border-bottom: 1px solid grey;
+    margin: 5px
+}
+
+.bill-div div span {
+   display: inline-block;
+   float: right;
+   clear: both;
 }
 
 #payButton {
     position: relative;
-    left: 150px;
+    left: 200px;
+    margin-top: 5px;
 }

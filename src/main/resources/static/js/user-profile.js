@@ -19,15 +19,13 @@ $(document).ready(function () {
                 $.each(data.awardedItems, function (index, value) {
                     let e = '<div class="form-div" style="align-items: center; border: 1px #8d6647 solid">' +
                         '<div>'
-                        + value.name + '</div><div><div class="bill-div"> <div>Date: <span>'
+                        + value.name + '</div><div><div class="bill-div "> <div>Date: <span>'
                         + value.dateStringValue + '</span></div> <div>Product name: <span>'
-                        + value.name + '</span></div><div>Price: <span>'
-                        + value.finalPrice + '</span></div><button id="payButton">Pay</button></div></div></div>';
+                        + value.name + '</span></div><div>Price: <span>$<span>'
+                        + value.finalPrice + '</span></span></div><button id="payButton" class="form-submit">Pay</button></div></div></div>';
                     awardedBids = awardedBids + e;
-
                 });
                 $('#awardedItemsList').html(awardedBids);
-                // $('#awardedList').html(data.items);
             },
         });
     }, 1000);

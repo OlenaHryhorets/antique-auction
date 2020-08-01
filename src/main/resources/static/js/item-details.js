@@ -11,20 +11,17 @@ $(document).ready(function () {
             let countDownTimer = document.getElementById("countDownTimer");
             countDownTimer.innerHTML = days + "d " + hours + "h "
                 + minutes + "m " + seconds + "s ";
+
             $.ajax({
                 type: 'GET',
                 url: '/item/status/get/' + itemId,
-                // data: { itemId: itemId },
+
                 success: function (data) {
-                    // let goodData = JSON.stringify(data);
-                    // alert(goodData);
-                    // $('#cand').html(data.currentPrice);
                     $('#showCurrentPrice').html(data.currentPrice);
                     if (currentPrice != data.currentPrice) {
                         currentPrice = data.currentPrice;
                         $('#currentPrice').val(data.currentPrice);
                     }
-
                     let html = '';
                     $.each(data.bidPrices, function (index, value) {
                         html = html + '<div><div>' + value + '</div></div>';
@@ -35,27 +32,15 @@ $(document).ready(function () {
                         // $('input#currentPrice').prop('min', data.currentPrice);
                     dateStringValue = data.dateStringValue;
                     countDownDate = new Date(dateStringValue).getTime()
-
                 },
             });
             if (distance < 0) {
                 clearInterval(x);
-                // $.ajax({
-                //     type: 'GET',
-                //     url: '/item/status/get',
-                //     data: { itemId: itemId },
-                //     success: function (data) {
-                //         let goodData = JSON.stringify(data);
-                //         alert(goodData);
-                //
-                //         // $('#cand').innerText('ffffff');
-                //     },
-                //
-                // });
+
                 $.ajax({
                     type: 'GET',
                     url: '/item/status/get/' + itemId,
-                    // data: { itemId: itemId },
+
                     success: function (data) {
                         $('#bidSection').html('<p class="won">Item was awarded to <span>'
                             + data.finalPriceUserName + '</span> with final price: <span>'
@@ -64,8 +49,6 @@ $(document).ready(function () {
                 });
                 countDownTimer.className = "error-msg";
                 countDownTimer.innerHTML = "Auction is over!";
-                // document.getElementById("currentPrice").disabled = true;
-                // document.getElementById("bidsubmit").disabled = true;
             }
         }, 1000);
     }

@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Auction mail</title>
+    <link href="/css/main.css" rel="stylesheet"/>
 </head>
 <body>
-Bid is finished!!!
-<h3>Information from Antique auction</h3>
-<p>
-Item name:<span th:text="${itemName}"></span>
-</p>
-<p>
-Item price:<span th:text="${bid}"></span>
-</p>
+<div class="container">
+    <div class="form-main">
+        <h3>Auction is finished!</h3>
 
-
-Thanks
+        <p>You have lost an item <span th:text="${itemName}"></span></p>
+        <p>Winning bid was: $<span th:text="${bid}"></span></p>
+        <p>Thank you.</p>
+    </div>
+</div>
 
 </body>
 </html>
+
