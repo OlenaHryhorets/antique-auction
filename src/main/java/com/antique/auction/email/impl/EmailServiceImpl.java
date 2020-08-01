@@ -1,13 +1,8 @@
 package com.antique.auction.email.impl;
 
 import com.antique.auction.email.EmailService;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,46 +11,57 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.StringWriter;
 import java.util.Map;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
-    @Autowired
-    private SpringTemplateEngine thymeleafTemplateEngine;
+    private final SpringTemplateEngine thymeleafTemplateEngine;
 
-    public EmailServiceImpl(@Qualifier("getJavaMailSender") JavaMailSender emailSender) {
+    @Value("${send.email}")
+    public boolean sendEmail;
+
+    public EmailServiceImpl(@Qualifier("getJavaMailSender") JavaMailSender emailSender, SpringTemplateEngine thymeleafTemplateEngine) {
         this.emailSender = emailSender;
+        this.thymeleafTemplateEngine = thymeleafTemplateEngine;
     }
 
     @Override
-    public void sendSimpleMessage(String to, String subject, String text) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("antique.auction.mail.sender@gmail.com");
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(text);
-
-//            emailSender.send(message);
-        } catch (MailException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @Override
-    public void sendMessageUsingThymeleafTemplate(
+    public void sendAwardedEmail(
             String to, String subject, Map<String, Object> templateModel)
             throws MessagingException {
 
+        String htmlBody = createHtml(templateModel, "awarded-email.html");
+
+        sendHtmlMessage(to, subject, htmlBody);
+    }
+
+    @Override
+    public void sendFinishBidEmail(
+            String to, String subject, Map<String, Object> templateModel)
+            throws MessagingException {
+
+        String htmlBody = createHtml(templateModel, "bid-finished-email.html");
+
+        sendHtmlMessage(to, subject, htmlBody);
+    }
+
+    @Override
+    public void sendNewBidOnItemEmail(
+            String to, String subject, Map<String, Object> templateModel)
+            throws MessagingException {
+
+        String htmlBody = createHtml(templateModel, "new-bid-email.html");
+
+        sendHtmlMessage(to, subject, htmlBody);
+    }
+
+    private String createHtml(Map<String, Object> templateModel, String s) {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
 
-        String htmlBody = thymeleafTemplateEngine.process("awarded-email.html", thymeleafContext);
-
-//        sendHtmlMessage(to, subject, htmlBody);
+        return thymeleafTemplateEngine.process(s, thymeleafContext);
     }
 
     private void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {
@@ -66,7 +72,8 @@ public class EmailServiceImpl implements EmailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
-//        helper.addInline("attachment.png", resourceFile);
-        emailSender.send(message);
+        if (sendEmail) {
+            emailSender.send(message);
+        }
     }
 }

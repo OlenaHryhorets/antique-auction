@@ -6,7 +6,6 @@ import com.antique.auction.models.User;
 import com.antique.auction.repositories.ItemRepository;
 import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -26,10 +25,12 @@ public class ItemServiceImpl implements ItemService {
     private static final String DEFAULT_ORDER_NAME = "default";
     private final ItemRepository itemRepository;
     private final EmailService emailService;
+    private final UserRepository userRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, EmailService emailService) {
+    public ItemServiceImpl(ItemRepository itemRepository, EmailService emailService, UserRepository userRepository) {
         this.itemRepository = itemRepository;
         this.emailService = emailService;
+        this.userRepository = userRepository;
     }
 
     public Page<Item> findPaginated(Pageable pageable, Optional<String> searchParam, Optional<String> sortOrder) {
@@ -80,28 +81,31 @@ public class ItemServiceImpl implements ItemService {
             if (itemDate.isBefore(LocalDateTime.now()) || itemDate.isEqual(LocalDateTime.now())) {
                 item.setAwarded(true);
                 itemRepository.save(item);
-                List<User> users = item.getUsers();
-                User bidUser = null;
-                if (users != null && !users.isEmpty()) {
-                    bidUser =  users.get(users.size() - 1);
-                }
+                User bidUser = userRepository.findByLogin(item.getBidUserLogin());
 
                 //send email to bid user
                 Map<String, Object> params = new HashMap<>();
                 params.put("itemName", item.getName());
                 params.put("bid", item.getCurrentPrice());
+                params.put("bidDate", item.getDateString());
                 try {
                     if (bidUser != null) {
-                        emailService.sendMessageUsingThymeleafTemplate(bidUser.getEmail(), "Item is Awarded!", params);
+                        emailService.sendAwardedEmail(bidUser.getEmail(), "You won the item!", params);
                     }
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
 
-                User finalBidUser = bidUser;
-                item.getUsers().stream().filter(user -> !user.equals(finalBidUser)).forEach(user -> {
-                    emailService.sendSimpleMessage(user.getEmail(), "Biding has finished", "Bidding of item with name " +
-                            item.getName() + " has finished");
+                item.getUsers().stream().filter(user -> !user.equals(bidUser)).forEach(user -> {
+                    Map<String, Object> bidParams = new HashMap<>();
+                    bidParams.put("itemName", item.getName());
+                    bidParams.put("bid", item.getCurrentPrice());
+                    bidParams.put("bidDate", item.getDateString());
+                    try {
+                        emailService.sendFinishBidEmail(user.getEmail(), "Biding has finished", bidParams);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
                 });
             }
         });

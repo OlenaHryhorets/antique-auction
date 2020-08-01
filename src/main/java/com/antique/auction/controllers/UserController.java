@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -70,8 +71,8 @@ public class UserController {
     public @ResponseBody
     UserDTO getUserStatus(@PathVariable String login) {
         UserDTO userDTO = new UserDTO();
-        User user = userRepository.findByLogin(login);
         itemService.finalizeBids();
+        User user = userRepository.findByLogin(login);
         List<ItemDTO> bidItems = new ArrayList<>();
         user.getItems().forEach(item -> {
             Optional<ItemDTO> dtoItemOptional = bidItems.stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
@@ -79,15 +80,14 @@ public class UserController {
             ItemDTO dtoItem = new ItemDTO();
             dtoItem.setName(item.getName());
             dtoItem.setId(item.getId());
-
-
+            dtoItem.setDateStringValue(item.getDateString());
+            dtoItem.setCurrentBidDate(item.getCurrentBidDate());
             if (isUserCurrentBidderForItem(login, item)) {
                 if (item.isAwarded()) {
                     dtoItem.setStatusName("WON");
                     Optional<ItemDTO> awardedDtoItemOptional = userDTO.getAwardedItems().stream().filter(itemDTO -> itemDTO.getId().equals(item.getId())).findFirst();
                     awardedDtoItemOptional.ifPresent(userDTO.getAwardedItems()::remove);
                     dtoItem.setFinalPrice(item.getCurrentPrice());
-                    dtoItem.setDateStringValue(item.getDateString());
                     userDTO.getAwardedItems().add(dtoItem);
                 } else {
                     dtoItem.setStatusName("IN_PROGRESS");
@@ -97,7 +97,9 @@ public class UserController {
             }
             bidItems.add(dtoItem);
         });
+        userDTO.setAwardedItems(userDTO.getAwardedItems().stream().sorted(Comparator.comparing(ItemDTO::getCurrentBidDate)).collect(Collectors.toList()));
         userDTO.getItems().addAll(bidItems);
+        userDTO.setItems(userDTO.getItems().stream().sorted(Comparator.comparing(ItemDTO::getCurrentBidDate)).collect(Collectors.toList()));
         return userDTO;
     }
 

@@ -56,8 +56,7 @@
                             <span th:text="${item.name}"></span></div>
                         <div class="flex-2">Price:
                             <span th:text="${item.currentPrice}"></span></div>
-                        <div class="flex-2">Close date:
-                            <span id="dateString" th:text="${item.dateString}">not set</span></div>
+                        <div class="flex-2" th:if="${item.awarded}">Auction is finished</div>
                         <div class="flex-2" sec:authorize="hasRole('ROLE_USER')">
                             <a class="form-submit" th:href="@{/item/details/{id}(id=${item.id})}">Bid Now</a>
                         </div>

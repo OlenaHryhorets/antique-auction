@@ -3,10 +3,8 @@ package com.antique.auction.controllers;
 import com.antique.auction.email.EmailService;
 import com.antique.auction.models.Bid;
 import com.antique.auction.models.Item;
-import com.antique.auction.models.Role;
 import com.antique.auction.models.User;
 import com.antique.auction.models.dto.ItemDTO;
-import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.BidService;
 import com.antique.auction.services.ItemService;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -33,10 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -46,20 +40,17 @@ public class ItemsController {
     private final ItemService itemService;
     private final BidService bidService;
     private final EmailService emailService;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Value("${user.home}")
     public String uploadDir;
 
     @Autowired
-    public ItemsController(ItemService itemsService, BidService bidService, EmailService emailService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserRepository userRepository) {
+    public ItemsController(ItemService itemsService, BidService bidService, EmailService emailService,
+                           UserRepository userRepository) {
         this.itemService = itemsService;
         this.bidService = bidService;
         this.emailService = emailService;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
 
@@ -70,24 +61,6 @@ public class ItemsController {
                                  @RequestParam("searchParam") Optional<String> searchParam,
                                  @RequestParam("sortOrder") Optional<String> sortOrder) {
         return populateModelAndView(modelAndView, page, size, searchParam, sortOrder);
-    }
-
-    @GetMapping(value = "/login")
-    public ModelAndView login() {
-        addUsersAndRolesIfNeeded();
-        if (itemService.count() == 0) {
-            addInitialDemoData();
-        }
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
-    }
-
-    @GetMapping(value = "/sendEmail")
-    public @ResponseBody
-    String sendEmail() {
-        emailService.sendSimpleMessage("adamenkolena7@gmail.com", "Test email", "This is email text HELLO!)))");
-        return "Email is sent";
     }
 
     @GetMapping(value = "/item/details/{id}")
@@ -108,10 +81,7 @@ public class ItemsController {
         itemDto.setItemDescription(item.getDescription());
         itemDto.setDateStringValue(item.getDateString());
         itemDto.setFinalPrice(item.getCurrentPrice());
-        List<User> users = item.getUsers();
-        if (users != null && !users.isEmpty()) {
-            itemDto.setFinalPriceUserName(users.get(users.size() - 1).getLogin());
-        }
+        itemDto.setFinalPriceUserName(item.getBidUserLogin());
         itemDto.setBidPrices(item.getBids().stream().map(Bid::getPriceValue).collect(Collectors.toList()));
         return itemDto;
     }
@@ -120,87 +90,47 @@ public class ItemsController {
     public ModelAndView addBid(@PathVariable int id, Item item) {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userRepository.findByLogin(principal.getUsername());
-        item.addUser(currentUser);
         Item existingItem;
         if (item.getId() != null) {
             existingItem = itemService.findById(id);
         } else {
             existingItem = new Item();
         }
-        if (item.getCurrentPrice().compareTo((existingItem != null && existingItem.getCurrentPrice() != null ? existingItem.getCurrentPrice() : 0)) <= 0) {
+        existingItem.addUser(currentUser);
+        if (item.getCurrentPrice().compareTo(existingItem.getCurrentPrice() != null ? existingItem.getCurrentPrice() : 0) <= 0) {
             ModelAndView modelAndView = new ModelAndView("item-details", "item", existingItem);
             modelAndView.addObject("wrongBid", "true");
             return modelAndView;
         }
-        if (existingItem != null) {
-            existingItem.setCurrentPrice(item.getCurrentPrice());
-        }
+        existingItem.setCurrentPrice(item.getCurrentPrice());
+        existingItem.setCurrentBidDate(LocalDateTime.now());
         Bid currentBid = new Bid();
         currentBid.setItem(existingItem);
         currentBid.setBidDate(LocalDateTime.now());
         currentBid.setPriceValue(item.getCurrentPrice());
-        if (existingItem != null) {
-            existingItem.getBids().add(currentBid);
-        }
+        existingItem.getBids().add(currentBid);
         bidService.save(currentBid);
         currentUser.addItem(item);
         userRepository.save(currentUser);
-        if (existingItem != null) {
-            existingItem.setBidUserLogin(currentUser.getLogin());
-        }
+        existingItem.setBidUserLogin(currentUser.getLogin());
         itemService.save(existingItem);
-        if (existingItem != null) {
-            existingItem.getUsers().stream().filter(user -> !user.equals(currentUser)).forEach(user -> {
-                emailService.sendSimpleMessage(user.getEmail(), "Bid is added", "There is a new bid on item " +
-                        existingItem.getName() + "; new price is - " + currentBid.getPriceValue());
-            });
-        }
+        existingItem.getUsers().stream().filter(user -> !user.equals(currentUser)).forEach(user -> {
+            //send email to bid user
+            Map<String, Object> params = new HashMap<>();
+            params.put("itemName", existingItem.getName());
+            params.put("bid", item.getCurrentPrice());
+            try {
+                emailService.sendNewBidOnItemEmail(user.getEmail(), "There is a new bid on item you bided", params);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        });
         return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 
     @RequestMapping(value = {"/", "/home"})
     public ModelAndView home(ModelAndView modelAndView) {
         return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
-    }
-
-    private void addUsersAndRolesIfNeeded() {
-        Role adminRole = createRoleIfNotFound("ADMIN");
-        Role userRole = createRoleIfNotFound("USER");
-        User admin = userRepository.findByLogin("admin");
-        if (admin == null) {
-            admin = new User();
-            admin.setLogin("admin");
-            admin.setFirstName("Admin");
-            admin.setLastName("Admin");
-            admin.setPassword(passwordEncoder.encode("admin"));
-            admin.setEmail("admin@test.com");
-            admin.setEnabled(true);
-            admin.setRoles(Collections.singletonList(adminRole));
-            userRepository.save(admin);
-        }
-        User user = userRepository.findByLogin("user");
-        if (user == null) {
-            user = new User();
-            user.setLogin("user");
-            user.setFirstName("user");
-            user.setLastName("user");
-            user.setPassword(passwordEncoder.encode("user"));
-            user.setEmail("user@test.com");
-            user.setRoles(Collections.singletonList(userRole));
-            user.setEnabled(true);
-            userRepository.save(user);
-        }
-    }
-
-    @Transactional
-    Role createRoleIfNotFound(
-            String name) {
-        Role role = roleRepository.findByName(name);
-        if (role == null) {
-            role = new Role(name);
-            roleRepository.save(role);
-        }
-        return role;
     }
 
     @PostMapping(value = "/item/add/edit/{id}")
@@ -226,19 +156,21 @@ public class ItemsController {
         return new RedirectView("/home");
     }
 
-    private void setImage(Item item, @RequestParam("file") MultipartFile file) {
-        try {
-            String filename = file.getOriginalFilename();
-            Path copyLocation = Paths.get(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-            item.setImageName(filename);
-        } catch (IOException | RuntimeException e) {
-            e.printStackTrace();
-        }
-    }
-
     @GetMapping(value = "/item/delete/{id}")
     public RedirectView addItem(@PathVariable Integer id) {
+        Item item = itemService.findById(id);
+        item.getBids().forEach(bid ->
+        {
+            bid.setItem(null);
+            bidService.save(bid);
+        });
+        item.getBids().clear();
+        itemService.save(item);
+        List<User> users = userRepository.findAllByItemsContains(item);
+        users.forEach(user -> {
+            user.getItems().removeAll(Collections.singletonList(item));
+            userRepository.save(user);
+        });
         itemService.deleteById(id);
         return new RedirectView("/home");
     }
@@ -278,6 +210,17 @@ public class ItemsController {
         return response;
     }
 
+    private void setImage(Item item, @RequestParam("file") MultipartFile file) {
+        try {
+            String filename = file.getOriginalFilename();
+            Path copyLocation = Paths.get(uploadDir + File.separator + ANTIQUE_AUCTION_IMAGES_DIR_NAME + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+            item.setImageName(filename);
+        } catch (IOException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static byte[] toByteArrayAutoClosable(BufferedImage image, String type) throws IOException {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             if (image != null) {
@@ -306,40 +249,5 @@ public class ItemsController {
         searchParam.ifPresent(s -> modelAndView.addObject("searchParam", s));
         modelAndView.setViewName("home");
         return modelAndView;
-    }
-
-    private void addInitialDemoData() {
-        saveItem("demoItem1", "demo description 1", 10);
-        saveItem("demoItem2", "demo description 21", 20);
-        saveItem("demoItem3", "demo description 31", 100);
-        saveItem("demoItem4", "demo description 41", 15);
-        saveItem("demoItem5", "demo description 51", 10);
-        saveItem("demoItem6", "demo description 61", 35);
-        saveItem("demoItem7", "demo description 71", 11);
-        saveItem("demoItem8", "demo description 81", 30);
-        saveItem("demoItem9", "demo description 91", 10);
-        saveItem("demoItem10", "demo description 101", 10);
-        saveItem("demoItem11", "demo description 102", 55);
-    }
-
-    private Item saveItem(String name, String description, int price) {
-        Item item = new Item();
-        item.setName(name);
-        item.setDescription(description);
-        item.setCurrentPrice(price);
-        User currentUser = userRepository.findByLogin("user");
-        item.setBidUserLogin(currentUser.getLogin());
-        item.setImageName(name + ".png");
-        DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-        item.setDateString(LocalDateTime.now().plusHours(20).format(customFormatter));
-        Bid bid = new Bid();
-        bid.setPriceValue(item.getCurrentPrice());
-        bid.setItem(item);
-        bid.setBidDate(LocalDateTime.now());
-        itemService.save(item);
-        currentUser.addItem(item);
-//        userRepository.save(currentUser);
-        bidService.save(bid);
-        return item;
     }
 }

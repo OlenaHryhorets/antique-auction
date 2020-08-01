@@ -102,7 +102,7 @@ public class User {
 
     private Collection<Role> roles;
 
-    @ManyToMany
+    @ManyToMany()
     @Column(unique = true)
     @JoinTable(
             name = "users_items",

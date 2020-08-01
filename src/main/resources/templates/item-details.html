@@ -53,7 +53,7 @@
 
                 <div sec:authorize="hasRole('USER')">
                     <span>Make a bid:</span>
-
+                    <div class="error-msg" th:if="${wrongBid == 'true'}">Please, bid above the current price!</div>
                     <form action="#" th:action="@{/item/bid/add/{id}(id=${item.id})}" th:object="${item}" method="post">
                         <input type="number" th:field="*{currentPrice}" th:min="*{currentPrice}" id="currentPrice">
                         <input type="submit" class="form-submit" value="Submit">

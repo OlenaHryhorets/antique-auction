@@ -1,8 +1,10 @@
 package com.antique.auction.models;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Item {
@@ -14,11 +16,12 @@ public class Item {
     private String description;
     private Integer currentPrice;
     private String bidUserLogin;
+    private LocalDateTime currentBidDate;
     private String dateString;
     private String imageName;
     private boolean awarded;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item")
     private List<Bid> bids = new ArrayList<>();
 
     @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
@@ -102,5 +105,28 @@ public class Item {
 
     public void setBidUserLogin(String bidUserLogin) {
         this.bidUserLogin = bidUserLogin;
+    }
+
+    public LocalDateTime getCurrentBidDate() {
+        return currentBidDate;
+    }
+
+    public void setCurrentBidDate(LocalDateTime currentBidDate) {
+        this.currentBidDate = currentBidDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        return Objects.equals(id, item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

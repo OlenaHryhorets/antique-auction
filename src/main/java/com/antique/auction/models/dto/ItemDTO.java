@@ -1,5 +1,6 @@
 package com.antique.auction.models.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ItemDTO {
@@ -14,6 +15,7 @@ public class ItemDTO {
     private String statusName;
     private List<Integer> bidPrices;
     private String dateStringValue;
+    private LocalDateTime currentBidDate;
 
     public Integer getId() { return id; }
 
@@ -97,5 +99,13 @@ public class ItemDTO {
 
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
+    }
+
+    public LocalDateTime getCurrentBidDate() {
+        return currentBidDate;
+    }
+
+    public void setCurrentBidDate(LocalDateTime currentBidDate) {
+        this.currentBidDate = currentBidDate;
     }
 }
