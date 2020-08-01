@@ -339,3 +339,17 @@ footer {
     position: relative;
     left: 150px;
 }
+
+.bill-div {
+    border: solid 2px;
+    background: #FFF;
+    width: 250px;
+    padding: 10px;
+    position: relative;
+    color: black;
+}
+
+#payButton {
+    position: relative;
+    left: 150px;
+}

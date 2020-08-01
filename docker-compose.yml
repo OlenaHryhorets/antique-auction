@@ -1,0 +1,21 @@
+version: "3"
+services:
+  auction-image:
+    image: auction-image
+    ports:
+      - "8081:8081"
+    networks:
+      - auction-mysql-network
+    depends_on:
+      - mysqlAuction
+
+  mysqlAuction:
+    image: mysql:8
+    networks:
+      - auction-mysql-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=auction
+
+networks:
+  auction-mysql-network:
