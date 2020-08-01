@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
                     bidParams.put("bid", item.getCurrentPrice());
                     bidParams.put("bidDate", item.getDateString());
                     try {
-                        emailService.sendFinishBidEmail(user.getEmail(), "Biding has finished", bidParams);
+                        emailService.sendFinishBidEmail(user.getEmail(), "Bidding has finished", bidParams);
                     } catch (MessagingException e) {
                         e.printStackTrace();
                     }

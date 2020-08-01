@@ -120,7 +120,7 @@ public class ItemsController {
             params.put("itemName", existingItem.getName());
             params.put("bid", item.getCurrentPrice());
             try {
-                emailService.sendNewBidOnItemEmail(user.getEmail(), "There is a new bid on item you bided", params);
+                emailService.sendNewBidOnItemEmail(user.getEmail(), "There is a new bid on item", params);
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
