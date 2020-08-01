@@ -1,4 +1,4 @@
-package com.antique.auction.security;
+package com.antique.auction.services;
 
 import com.antique.auction.models.Role;
 import com.antique.auction.models.User;
