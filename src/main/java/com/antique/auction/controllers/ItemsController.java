@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -152,8 +153,28 @@ public class ItemsController {
         if (file != null && !file.isEmpty()) {
             setImage(item, file);
         }
+        if (!StringUtils.isEmpty(item.getDateString())) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime itemDate = LocalDateTime.parse(item.getDateString(), formatter);
+            if (itemDate.isBefore(LocalDateTime.now()) || itemDate.isEqual(LocalDateTime.now())) {
+                return getBackRedirectView(item);
+            }
+        } else {
+            return getBackRedirectView(item);
+        }
         itemService.save(item);
         return new RedirectView("/home");
+    }
+
+    private RedirectView getBackRedirectView(Item item) {
+        RedirectView redirectView = new RedirectView();
+        HashMap<String, Object> attributes = new HashMap<>();
+        attributes.put("itemName", item.getName());
+        attributes.put("itemDescription", item.getDescription());
+        attributes.put("wrongDate", "true");
+        redirectView.setUrl("/item/edit/view");
+        redirectView.setAttributesMap(attributes);
+        return redirectView;
     }
 
     @GetMapping(value = "/item/delete/{id}")
@@ -180,6 +201,19 @@ public class ItemsController {
         ModelAndView modelAndView = new ModelAndView();
         Item existingItem = itemService.findById(id);
         modelAndView.addObject("item", existingItem);
+        modelAndView.setViewName("add-edit-item");
+        return modelAndView;
+    }
+
+    @GetMapping("/item/edit/view")
+    public ModelAndView editItem(@RequestParam String wrongDate, @RequestParam String itemName,
+                                 @RequestParam String itemDescription) {
+        ModelAndView modelAndView = new ModelAndView();
+        Item item = new Item();
+        item.setName(itemName);
+        item.setDescription(itemDescription);
+        modelAndView.addObject("item", item);
+        modelAndView.addObject("wrongDate", wrongDate);
         modelAndView.setViewName("add-edit-item");
         return modelAndView;
     }

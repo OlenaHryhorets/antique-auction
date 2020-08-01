@@ -7,7 +7,6 @@ import com.antique.auction.models.dto.UserDTO;
 import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
 import com.antique.auction.services.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
