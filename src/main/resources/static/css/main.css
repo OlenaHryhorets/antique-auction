@@ -194,10 +194,6 @@ header h3 {
     min-width: 60px;
 }
 
-#bidItemsList {
-    margin-bottom: 20px;
-}
-
 #main-grid {
     display: grid;
     grid-gap: 10px;
@@ -311,7 +307,11 @@ a.fas span {
 .pagination div {
     display: inline-block;
 }
-
+.states {
+    font-size: 0.8em;
+    margin: 0;
+    padding: 0;
+}
 footer {
     width: 100%;
     text-align: center;

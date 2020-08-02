@@ -20,12 +20,16 @@
     </header>
     <div class="container">
         <div class="form-main">
-            <h2>List of your bids:</h2>
+            <div class="form-div">
+                <h2>List of your bids:</h2>
+                <div class="states"><small class="lost">LOST</small>: someone make the highest bid or won this item<br/>
+                    <small class="in_progress">IN_PROGRESS</small>: your bid is the highest on this item<br/>
+                    <small class="won">WON</small>: you won this item</small>
+                </div>
+            </div>
             <div class="form-div">
                 <div>Bid</div>
-                <div>Current state
-                (LOST - means someone make the highest bid, IN_PROGRESS - your bid is the highest on this item, WON - you won this item)
-                </div>
+                <div>Current state</div>
             </div>
             <div id="bidItemsList"></div>
 
