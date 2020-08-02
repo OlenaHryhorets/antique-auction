@@ -17,9 +17,13 @@ public class ItemDTO {
     private String dateStringValue;
     private LocalDateTime currentBidDate;
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCurrentPrice() {
         return currentPrice;

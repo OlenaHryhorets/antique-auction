@@ -7,9 +7,11 @@ public interface EmailService {
     void sendAwardedEmail(
             String to, String subject, Map<String, Object> templateModel)
             throws MessagingException;
+
     void sendFinishBidEmail(
             String to, String subject, Map<String, Object> templateModel)
             throws MessagingException;
+
     void sendNewBidOnItemEmail(
             String to, String subject, Map<String, Object> templateModel)
             throws MessagingException;

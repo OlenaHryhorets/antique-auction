@@ -4,12 +4,78 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Auction mail</title>
     <link href="/css/main.css" rel="stylesheet"/>
+    <style>
+        html, body {
+            min-height: 100vh;
+        }
+
+        body {
+            position: relative;
+            font-family: "Fira Sans", "Helvetica Neue", sans-serif;
+            text-decoration-color: #26110C;
+            margin: 0;
+        }
+
+        .container {
+            background: #26110C;
+            border-radius: 10px;
+            color: #D0C1A9;
+            padding: 30px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .form-main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .bill-div {
+            background: #FFF;
+            width: 300px;
+            padding: 5px;
+            position: relative;
+            color: black;
+            border-radius: 6px;
+        }
+
+        .bill-div div {
+            border-bottom: 1px solid grey;
+            margin: 5px
+        }
+
+        .bill-div div span {
+            display: inline-block;
+            float: right;
+            clear: both;
+        }
+
+        #payButton {
+            position: relative;
+            left: 200px;
+            margin-top: 5px;
+            padding: 8px 16px;
+            border: none;
+            background: #26110C;
+            color: #D0C1A9;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            border-radius: 3px;
+        }
+        #payButton:hover {
+            background: #D0C1A9;
+            color: #26110C;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="form-main">
 
-        <h4>Congratulations!</h4>
+        <h1>Congratulations!</h1>
         <p>You have won an item <span th:text="${itemName}"></span></p>
         <p>$<span th:text="${bid}"></span> was the winning bid.</p>
         <p>You got a great deal!</p>
@@ -18,7 +84,7 @@
             <div>Date: <span th:text="${bidDate}"></span></div>
             <div>Product name: <span th:text="${itemName}"></span></div>
             <div>Price: <span>$<span th:text="${bid}"></span></span></div>
-            <button id="payButton" class="form-submit">Pay</button>
+            <button id="payButton">Pay</button>
         </div>
         <p>Thank you.</p>
     </div>

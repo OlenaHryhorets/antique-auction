@@ -29,7 +29,6 @@ $(document).ready(function () {
                     $('.bidHistory').html(html);
                     $('#itemName').html(data.itemName);
                     $('#description-field').html(data.itemDescription);
-                        // $('input#currentPrice').prop('min', data.currentPrice);
                     dateStringValue = data.dateStringValue;
                     countDownDate = new Date(dateStringValue).getTime()
                 },

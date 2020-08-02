@@ -139,6 +139,15 @@ public class ItemsController {
         Item existingItem = itemService.findById(id);
         existingItem.setId(item.getId());
         existingItem.setDateString(item.getDateString());
+
+        if (!StringUtils.isEmpty(item.getDateString())) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime itemDate = LocalDateTime.parse(item.getDateString(), formatter);
+            if (itemDate.isAfter(LocalDateTime.now())) {
+                existingItem.setAwarded(false);
+            }
+        }
+
         existingItem.setName(item.getName());
         existingItem.setDescription(item.getDescription());
         if (file != null && !file.isEmpty()) {

@@ -4,15 +4,63 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Auction mail</title>
     <link href="/css/main.css" rel="stylesheet"/>
+    <style>
+        html, body {
+            min-height: 100vh;
+        }
+
+        body {
+            position: relative;
+            font-family: "Fira Sans", "Helvetica Neue", sans-serif;
+            text-decoration-color: #26110C;
+            margin: 0;
+        }
+
+        .container {
+            background: #26110C;
+            border-radius: 10px;
+            color: #D0C1A9;
+            padding: 30px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+
+        }
+
+        .form-main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #D0C1A9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5em 1em;
+            border: 1px #31241c solid;
+            border-radius: 5px;
+            margin: 0.3em;
+        }
+
+        .btn:hover {
+            background: #BD997D;
+            color: #261E18;
+        }
+
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="form-main">
-        <h3>There is a new bid!</h3>
+        <h2>There is a new bid!</h2>
 
         <p>Item name: <span th:text="${itemName}"></span></p>
         <p>New price: $<span th:text="${bid}"></span></p>
-        <p>You can go to <a href="#">Antique auction</a> and increase your bid!</p>
+        <p>You can go to <a class="btn" href="#">Antique auction</a> and increase your bid!</p>
         <p>Thank you.</p>
     </div>
 </div>

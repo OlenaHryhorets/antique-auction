@@ -17,17 +17,20 @@
               th:action="@{/registration}" th:object="${user}" method="post">
             <div class="form-div">
                 <label for="firstName">Enter first name:</label>
-                <input class="input" type="text" th:field="*{firstName}" id="firstName" name="firstName" placeholder="FirstName" required
+                <input class="input" type="text" th:field="*{firstName}" id="firstName" name="firstName"
+                       placeholder="FirstName" required
                        autofocus>
             </div>
             <div class="form-div">
                 <label for="lastName">Enter last name:</label>
-                <input class="input" type="text" id="lastName" th:field="*{lastName}" name="lastName" placeholder="LastName" required
+                <input class="input" type="text" id="lastName" th:field="*{lastName}" name="lastName"
+                       placeholder="LastName" required
                        autofocus>
             </div>
             <div class="form-div">
                 <label for="login">Enter your login:</label>
-                <input class="input" type="text" id="login" th:field="*{login}" name="login" placeholder="Login" required
+                <input class="input" type="text" id="login" th:field="*{login}" name="login" placeholder="Login"
+                       required
                        autofocus>
             </div>
             <div class="form-div">
@@ -37,7 +40,8 @@
             </div>
             <div class="form-div">
                 <label for="email">Enter your email:</label>
-                <div class="error-msg" th:if="${registerError}">There is an account with that email already exists!</div>
+                <div class="error-msg" th:if="${registerError}">There is an account with that email already exists!
+                </div>
                 <input class="input" type="email" id="email" th:field="*{email}" name="email" placeholder="Email"
                        required>
             </div>

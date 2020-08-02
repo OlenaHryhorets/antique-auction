@@ -9,28 +9,27 @@
     <link href="/css/main.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@562;700&display=swap" rel="stylesheet">
     <script src="/js/user-profile.js"></script>
-
     <script th:inline="javascript">
         let login = [[${user.login}]];
     </script>
 </head>
-
 <body>
 <main>
     <header>
         <h2>Your profile</h2>
     </header>
-
     <div class="container">
         <div class="form-main">
-            <h4>List of your bids:</h4>
+            <h2>List of your bids:</h2>
             <div class="form-div">
                 <div>Bid</div>
-                <div>Current state</div>
+                <div>Current state
+                (LOST - means someone make the highest bid, IN_PROGRESS - your bid is the highest on this item, WON - you won this item)
+                </div>
             </div>
             <div id="bidItemsList"></div>
 
-            <h4>Awarded Items:</h4>
+            <h2>Awarded Items:</h2>
             <div class="form-div">
                 <div>Item</div>
                 <div>Bill</div>

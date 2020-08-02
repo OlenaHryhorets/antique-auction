@@ -38,14 +38,15 @@
 
             <div class="form-div history">
                 <h3>Bidding history:</h3>
-                <div><details>
-                    <summary>Click to open</summary>
-                <div class="margin bidHistory">
-                    <div th:each="bid: ${item.bids}">
-                        <div th:text="${bid.priceValue}"></div>
-                    </div>
-                </div>
-                </details>
+                <div>
+                    <details>
+                        <summary>Click to open</summary>
+                        <div class="margin bidHistory">
+                            <div th:each="bid: ${item.bids}">
+                                <div th:text="${bid.priceValue}"></div>
+                            </div>
+                        </div>
+                    </details>
                 </div>
             </div>
 
@@ -69,7 +70,7 @@
             <!--        <div id="cand">old value</div>-->
 
             <div class="form-div btn-back">
-            <button class="form-submit" onclick="window.location.href='/home';">Back</button>
+                <button class="form-submit" onclick="window.location.href='/home';">Back</button>
             </div>
 
         </div>

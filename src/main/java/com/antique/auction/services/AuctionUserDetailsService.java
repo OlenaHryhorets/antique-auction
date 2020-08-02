@@ -2,7 +2,6 @@ package com.antique.auction.services;
 
 import com.antique.auction.models.Role;
 import com.antique.auction.models.User;
-import com.antique.auction.repositories.RoleRepository;
 import com.antique.auction.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,24 +15,21 @@ import java.util.stream.Collectors;
 @Service("userDetailsService")
 @Transactional
 public class AuctionUserDetailsService implements UserDetailsService {
- 
-    private final UserRepository userRepository;
- 
-    private final RoleRepository roleRepository;
 
-    public AuctionUserDetailsService(RoleRepository roleRepository, UserRepository userRepository) {
-        this.roleRepository = roleRepository;
+    private final UserRepository userRepository;
+
+    public AuctionUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String login)
-      throws UsernameNotFoundException {
- 
+            throws UsernameNotFoundException {
+
         User user = userRepository.findByLogin(login);
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
-              " ", " ", true, true, true, true, new ArrayList<>());
+                    " ", " ", true, true, true, true, new ArrayList<>());
         }
 
         return org.springframework.security.core.userdetails.User.builder()

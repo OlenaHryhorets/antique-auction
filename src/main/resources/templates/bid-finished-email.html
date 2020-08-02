@@ -4,11 +4,39 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Auction mail</title>
     <link href="/css/main.css" rel="stylesheet"/>
+    <style>
+        html, body {
+            min-height: 100vh;
+        }
+
+        body {
+            position: relative;
+            font-family: "Fira Sans", "Helvetica Neue", sans-serif;
+            text-decoration-color: #26110C;
+            margin: 0;
+        }
+
+        .container {
+            background: #26110C;
+            border-radius: 10px;
+            color: #D0C1A9;
+            padding: 30px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="form-main">
-        <h3>Auction is finished!</h3>
+        <h2>Auction is finished!</h2>
 
         <p>You have lost an item <span th:text="${itemName}"></span></p>
         <p>Winning bid was: $<span th:text="${bid}"></span></p>
