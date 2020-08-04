@@ -55,6 +55,11 @@ public class ItemsController {
         this.userRepository = userRepository;
     }
 
+    @RequestMapping(value = {"/", "/home"})
+    public ModelAndView home(ModelAndView modelAndView) {
+        return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
+    }
+
     @GetMapping(value = "/items")
     public ModelAndView getItems(ModelAndView modelAndView,
                                  @RequestParam("page") Optional<Integer> page,
@@ -65,7 +70,7 @@ public class ItemsController {
     }
 
     @GetMapping(value = "/item/details/{id}")
-    public ModelAndView gotToItemsDetail(@PathVariable int id) {
+    public ModelAndView goToItemDetails(@PathVariable int id) {
         Item item = itemService.findById(id);
         return new ModelAndView("item-details", "item", item);
     }
@@ -129,11 +134,6 @@ public class ItemsController {
         return populateModelAndView(new ModelAndView(), Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
     }
 
-    @RequestMapping(value = {"/", "/home"})
-    public ModelAndView home(ModelAndView modelAndView) {
-        return populateModelAndView(modelAndView, Optional.of(1), Optional.of(10), Optional.empty(), Optional.empty());
-    }
-
     @PostMapping(value = "/item/add/edit/{id}")
     public RedirectView editItem(@PathVariable int id, Item item, @RequestParam("file") MultipartFile file) {
         Item existingItem = itemService.findById(id);
@@ -147,7 +147,6 @@ public class ItemsController {
                 existingItem.setAwarded(false);
             }
         }
-
         existingItem.setName(item.getName());
         existingItem.setDescription(item.getDescription());
         if (file != null && !file.isEmpty()) {
@@ -187,7 +186,7 @@ public class ItemsController {
     }
 
     @GetMapping(value = "/item/delete/{id}")
-    public RedirectView addItem(@PathVariable Integer id) {
+    public RedirectView deleteItem(@PathVariable Integer id) {
         Item item = itemService.findById(id);
         item.getBids().forEach(bid ->
         {
